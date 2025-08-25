@@ -1,0 +1,380 @@
+.ai-problem-generation {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f7fa;
+    min-height: 100vh;
+  }
+  
+  .page-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+  }
+  
+  .page-header h1 {
+    margin: 0 0 20px 0;
+    font-size: 2.5em;
+    font-weight: 700;
+  }
+  
+  .step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 20px;
+  }
+  
+  .step {
+    padding: 10px 20px;
+    border-radius: 25px;
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .step.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #667eea;
+    font-weight: 700;
+    transform: scale(1.05);
+  }
+  
+  .step-content {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+  
+  .step-content h2 {
+    color: #2d3748;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 10px;
+  }
+  
+  .error-message {
+    background: #fed7d7;
+    color: #c53030;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid #c53030;
+  }
+  
+  .error-icon {
+    font-size: 1.2em;
+  }
+  
+  /* 需求输入区域 */
+  .requirements-section {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+  }
+  
+  .requirements-input {
+    width: 100%;
+    padding: 20px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    line-height: 1.6;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .requirements-input:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  .input-tips {
+    background: #f7fafc;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #48bb78;
+  }
+  
+  .input-tips h4 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .input-tips ul {
+    margin: 0;
+    padding-left: 20px;
+  }
+  
+  .input-tips li {
+    margin-bottom: 8px;
+    color: #4a5568;
+    line-height: 1.5;
+  }
+  
+  /* 题目编辑器 */
+  .problem-editor {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .editor-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .editor-section label {
+    font-weight: 600;
+    color: #2d3748;
+    font-size: 16px;
+  }
+  
+  .editor-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .title-input, .description-input, .test-cases-input, 
+  .expected-output-input, .difficulty-select, 
+  .time-limit-input, .memory-limit-input {
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .title-input:focus, .description-input:focus, 
+  .test-cases-input:focus, .expected-output-input:focus,
+  .difficulty-select:focus, .time-limit-input:focus, 
+  .memory-limit-input:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  }
+  
+  .description-input, .test-cases-input, .expected-output-input {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    line-height: 1.5;
+    resize: vertical;
+  }
+  
+  /* 最终预览 */
+  .final-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  
+  .preview-card {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 25px;
+  }
+  
+  .preview-card h3 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .preview-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .preview-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .preview-item strong {
+    color: #4a5568;
+    font-size: 14px;
+  }
+  
+  .preview-item span, .preview-item pre {
+    background: white;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .difficulty-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  
+  .difficulty-badge.easy {
+    background: #c6f6d5;
+    color: #22543d;
+  }
+  
+  .difficulty-badge.medium {
+    background: #feebc8;
+    color: #c05621;
+  }
+  
+  .difficulty-badge.hard {
+    background: #fed7d7;
+    color: #c53030;
+  }
+  
+  .description-preview, .test-cases-preview {
+    white-space: pre-wrap;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 0;
+  }
+  
+  .validation-result {
+    background: #edf2f7;
+    border: 2px solid #cbd5e0;
+    border-radius: 12px;
+    padding: 25px;
+  }
+  
+  .validation-result h3 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .validation-content pre {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    white-space: pre-wrap;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0;
+    color: #2d3748;
+  }
+  
+  /* 按钮样式 */
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .primary-btn, .secondary-btn, .warning-btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 140px;
+    justify-content: center;
+  }
+  
+  .primary-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  .primary-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+  }
+  
+  .secondary-btn {
+    background: #e2e8f0;
+    color: #4a5568;
+    border: 2px solid #cbd5e0;
+  }
+  
+  .secondary-btn:hover:not(:disabled) {
+    background: #cbd5e0;
+    transform: translateY(-1px);
+  }
+  
+  .warning-btn {
+    background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(245, 101, 101, 0.4);
+  }
+  
+  .warning-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 101, 101, 0.6);
+  }
+  
+  .primary-btn:disabled, .secondary-btn:disabled, .warning-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  /* 响应式设计 */
+  @media (max-width: 768px) {
+    .ai-problem-generation {
+      padding: 10px;
+    }
+  
+    .requirements-section {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  
+    .editor-row {
+      grid-template-columns: 1fr;
+    }
+  
+    .step-indicator {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .action-buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .primary-btn, .secondary-btn, .warning-btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }

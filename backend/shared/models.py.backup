@@ -1,0 +1,102 @@
+#定义了共享的数据库模型基类，Problem 和 Submission 的基本字段，
+# 供主服务和判题服务继承，保持数据模型一致。
+
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime, timezone
+from werkzeug.security import generate_password_hash, check_password_hash
+
+# 创建一个临时的db对象，实际使用时会被app中的db替换
+db = SQLAlchemy()
+
+class User(db.Model):
+    __tablename__ = 'user'
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password_hash = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True)
+    phone = db.Column(db.String(20))
+    role = db.Column(db.String(20), default='student')  # student, teacher, admin
+    is_active = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+    
+    # 关联信息
+    class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
+    major_id = db.Column(db.Integer, db.ForeignKey('major.id'))
+    school_id = db.Column(db.Integer, db.ForeignKey('school.id'))
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'name': self.name,
+            'email': self.email,
+            'phone': self.phone,
+            'role': self.role,
+            'is_active': self.is_active,
+            'class_id': self.class_id,
+            'major_id': self.major_id,
+            'school_id': self.school_id,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'updated_at': self.updated_at.isoformat() if self.updated_at else None
+        }
+
+class School(Base):
+    __tablename__ = 'school'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    code = Column(String(20), unique=True)
+    majors = relationship('Major', backref='school', lazy=True)
+
+class Major(Base):
+    __tablename__ = 'major'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    code = Column(String(20))
+    school_id = Column(Integer, ForeignKey('school.id'))
+    classes = relationship('Class', backref='major', lazy=True)
+
+class Class(Base):
+    __tablename__ = 'class'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), nullable=False)
+    grade = Column(String(20))  # 年级
+    major_id = Column(Integer, ForeignKey('major.id'))
+    students = relationship('User', backref='class_ref', lazy=True)
+
+class Problem(Base):
+    __tablename__ = 'problem'
+    id = Column(Integer, primary_key=True)
+    title = Column(String(100), nullable=False)
+    description = Column(Text, nullable=False)
+    test_cases = Column(Text, nullable=False)
+    expected_output = Column(Text, nullable=False)
+    difficulty = Column(String(20), default='easy')  # easy, medium, hard
+    time_limit = Column(Integer, default=1000)  # 毫秒
+    memory_limit = Column(Integer, default=128)  # MB
+    created_by = Column(Integer, ForeignKey('user.id'))
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    
+    # 关系
+    submissions = relationship('Submission', backref='problem', lazy=True)
+
+class Submission(Base):
+    __tablename__ = 'submission'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('user.id'), nullable=False)
+    problem_id = Column(Integer, ForeignKey('problem.id'), nullable=False)
+    code = Column(Text, nullable=False)
+    language = Column(String(20), nullable=False)
+    status = Column(String(20), default='pending')  # pending, judging, accepted, wrong_answer, error, time_limit_exceeded, memory_limit_exceeded
+    result = Column(Text)
+    execution_time = Column(Float)
+    memory_used = Column(Float)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
