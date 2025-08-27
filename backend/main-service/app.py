@@ -42,6 +42,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
 app.config['JWT_SECRET_KEY'] = 'your-jwt-secret-key-here'  # JWT密钥
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=24)
 
+# SQLite数据库优化配置
+if 'sqlite' in db_uri.lower():
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+        'pool_pre_ping': True,
+        'pool_recycle': 300,
+        'connect_args': {
+            'timeout': 30,  # 连接超时30秒
+            'check_same_thread': False,  # 允许多线程访问
+            'isolation_level': None,  # 自动提交模式
+        }
+    }
+    print("已启用SQLite优化配置")
+
 # DeepSeek API 配置
 DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY', 'your-deepseek-api-key-here')
 DEEPSEEK_API_BASE = os.getenv('DEEPSEEK_API_BASE', 'https://api.deepseek.com/v1')  # DeepSeek API端点
@@ -215,20 +228,48 @@ def parse_ai_generated_problem(ai_response):
 
 def generate_problem_prompt(requirements):
     """生成题目生成的提示词"""
-    base_prompt = """请根据以下需求生成一个编程题目，要求格式如下：
+    base_prompt = """请根据以下需求生成一个编程题目，严格按照以下格式要求：
 
 题目名称：[题目的简洁名称]
 
-题目描述：[详细的题目描述，包括问题背景、输入输出格式说明]
+题目描述：[详细的题目描述，包括：
+1. 问题背景和需求
+2. 输入格式说明（如：第一行包含n，第二行包含n个整数）
+3. 输出格式说明（如：输出排序后的数组，用空格分隔）
+4. 约束条件（如：1 ≤ n ≤ 1000，-10^9 ≤ 数组元素 ≤ 10^9）]
 
-测试用例：[提供3-5个测试用例，每个用例包含输入和输出，格式为：
-输入1：[具体输入]
-输出1：[具体输出]
-输入2：[具体输入]
-输出2：[具体输出]
-...]
+测试用例：[严格按照以下格式提供3-5个测试用例：
 
-预期输出：[对于给定测试用例的完整预期输出]
+测试用例1:
+输入：[具体输入内容，多行用换行分隔]
+输出：[具体输出内容，多行用换行分隔]
+
+测试用例2:
+输入：[具体输入内容，多行用换行分隔]
+输出：[具体输出内容，多行用换行分隔]
+
+测试用例3:
+输入：[具体输入内容，多行用换行分隔]
+输出：[具体输出内容，多行用换行分隔]
+
+注意：
+- 每个测试用例必须用"测试用例X:"、"输入："和"输出："明确标记
+- 输入和输出之间用空行分隔
+- 不同测试用例之间用空行分隔
+- 确保输入输出格式清晰，便于程序解析
+- 包含边界情况（如：空输入、单个元素、最大/最小值等）
+
+格式示例：
+测试用例1:
+输入：[]
+输出：[]
+
+测试用例2:
+输入：3
+3 1 2
+输出：1 2 3]
+
+预期输出：[对于给定测试用例的完整预期输出，每行一个]
 
 难度：[easy/medium/hard]
 
@@ -572,25 +613,30 @@ def register_teacher(current_user):
 # 密码找回
 @app.route('/auth/forgot-password', methods=['POST'])
 def forgot_password():
-    data = request.json
-    email = data.get('email')
-    phone = data.get('phone')
-    
-    if not email and not phone:
-        return jsonify({'error': '请提供邮箱或手机号'}), 400
-    
-    # 查找用户
-    if email:
-        user = User.query.filter_by(email=email).first()
+    data = request.json or {}
+    identifier = data.get('identifier')  # 支持邮箱或手机号
+    new_password = data.get('new_password')
+
+    if not identifier or not new_password:
+        return jsonify({'error': '请提供邮箱或手机号以及新密码'}), 400
+
+    # 根据邮箱或手机号查找用户
+    user = None
+    if '@' in identifier:
+        user = User.query.filter_by(email=identifier).first()
     else:
-        user = User.query.filter_by(phone=phone).first()
-    
+        user = User.query.filter_by(phone=identifier).first()
+
     if not user:
-        return jsonify({'error': '用户不存在'}), 404
-    
-    # 这里应该发送重置密码的邮件或短信
-    # 为了演示，我们直接返回成功消息
-    return jsonify({'message': '重置密码链接已发送到您的邮箱/手机'}), 200
+        return jsonify({'error': '邮箱或手机填写有误'}), 400
+
+    try:
+        user.set_password(new_password)
+        db.session.commit()
+        return jsonify({'message': '密码已重置，请使用新密码登录'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': '重置失败，请稍后重试'}), 500
 
 # 重置密码
 @app.route('/auth/reset-password', methods=['POST'])
@@ -740,6 +786,33 @@ def get_problems():
         'current_page': page
     }), 200
 
+# 获取所有题目列表（包括已删除的，仅管理员可用）
+@app.route('/problems/all', methods=['GET'])
+@admin_required
+def get_all_problems():
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 10, type=int)
+    difficulty = request.args.get('difficulty')
+    show_deleted = request.args.get('show_deleted', 'false').lower() == 'true'
+    
+    query = Problem.query
+    
+    if not show_deleted:
+        query = query.filter_by(is_active=True)
+    
+    if difficulty:
+        query = query.filter_by(difficulty=difficulty)
+    
+    problems = query.paginate(page=page, per_page=per_page, error_out=False)
+    
+    return jsonify({
+        'problems': [problem.to_dict() for problem in problems.items],
+        'total': problems.total,
+        'pages': problems.pages,
+        'current_page': page,
+        'show_deleted': show_deleted
+    }), 200
+
 # 获取题目详情
 @app.route('/problems/<int:problem_id>', methods=['GET'])
 def get_problem(problem_id):
@@ -832,13 +905,47 @@ def delete_problem(current_user, problem_id):
     if problem.created_by != current_user.id and current_user.role != 'admin':
         return jsonify({'error': '只能删除自己创建的题目'}), 403
     
+    # 检查题目是否已被作业使用
+    from models.assignment import AssignmentProblem
+    assignment_problems = AssignmentProblem.query.filter_by(problem_id=problem_id).all()
+    if assignment_problems:
+        return jsonify({'error': '该题目已被作业使用，无法删除。建议使用软删除功能。'}), 400
+    
     try:
-        db.session.delete(problem)
+        # 软删除：标记为inactive并设置删除时间
+        problem.is_active = False
+        problem.deleted_at = datetime.now(timezone.utc)
         db.session.commit()
-        return jsonify({'message': '题目删除成功'}), 200
+        return jsonify({'message': '题目已软删除成功'}), 200
     except Exception as e:
         db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': f'题目删除失败: {str(e)}'}), 500
+
+# 恢复软删除的题目（需要教师权限）
+@app.route('/problems/<int:problem_id>/restore', methods=['POST'])
+@teacher_required
+def restore_problem(current_user, problem_id):
+    problem = Problem.query.get(problem_id)
+    if not problem:
+        return jsonify({'error': '题目不存在'}), 404
+    
+    # 检查权限：只能恢复自己创建的题目
+    if problem.created_by != current_user.id and current_user.role != 'admin':
+        return jsonify({'error': '只能恢复自己创建的题目'}), 403
+    
+    # 检查题目是否已被软删除
+    if problem.is_active:
+        return jsonify({'error': '该题目未被删除'}), 400
+    
+    try:
+        # 恢复题目：重新标记为active并清除删除时间
+        problem.is_active = True
+        problem.deleted_at = None
+        db.session.commit()
+        return jsonify({'message': '题目恢复成功'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'题目恢复失败: {str(e)}'}), 500
 
 # ============ AI 智能生成题目相关API ============
 
@@ -1384,6 +1491,35 @@ def delete_user(current_user, user_id):
                 db.session.commit()
                 print(f"成功删除教师 {user.username} 的所有相关数据")
         
+        # 如果是学生，需要处理相关的课程关联
+        elif user.role == 'student':
+            # 导入所有需要的模型类
+            from models.course_student import Course, CourseStudent
+            from models.assignment import Assignment, AssignmentProblem
+            
+            print(f"开始删除学生 {user.username} 的相关数据")
+            
+            # 1. 删除该学生在所有课程中的关联关系
+            course_students = CourseStudent.query.filter_by(student_id=user_id).all()
+            if course_students:
+                print(f"删除学生 {user.username} 的 {len(course_students)} 个课程关联")
+                for cs in course_students:
+                    print(f"删除课程关联: 课程ID {cs.course_id}")
+                    db.session.delete(cs)
+            
+            # 2. 删除该学生提交的所有代码记录
+            from models import Submission
+            submissions = Submission.query.filter_by(user_id=user_id).all()
+            if submissions:
+                print(f"删除学生 {user.username} 的 {len(submissions)} 个代码提交记录")
+                for submission in submissions:
+                    print(f"删除提交记录: 题目ID {submission.problem_id}")
+                    db.session.delete(submission)
+            
+            # 提交所有删除操作
+            db.session.commit()
+            print(f"成功删除学生 {user.username} 的所有相关数据")
+        
         # 删除用户
         db.session.delete(user)
         db.session.commit()
@@ -1475,9 +1611,13 @@ def get_result(current_user, submission_id):
 @app.route('/submissions', methods=['GET'])
 @token_required
 def get_submissions(current_user):
+    # 在函数开头导入所需的模型
+    from models.problem import MSProblem
+    
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
     problem_id = request.args.get('problem_id', type=int)
+    problem_title = request.args.get('problem_title', '').strip()  # 新增：题目名称筛选
     
     query = Submission.query
     
@@ -1485,15 +1625,56 @@ def get_submissions(current_user):
     if current_user.role == 'student':
         query = query.filter_by(user_id=current_user.id)
     
+    # 按题目ID筛选
     if problem_id:
         query = query.filter_by(problem_id=problem_id)
+    
+    # 按题目名称筛选（模糊匹配）
+    if problem_title:
+        # 先查询匹配的题目ID，然后筛选提交记录
+        matching_problems = MSProblem.query.filter(
+            MSProblem.title.ilike(f'%{problem_title}%')
+        ).with_entities(MSProblem.id).all()
+        
+        if matching_problems:
+            problem_ids = [p.id for p in matching_problems]
+            query = query.filter(Submission.problem_id.in_(problem_ids))
+        else:
+            # 如果没有找到匹配的题目，返回空结果
+            return jsonify({
+                'submissions': [],
+                'total': 0,
+                'pages': 0,
+                'current_page': page
+            }), 200
     
     submissions = query.order_by(Submission.created_at.desc()).paginate(
         page=page, per_page=per_page, error_out=False
     )
     
+    # 为每个提交添加题目信息
+    submission_list = []
+    for submission in submissions.items:
+        submission_dict = submission.to_dict()
+        
+        # 获取题目信息
+        try:
+            problem = MSProblem.query.get(submission.problem_id)
+            if problem:
+                submission_dict['problem_title'] = problem.title
+                submission_dict['problem_type'] = problem.type
+            else:
+                submission_dict['problem_title'] = f'题目{submission.problem_id}'
+                submission_dict['problem_type'] = 'unknown'
+        except Exception as e:
+            print(f"获取题目信息失败: {e}")
+            submission_dict['problem_title'] = f'题目{submission.problem_id}'
+            submission_dict['problem_type'] = 'unknown'
+        
+        submission_list.append(submission_dict)
+    
     return jsonify({
-        'submissions': [submission.to_dict() for submission in submissions.items],
+        'submissions': submission_list,
         'total': submissions.total,
         'pages': submissions.pages,
         'current_page': page
@@ -1505,18 +1686,52 @@ def get_submissions(current_user):
 @app.route('/courses', methods=['GET'])
 @token_required
 def get_courses(current_user):
+    print(f"Debug: get_courses 被调用，当前用户: ID={current_user.id}, 用户名={current_user.username}, 角色={current_user.role}")
+    
     # 根据用户角色过滤课程
     if current_user.role == 'teacher':
         # 教师只能看到自己的课程
         courses = Course.query.filter_by(teacher_id=current_user.id).all()
+        print(f"Debug: 教师用户，查询 teacher_id={current_user.id} 的课程，找到 {len(courses)} 个课程")
     elif current_user.role == 'admin':
         # 管理员可以看到所有课程
         courses = Course.query.all()
+        print(f"Debug: 管理员用户，查询所有课程，找到 {len(courses)} 个课程")
+    elif current_user.role == 'student':
+        # 学生只能看到自己所在的课程
+        # 通过学生的班级ID来查找相关课程
+        student_courses = []
+        
+        # 1. 查找学生所在班级的课程
+        if current_user.class_id:
+            class_courses = Course.query.filter_by(class_id=current_user.class_id).all()
+            student_courses.extend(class_courses)
+            print(f"Debug: 学生用户，通过班级ID {current_user.class_id} 找到 {len(class_courses)} 个课程")
+        
+        # 2. 查找学生通过课程管理添加的课程
+        from models.course_student import CourseStudent
+        course_student_relations = CourseStudent.query.filter_by(student_id=current_user.id).all()
+        for relation in course_student_relations:
+            course = Course.query.get(relation.course_id)
+            if course and course not in student_courses:
+                student_courses.append(course)
+                print(f"Debug: 学生用户，通过课程管理找到课程 {course.id} ({course.name})")
+        
+        courses = student_courses
+        print(f"Debug: 学生用户，总共找到 {len(courses)} 个课程")
     else:
+        print(f"Debug: 用户角色 {current_user.role} 权限不足")
         return jsonify({'error': '权限不足'}), 403
     
+    # 为每个课程添加调试信息
+    course_list = []
+    for course in courses:
+        course_dict = course.to_dict()
+        print(f"Debug: 课程 {course.id} ({course.name}) - 学生数量: {course_dict.get('student_count', '未找到')}")
+        course_list.append(course_dict)
+    
     return jsonify({
-        'courses': [course.to_dict() for course in courses]
+        'courses': course_list
     }), 200
 
 # 获取所有课程（管理员权限）
@@ -1549,58 +1764,42 @@ def create_course(current_user):
     if current_user.role not in ['teacher', 'admin']:
         return jsonify({'error': '权限不足'}), 403
     
-    data = request.get_json()
-    required_fields = ['name', 'class_id']
-    for field in required_fields:
-        if not data.get(field):
-            return jsonify({'error': f'缺少必填字段: {field}'}), 400
-    
-    # 检查教学班是否存在
-    class_info = ClassModel.query.get(data['class_id'])
-    if not class_info:
-        return jsonify({'error': '教学班不存在'}), 404
-    
+    data = request.get_json() or {}
+    # 允许管理员/教师通过教学班名称创建课程；class_id（行政班）可选
+    if not data.get('name'):
+        return jsonify({'error': '缺少必填字段: name'}), 400
+
     # 确定教师ID
     if current_user.role == 'admin':
-        # 管理员必须指定教师
         if not data.get('teacher_id'):
             return jsonify({'error': '管理员创建课程必须指定教师'}), 400
-        
-        # 检查指定的教师是否存在且是教师角色
         teacher = User.query.get(data['teacher_id'])
         if not teacher or teacher.role != 'teacher':
             return jsonify({'error': '指定的教师不存在或不是教师角色'}), 400
-        
         teacher_id = data['teacher_id']
     else:
-        # 教师创建课程时使用自己的ID
         teacher_id = current_user.id
-    
+
+    # 行政班class_id可选；教学班名称teaching_class_name可选
+    class_id = data.get('class_id')
+    if class_id:
+        class_info = ClassModel.query.get(class_id)
+        if not class_info:
+            return jsonify({'error': '行政班不存在'}), 404
+    teaching_class_name = (data.get('teaching_class_name') or '').strip() or None
+
     course = Course(
         name=data['name'],
         description=data.get('description', ''),
         teacher_id=teacher_id,
-        class_id=data['class_id']
+        class_id=class_id,
+        teaching_class_name=teaching_class_name
     )
     
     db.session.add(course)
     db.session.commit()
     
     return jsonify(course.to_dict()), 201
-
-# 获取课程详情
-@app.route('/courses/<int:course_id>', methods=['GET'])
-@token_required
-def get_course(current_user, course_id):
-    course = Course.query.get(course_id)
-    if not course:
-        return jsonify({'error': '课程不存在'}), 404
-    
-    # 检查权限：教师只能查看自己的课程，管理员可以查看所有
-    if current_user.role == 'teacher' and course.teacher_id != current_user.id:
-        return jsonify({'error': '权限不足'}), 403
-    
-    return jsonify(course.to_dict()), 200
 
 # 更新课程
 @app.route('/courses/<int:course_id>', methods=['PUT'])
@@ -1617,15 +1816,18 @@ def update_course(current_user, course_id):
     if current_user.role == 'teacher' and course.teacher_id != current_user.id:
         return jsonify({'error': '权限不足'}), 403
     
-    data = request.get_json()
+    data = request.get_json() or {}
     if 'name' in data:
         course.name = data['name']
     if 'description' in data:
         course.description = data['description']
     if 'class_id' in data:
+        # class_id 可设置为 None 或某个行政班
         course.class_id = data['class_id']
     if 'teacher_id' in data:
         course.teacher_id = data['teacher_id']
+    if 'teaching_class_name' in data:
+        course.teaching_class_name = (data.get('teaching_class_name') or '').strip() or None
     
     db.session.commit()
     return jsonify(course.to_dict()), 200
@@ -1645,13 +1847,19 @@ def delete_course(current_user, course_id):
     if current_user.role == 'teacher' and course.teacher_id != current_user.id:
         return jsonify({'error': '权限不足'}), 403
     
-    # 删除相关的学生-课程关联关系
-    CourseStudent.query.filter_by(course_id=course_id).delete()
-    
-    db.session.delete(course)
-    db.session.commit()
-    
-    return jsonify({'message': '课程删除成功'}), 200
+    try:
+        # 由于设置了级联删除约束，直接删除课程即可
+        # 所有相关的数据（作业、学生关联、退课记录等）会自动删除
+        db.session.delete(course)
+        db.session.commit()
+        
+        print(f"成功删除课程 {course.name} (ID: {course_id}) 及其所有相关数据（级联删除）")
+        return jsonify({'message': '课程删除成功'}), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        print(f"删除课程失败: {str(e)}")
+        return jsonify({'error': f'删除课程失败: {str(e)}'}), 500
 
 # ============ 学生-课程关联关系管理API ============
 
@@ -1667,10 +1875,85 @@ def get_course_students(current_user, course_id):
     if current_user.role == 'teacher' and course.teacher_id != current_user.id:
         return jsonify({'error': '权限不足'}), 403
     
-    # 获取该课程的所有学生
-    course_students = CourseStudent.query.filter_by(course_id=course_id).all()
+    # 获取该课程的所有学生（包含两部分）：
+    # 1) 原班级学生（排除已退课的） 2) 通过关联关系添加的学生
+    from models.course_student import CourseStudentExclusion
     
-    return jsonify([cs.to_dict() for cs in course_students]), 200
+    # 原班级学生
+    original_students = User.query.filter_by(class_id=course.class_id, role='student').all()
+    
+    # 查询退课排除表
+    excluded_ids = set([e.student_id for e in CourseStudentExclusion.query.filter_by(course_id=course_id).all()])
+    
+    original_students_data = []
+    for s in original_students:
+        if s.id in excluded_ids:
+            continue
+        original_students_data.append({
+            'id': s.id,
+            'student_id': s.id,
+            'student_name': s.name,
+            'student_no': s.username,
+            'class_id': s.class_id,
+            'course_id': course_id,
+            'is_original': True
+        })
+
+    # 通过关联关系添加的学生
+    course_students = CourseStudent.query.filter_by(course_id=course_id).all()
+    related_students_data = [cs.to_dict() for cs in course_students]
+
+    # 合并
+    combined = original_students_data + related_students_data
+    return jsonify(combined), 200
+
+# 原班级学生退课（排除）
+@app.route('/courses/<int:course_id>/students/<int:student_id>/exclude', methods=['POST'])
+@token_required
+def exclude_original_student_from_course(current_user, course_id, student_id):
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足'}), 403
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': '课程不存在'}), 404
+    if current_user.role == 'teacher' and course.teacher_id != current_user.id:
+        return jsonify({'error': '权限不足'}), 403
+
+    # 确认该学生属于课程的原班级
+    student = User.query.get(student_id)
+    if not student or student.role != 'student':
+        return jsonify({'error': '学生不存在'}), 404
+    if student.class_id != course.class_id:
+        return jsonify({'error': '该学生不是该课程原班级学生'}), 400
+
+    from models.course_student import CourseStudentExclusion
+    existing = CourseStudentExclusion.query.filter_by(course_id=course_id, student_id=student_id).first()
+    if existing:
+        return jsonify({'message': '该学生已退课'}), 200
+    exclusion = CourseStudentExclusion(course_id=course_id, student_id=student_id)
+    db.session.add(exclusion)
+    db.session.commit()
+    return jsonify({'message': '已将该学生从课程中排除（退课）'}), 200
+
+# 取消退课（恢复原班级学生）
+@app.route('/courses/<int:course_id>/students/<int:student_id>/exclude', methods=['DELETE'])
+@token_required
+def cancel_exclusion_for_student(current_user, course_id, student_id):
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足'}), 403
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': '课程不存在'}), 404
+    if current_user.role == 'teacher' and course.teacher_id != current_user.id:
+        return jsonify({'error': '权限不足'}), 403
+
+    from models.course_student import CourseStudentExclusion
+    exclusion = CourseStudentExclusion.query.filter_by(course_id=course_id, student_id=student_id).first()
+    if not exclusion:
+        return jsonify({'error': '未找到退课记录'}), 404
+    db.session.delete(exclusion)
+    db.session.commit()
+    return jsonify({'message': '已恢复该学生到课程'}), 200
 
 # 添加学生到课程
 @app.route('/courses/<int:course_id>/students', methods=['POST'])
@@ -1687,12 +1970,25 @@ def add_student_to_course(current_user, course_id):
     if current_user.role == 'teacher' and course.teacher_id != current_user.id:
         return jsonify({'error': '权限不足'}), 403
     
-    data = request.get_json()
-    required_fields = ['student_id', 'class_id']
-    for field in required_fields:
-        if not data.get(field):
-            return jsonify({'error': f'缺少必填字段: {field}'}), 400
+    data = request.get_json() or {}
+    # 仅强制 student_id，class_id 可选（默认为学生的行政班）
+    if not data.get('student_id'):
+        return jsonify({'error': '缺少必填字段: student_id'}), 400
     
+    # 检查学生是否存在
+    student = User.query.get(data['student_id'])
+    if not student or student.role != 'student':
+        return jsonify({'error': '学生不存在'}), 404
+
+    # 解析 class_id：优先取传入值，否则使用学生当前行政班
+    class_id = data.get('class_id')
+    if class_id in ('', None):
+        class_id = student.class_id
+    
+    if class_id in ('', None):
+        # 如果学生没有行政班也未传入class_id，则用0占位不入库；CourseStudent.class_id 为必填，需给出有效值
+        return jsonify({'error': '该学生缺少行政班信息，请在创建学生账号时指定行政班，或在添加到课程时提供class_id'}), 400
+
     # 检查学生是否已经在该课程中
     existing_enrollment = CourseStudent.query.filter_by(
         course_id=course_id,
@@ -1702,16 +1998,11 @@ def add_student_to_course(current_user, course_id):
     if existing_enrollment:
         return jsonify({'error': '该学生已经在该课程中'}), 400
     
-    # 检查学生是否存在
-    student = User.query.get(data['student_id'])
-    if not student or student.role != 'student':
-        return jsonify({'error': '学生不存在'}), 404
-    
     # 创建学生-课程关联关系
     course_student = CourseStudent(
         course_id=course_id,
         student_id=data['student_id'],
-        class_id=data['class_id']
+        class_id=class_id
     )
     
     db.session.add(course_student)
@@ -1766,6 +2057,30 @@ def get_assignments(current_user):
         if current_user.role == 'teacher' and course.teacher_id != current_user.id:
             return jsonify({'error': '权限不足'}), 403
         
+        # 学生只能查看自己所在课程的作业
+        if current_user.role == 'student':
+            # 检查学生是否在该课程中
+            student_in_course = False
+            
+            # 1. 检查学生是否通过班级关联到该课程
+            if current_user.class_id == course.class_id:
+                student_in_course = True
+                print(f"Debug: 学生 {current_user.username} 通过班级关联到课程 {course.id}")
+            
+            # 2. 检查学生是否通过课程管理添加到该课程
+            if not student_in_course:
+                from models.course_student import CourseStudent
+                course_student = CourseStudent.query.filter_by(
+                    course_id=course_id,
+                    student_id=current_user.id
+                ).first()
+                if course_student:
+                    student_in_course = True
+                    print(f"Debug: 学生 {current_user.username} 通过课程管理关联到课程 {course.id}")
+            
+            if not student_in_course:
+                return jsonify({'error': '权限不足，您不在该课程中'}), 403
+        
         assignments = Assignment.query.filter_by(course_id=course_id).all()
     else:
         # 获取所有作业（根据用户角色过滤）
@@ -1773,6 +2088,28 @@ def get_assignments(current_user):
             assignments = Assignment.query.filter_by(teacher_id=current_user.id).all()
         elif current_user.role == 'admin':
             assignments = Assignment.query.all()
+        elif current_user.role == 'student':
+            # 学生只能看到自己所在课程的作业
+            student_assignments = []
+            
+            # 1. 获取学生所在班级的课程
+            if current_user.class_id:
+                class_courses = Course.query.filter_by(class_id=current_user.class_id).all()
+                for course in class_courses:
+                    course_assignments = Assignment.query.filter_by(course_id=course.id).all()
+                    student_assignments.extend(course_assignments)
+                    print(f"Debug: 学生 {current_user.username} 通过班级获取到课程 {course.id} 的 {len(course_assignments)} 个作业")
+            
+            # 2. 获取学生通过课程管理添加的课程的作业
+            from models.course_student import CourseStudent
+            course_student_relations = CourseStudent.query.filter_by(student_id=current_user.id).all()
+            for relation in course_student_relations:
+                course_assignments = Assignment.query.filter_by(course_id=relation.course_id).all()
+                student_assignments.extend(course_assignments)
+                print(f"Debug: 学生 {current_user.username} 通过课程管理获取到课程 {relation.course_id} 的 {len(course_assignments)} 个作业")
+            
+            assignments = student_assignments
+            print(f"Debug: 学生 {current_user.username} 总共获取到 {len(assignments)} 个作业")
         else:
             return jsonify({'error': '权限不足'}), 403
     
@@ -1817,7 +2154,11 @@ def create_assignment(current_user):
             requirements=data['requirements'],
             due_date=datetime.fromisoformat(data['due_date']),
             course_id=data['course_id'],
-            teacher_id=current_user.id
+            teacher_id=current_user.id,
+            # 补交作业相关字段
+            allow_overdue_submission=data.get('allow_overdue_submission', False),
+            overdue_deadline=datetime.fromisoformat(data['overdue_deadline']) if data.get('overdue_deadline') else None,
+            overdue_score_ratio=data.get('overdue_score_ratio', 0.8)
         )
         db.session.add(assignment)
         db.session.flush()  # 获取assignment.id
@@ -1872,6 +2213,14 @@ def update_assignment(current_user, assignment_id):
         if 'due_date' in data:
             assignment.due_date = datetime.fromisoformat(data['due_date'])
         
+        # 更新补交作业相关字段
+        if 'allow_overdue_submission' in data:
+            assignment.allow_overdue_submission = data['allow_overdue_submission']
+        if 'overdue_deadline' in data:
+            assignment.overdue_deadline = datetime.fromisoformat(data['overdue_deadline']) if data['overdue_deadline'] else None
+        if 'overdue_score_ratio' in data:
+            assignment.overdue_score_ratio = data['overdue_score_ratio']
+        
         # 更新作业-题目关联
         if 'problem_ids' in data:
             # 删除旧的关联
@@ -1899,30 +2248,27 @@ def update_assignment(current_user, assignment_id):
         db.session.rollback()
         return jsonify({'error': f'更新作业失败: {str(e)}'}), 500
 
-# 删除作业
+# 删除作业（需要教师权限）
 @app.route('/assignments/<int:assignment_id>', methods=['DELETE'])
-@token_required
+@teacher_required
 def delete_assignment(current_user, assignment_id):
-    if current_user.role not in ['teacher', 'admin']:
-        return jsonify({'error': '权限不足'}), 403
-    
     assignment = Assignment.query.get(assignment_id)
     if not assignment:
         return jsonify({'error': '作业不存在'}), 404
     
-    # 检查权限：教师只能删除自己创建的作业
-    if current_user.role == 'teacher' and assignment.teacher_id != current_user.id:
+    # 检查权限：只能删除自己创建的作业
+    if assignment.teacher_id != current_user.id and current_user.role != 'admin':
         return jsonify({'error': '权限不足'}), 403
     
     try:
-        # 删除作业-题目关联
+        # 先删除作业-题目关联
         AssignmentProblem.query.filter_by(assignment_id=assignment_id).delete()
         
         # 删除作业
         db.session.delete(assignment)
         db.session.commit()
         
-        return jsonify({'message': '作业已删除'}), 200
+        return jsonify({'message': '作业删除成功'}), 200
         
     except Exception as e:
         db.session.rollback()
@@ -1948,6 +2294,262 @@ def get_assignment_detail(current_user, assignment_id):
     result['problem_ids'] = [ap.problem_id for ap in assignment_problems]
     
     return jsonify(result), 200
+
+# 获取学生作业完成状态
+@app.route('/assignments/completion-status', methods=['GET'])
+@token_required
+def get_assignment_completion_status(current_user):
+    """获取学生作业完成状态"""
+    if current_user.role != 'student':
+        return jsonify({'error': '只有学生可以查看作业完成状态'}), 403
+    
+    course_id = request.args.get('course_id', type=int)
+    
+    if not course_id:
+        return jsonify({'error': '缺少课程ID参数'}), 400
+    
+    # 检查学生是否在该课程中
+    student_in_course = False
+    
+    # 1. 检查学生是否通过班级关联到该课程
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': '课程不存在'}), 404
+    
+    if current_user.class_id == course.class_id:
+        student_in_course = True
+    
+    # 2. 检查学生是否通过课程管理添加到该课程
+    if not student_in_course:
+        course_student = CourseStudent.query.filter_by(
+            course_id=course_id,
+            student_id=current_user.id
+        ).first()
+        if course_student:
+            student_in_course = True
+    
+    if not student_in_course:
+        return jsonify({'error': '权限不足，您不在该课程中'}), 403
+    
+    # 获取该课程的所有作业
+    assignments = Assignment.query.filter_by(course_id=course_id).all()
+    
+    # 构建作业完成状态
+    result = []
+    for assignment in assignments:
+        assignment_data = assignment.to_dict()
+        
+        # 获取作业包含的题目
+        assignment_problems = AssignmentProblem.query.filter_by(assignment_id=assignment.id).all()
+        problem_ids = [ap.problem_id for ap in assignment_problems]
+        assignment_data['problem_ids'] = problem_ids
+        
+        # 计算完成状态
+        total_problems = len(problem_ids)
+        completed_problems = 0
+        
+        for problem_id in problem_ids:
+            # 首先检查题目是否仍然存在且活跃
+            problem = Problem.query.get(problem_id)
+            if not problem or not problem.is_active:
+                # 题目已被删除或停用，不计入完成进度
+                print(f"题目{problem_id}已被删除或停用，不计入完成进度")
+                continue
+            
+            # 查找学生对该题目的最新提交
+            latest_submission = Submission.query.filter_by(
+                user_id=current_user.id,
+                problem_id=problem_id
+            ).order_by(Submission.created_at.desc()).first()
+            
+            # 如果提交状态是accepted，则算作完成
+            if latest_submission and latest_submission.status == 'accepted':
+                completed_problems += 1
+        
+        # 计算完成百分比和状态
+        completion_percentage = (completed_problems / total_problems * 100) if total_problems > 0 else 0
+        is_completed = completed_problems == total_problems and total_problems > 0
+        
+        assignment_data['completion_status'] = {
+            'total_problems': total_problems,
+            'completed_problems': completed_problems,
+            'completion_percentage': round(completion_percentage, 1),
+            'is_completed': is_completed,
+            'status_text': '已完成' if is_completed else '进行中'
+        }
+        
+        result.append(assignment_data)
+    
+    return jsonify({'assignments': result}), 200
+
+# ============ 补交作业相关API ============
+
+@app.route('/assignments/<int:assignment_id>/overdue-users', methods=['GET'])
+@token_required
+def get_overdue_users(current_user, assignment_id):
+    """获取作业的逾期提交白名单用户"""
+    # 检查权限：只有教师和该作业的布置者可以查看
+    assignment = Assignment.query.get_or_404(assignment_id)
+    
+    if current_user.role != 'teacher' and current_user.id != assignment.teacher_id:
+        return jsonify({'error': '权限不足'}), 403
+    
+    try:
+        overdue_user_ids = json.loads(assignment.overdue_allow_user_ids) if assignment.overdue_allow_user_ids else []
+        users = User.query.filter(User.id.in_(overdue_user_ids)).all()
+        
+        result = [{
+            'id': user.id,
+            'name': user.name,
+            'username': user.username,
+            'email': user.email
+        } for user in users]
+        
+        return jsonify({'overdue_users': result}), 200
+    except Exception as e:
+        return jsonify({'error': f'获取白名单失败: {str(e)}'}), 500
+
+@app.route('/assignments/<int:assignment_id>/overdue-users', methods=['POST'])
+@token_required
+def add_overdue_user(current_user, assignment_id):
+    """添加用户到逾期提交白名单"""
+    # 检查权限：只有该作业的布置者可以修改
+    assignment = Assignment.query.get_or_404(assignment_id)
+    
+    if current_user.id != assignment.teacher_id:
+        return jsonify({'error': '只有作业布置者可以修改白名单'}), 403
+    
+    data = request.json
+    user_id = data.get('user_id')
+    
+    if not user_id:
+        return jsonify({'error': '缺少用户ID'}), 400
+    
+    # 检查用户是否存在
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'error': '用户不存在'}), 404
+    
+    try:
+        # 获取当前白名单
+        overdue_user_ids = json.loads(assignment.overdue_allow_user_ids) if assignment.overdue_allow_user_ids else []
+        
+        # 检查用户是否已在白名单中
+        if user_id in overdue_user_ids:
+            return jsonify({'error': '用户已在白名单中'}), 400
+        
+        # 添加到白名单
+        overdue_user_ids.append(user_id)
+        assignment.overdue_allow_user_ids = json.dumps(overdue_user_ids)
+        
+        db.session.commit()
+        
+        return jsonify({'message': '用户已添加到白名单', 'overdue_users': overdue_user_ids}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'添加用户到白名单失败: {str(e)}'}), 500
+
+@app.route('/assignments/<int:assignment_id>/overdue-users/<int:user_id>', methods=['DELETE'])
+@token_required
+def remove_overdue_user(current_user, assignment_id, user_id):
+    """从逾期提交白名单中移除用户"""
+    # 检查权限：只有该作业的布置者可以修改
+    assignment = Assignment.query.get_or_404(assignment_id)
+    
+    if current_user.id != assignment.teacher_id:
+        return jsonify({'error': '只有作业布置者可以修改白名单'}), 403
+    
+    try:
+        # 获取当前白名单
+        overdue_user_ids = json.loads(assignment.overdue_allow_user_ids) if assignment.overdue_allow_user_ids else []
+        
+        # 检查用户是否在白名单中
+        if user_id not in overdue_user_ids:
+            return jsonify({'error': '用户不在白名单中'}), 400
+        
+        # 从白名单中移除
+        overdue_user_ids.remove(user_id)
+        assignment.overdue_allow_user_ids = json.dumps(overdue_user_ids)
+        
+        db.session.commit()
+        
+        return jsonify({'message': '用户已从白名单中移除', 'overdue_users': overdue_user_ids}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'从白名单中移除用户失败: {str(e)}'}), 500
+
+@app.route('/assignments/<int:assignment_id>/overdue-settings', methods=['PUT'])
+@token_required
+def update_overdue_settings(current_user, assignment_id):
+    """更新作业的补交设置"""
+    # 检查权限：只有该作业的布置者可以修改
+    assignment = Assignment.query.get_or_404(assignment_id)
+    
+    if current_user.id != assignment.teacher_id:
+        return jsonify({'error': '只有作业布置者可以修改补交设置'}), 403
+    
+    data = request.json
+    
+    try:
+        # 更新补交设置
+        if 'allow_overdue_submission' in data:
+            assignment.allow_overdue_submission = data['allow_overdue_submission']
+        
+        if 'overdue_deadline' in data and data['overdue_deadline']:
+            assignment.overdue_deadline = datetime.fromisoformat(data['overdue_deadline'].replace('Z', '+00:00'))
+        
+        if 'overdue_score_ratio' in data:
+            score_ratio = float(data['overdue_score_ratio'])
+            if 0.0 <= score_ratio <= 1.0:
+                assignment.overdue_score_ratio = score_ratio
+            else:
+                return jsonify({'error': '得分比例必须在0.0到1.0之间'}), 400
+        
+        db.session.commit()
+        
+        return jsonify({'message': '补交设置已更新', 'assignment': assignment.to_dict()}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': f'更新补交设置失败: {str(e)}'}), 500
+
+@app.route('/assignments/<int:assignment_id>/can-overdue-submit', methods=['GET'])
+@token_required
+def check_can_overdue_submit(current_user, assignment_id):
+    """检查学生是否可以补交作业"""
+    # 检查权限：只有学生可以查看
+    if current_user.role != 'student':
+        return jsonify({'error': '只有学生可以查看补交权限'}), 403
+    
+    assignment = Assignment.query.get_or_404(assignment_id)
+    
+    # 检查作业是否允许补交
+    if not assignment.allow_overdue_submission:
+        return jsonify({
+            'can_overdue': False,
+            'reason': '该作业不允许补交'
+        }), 200
+    
+    # 检查补交截止时间
+    now = datetime.utcnow()
+    if assignment.overdue_deadline and now > assignment.overdue_deadline:
+        return jsonify({
+            'can_overdue': False,
+            'reason': '补交截止时间已过'
+        }), 200
+    
+    # 检查用户是否在白名单中
+    overdue_user_ids = json.loads(assignment.overdue_allow_user_ids) if assignment.overdue_allow_user_ids else []
+    if current_user.id not in overdue_user_ids:
+        return jsonify({
+            'can_overdue': False,
+            'reason': '您不在补交白名单中'
+        }), 200
+    
+    return jsonify({
+        'can_overdue': True,
+        'overdue_deadline': assignment.overdue_deadline.isoformat() if assignment.overdue_deadline else None,
+        'score_ratio': assignment.overdue_score_ratio
+    }), 200
 
 # ============ 组织架构管理相关API ============
 
@@ -2279,3 +2881,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     app.run(port=5001, debug=True)
+

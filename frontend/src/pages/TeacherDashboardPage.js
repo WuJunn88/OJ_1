@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { getUsers, getSchools, getMajors, getClasses, batchImportStudents, getProblems, createProblem, updateProblem, deleteProblem, updateUser, deleteUser, registerStudent, getTeacherCourses, getCourseAssignments, createAssignment, updateAssignment, deleteAssignment, getCourseStudents, addStudentToCourse, removeStudentFromCourse, getDepartments, batchImportStudentsFromExcel } from '../services/api';
+import { getUsers, getSchools, getMajors, getClasses, batchImportStudents, getProblems, createProblem, updateProblem, deleteProblem, updateUser, deleteUser, registerStudent, getTeacherCourses, getCourseAssignments, createAssignment, updateAssignment, deleteAssignment, getCourseStudents, addStudentToCourse, removeStudentFromCourse, getDepartments, batchImportStudentsFromExcel, excludeOriginalStudent, cancelExcludeOriginalStudent } from '../services/api';
 import * as XLSX from 'xlsx';
 import './TeacherDashboardPage.css';
 import AIProblemGenerationPage from './AIProblemGenerationPage';
+import AssignmentWhitelistManager from '../components/AssignmentWhitelistManager';
 import { mockCourses, mockAssignments, formatDate } from '../testData/courses';
 
 const TeacherDashboardPage = () => {
@@ -30,8 +31,7 @@ const TeacherDashboardPage = () => {
     title: '',
     description: '',
     type: 'programming', // 题目类型：programming(编程题), choice(选择题), judge(判断题), short_answer(简答题)
-    test_cases: '',
-    expected_output: '',
+    testCases: [], // 测试用例数组，每个元素包含 {id, input, output}
     difficulty: 'easy',
     time_limit: 1000,
     memory_limit: 128,
@@ -43,9 +43,92 @@ const TeacherDashboardPage = () => {
     answer: '' // 简答题答案
   });
 
+  // 滚动动画相关状态
+  const [scrollAnimations, setScrollAnimations] = useState({
+    formVisible: false,
+    bottomFormVisible: false
+  });
+
+  // 课程详情页荷叶式动画状态
+  const [courseDetailAnimations, setCourseDetailAnimations] = useState({
+    courseInfoVisible: false,
+    studentsSectionVisible: false,
+    assignmentsSectionVisible: false
+  });
+  
+
   // 编辑题目状态
   const [editingProblem, setEditingProblem] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  // 测试用例管理函数
+  const addTestCase = () => {
+    const newTestCase = {
+      id: Date.now() + Math.random(), // 生成唯一ID
+      input: '',
+      output: ''
+    };
+    setProblemForm(prev => ({
+      ...prev,
+      testCases: [...prev.testCases, newTestCase]
+    }));
+  };
+
+  const removeTestCase = (testCaseId) => {
+    setProblemForm(prev => ({
+      ...prev,
+      testCases: prev.testCases.filter(tc => tc.id !== testCaseId)
+    }));
+  };
+
+  const updateTestCase = (testCaseId, field, value) => {
+    setProblemForm(prev => ({
+      ...prev,
+      testCases: prev.testCases.map(tc => 
+        tc.id === testCaseId ? { ...tc, [field]: value } : tc
+      )
+    }));
+  };
+
+  // 解析后端测试用例格式的函数
+  const parseTestCases = (testCasesStr, expectedOutputStr) => {
+    if (!testCasesStr && !expectedOutputStr) {
+      return [];
+    }
+    
+    // 优先尝试解析JSON数组格式：[ { input, output }, ... ]
+    try {
+      if (testCasesStr && testCasesStr.trim().startsWith('[')) {
+        const parsed = JSON.parse(testCasesStr);
+        if (Array.isArray(parsed)) {
+          return parsed.map((tc, idx) => ({
+            id: Date.now() + Math.random() + idx,
+            input: (tc && typeof tc.input !== 'undefined') ? String(tc.input) : '',
+            output: (tc && typeof tc.output !== 'undefined') ? String(tc.output) : ''
+          }));
+        }
+      }
+    } catch (e) {
+      // JSON解析失败则回退到旧格式
+      console.warn('解析JSON测试用例失败，回退旧格式:', e);
+    }
+    
+    const testCases = testCasesStr ? testCasesStr.split('\n').filter(line => line.trim()) : [];
+    const expectedOutputs = expectedOutputStr ? expectedOutputStr.split('\n').filter(line => line.trim()) : [];
+    
+    const maxLength = Math.max(testCases.length, expectedOutputs.length);
+    
+    const result = [];
+    for (let i = 0; i < maxLength; i++) {
+      result.push({
+        id: Date.now() + Math.random() + i, // 生成唯一ID
+        input: testCases[i] || '', // 如果没有输入则使用空字符串
+        output: expectedOutputs[i] || '' // 输出是必填的
+      });
+    }
+    
+    return result;
+  };
 
   // 添加学生相关状态（按新规则：学号、姓名、密码必填）
   const [addStudentForm, setAddStudentForm] = useState({
@@ -83,7 +166,11 @@ const TeacherDashboardPage = () => {
     requirements: '',
     due_date: '',
     course_id: '',
-    problem_ids: []
+    problem_ids: [],
+    // 补交作业相关字段
+    allow_overdue_submission: false,
+    overdue_deadline: '',
+    overdue_score_ratio: 0.8
   });
 
   // 编辑作业状态
@@ -99,37 +186,158 @@ const TeacherDashboardPage = () => {
 
   useEffect(() => {
     fetchInitialData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 滚动监听和动画触发
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // 检测表单是否进入视口
+      if (scrollY > 100) {
+        setScrollAnimations(prev => ({ ...prev, formVisible: true }));
+      }
+      
+      // 检测是否接近底部，触发底部表单动画
+      if (scrollY + windowHeight > documentHeight - 200) {
+        setScrollAnimations(prev => ({ ...prev, bottomFormVisible: true }));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // 初始触发
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // 课程详情页荷叶式动画滚动监听
+  useEffect(() => {
+    if (activeSubTab === 'detail' && editingCourse) {
+      const handleCourseDetailScroll = () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        
+        // 课程基本信息 - 当滚动到页面中央时浮现
+        if (scrollY > windowHeight * 0.3) {
+          setCourseDetailAnimations(prev => ({ ...prev, courseInfoVisible: true }));
+        }
+        
+        // 教学班学生 - 当滚动到页面中央偏下时浮现
+        if (scrollY > windowHeight * 0.6) {
+          setCourseDetailAnimations(prev => ({ ...prev, studentsSectionVisible: true }));
+        }
+        
+        // 已布置作业 - 当滚动到页面底部时浮现
+        if (scrollY > windowHeight * 0.9) {
+          setCourseDetailAnimations(prev => ({ ...prev, assignmentsSectionVisible: true }));
+        }
+      };
+
+      window.addEventListener('scroll', handleCourseDetailScroll);
+      
+      // 初始触发
+      handleCourseDetailScroll();
+      
+      return () => window.removeEventListener('scroll', handleCourseDetailScroll);
+    }
+  }, [activeSubTab, editingCourse]);
+
+  useEffect(() => {
+    fetchInitialData();
+    
+    // 监听多种通知方式，用于AI生题成功后的数据刷新
+    const handleStorageChange = (e) => {
+      if (e.key === 'refreshProblems' && e.newValue === 'true') {
+        console.log('检测到题目创建成功标记，自动刷新题目列表');
+        // 清除标记
+        localStorage.removeItem('refreshProblems');
+        // 刷新题目列表
+        fetchProblems();
+      }
+    };
+    
+    const handleProblemCreated = (e) => {
+      console.log('检测到题目创建成功事件，自动刷新题目列表');
+      fetchProblems();
+    };
+    
+    const handleMessage = (e) => {
+      if (e.data && e.data.type === 'PROBLEM_CREATED') {
+        console.log('检测到题目创建成功消息，自动刷新题目列表');
+        fetchProblems();
+      }
+    };
+    
+    // 监听storage事件（跨标签页）
+    window.addEventListener('storage', handleStorageChange);
+    
+    // 监听自定义事件
+    window.addEventListener('problemCreated', handleProblemCreated);
+    
+    // 监听postMessage
+    window.addEventListener('message', handleMessage);
+    
+    // 检查是否需要刷新（当前标签页）
+    const shouldRefresh = localStorage.getItem('refreshProblems');
+    if (shouldRefresh === 'true') {
+      console.log('检测到题目创建成功标记，自动刷新题目列表');
+      localStorage.removeItem('refreshProblems');
+      fetchProblems();
+    }
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('problemCreated', handleProblemCreated);
+      window.removeEventListener('message', handleMessage);
+    };
+  }, []);
 
   // 从API加载学生-课程关联关系
+  const fetchStudentClassRelations = async (courseId) => {
+    try {
+      const courseStudentsData = await getCourseStudents(courseId);
+      if (courseStudentsData && courseStudentsData.length > 0) {
+        const apiRelations = courseStudentsData.map(student => ({
+          student_id: student.student_id,
+          class_id: student.class_id,
+          course_id: courseId,
+          student_name: student.student_name,
+          student_no: student.student_no,
+          added_at: student.added_at || new Date().toISOString()
+        }));
+        setStudentClassRelations(apiRelations);
+      } else {
+        setStudentClassRelations([]);
+      }
+    } catch (error) {
+      console.error('获取课程学生关联关系失败:', error);
+      setStudentClassRelations([]);
+    }
+  };
+
+  // 刷新题目列表
+  const fetchProblems = async () => {
+    try {
+      const problemsData = await getProblems(1, 50);
+      if (problemsData && problemsData.problems) {
+        setProblems(problemsData.problems);
+        console.log('题目列表刷新成功，题目数量:', problemsData.problems.length);
+      }
+    } catch (error) {
+      console.warn('刷新题目列表失败:', error);
+    }
+  };
+
+  // 监听课程变化，加载课程学生关联关系
   useEffect(() => {
     const loadCourseStudents = async () => {
       if (editingCourse && editingCourse.id) {
         console.log('开始加载课程学生数据，课程ID:', editingCourse.id);
-        
-        try {
-          const courseStudentsData = await getCourseStudents(editingCourse.id);
-          console.log('从API获取的课程学生数据:', courseStudentsData);
-          
-          if (courseStudentsData && courseStudentsData.length > 0) {
-            const apiRelations = courseStudentsData.map(student => ({
-              student_id: student.student_id,
-              class_id: student.class_id,
-              course_id: editingCourse.id,
-              student_name: student.student_name,
-              student_no: student.student_no,
-              added_at: student.added_at || new Date().toISOString()
-            }));
-            setStudentClassRelations(apiRelations);
-            console.log('成功加载课程学生数据:', apiRelations);
-          } else {
-            setStudentClassRelations([]);
-            console.log('该课程暂无学生');
-          }
-        } catch (error) {
-          console.error('加载课程学生数据失败:', error);
-          setStudentClassRelations([]);
-        }
+        await fetchStudentClassRelations(editingCourse.id);
       }
     };
     
@@ -171,15 +379,33 @@ const TeacherDashboardPage = () => {
       
       // 获取课程和作业数据（使用测试数据）
       try {
+        console.log('开始获取课程和作业数据...');
         const [coursesData, assignmentsData] = await Promise.all([
           getTeacherCourses(),
           getCourseAssignments()
         ]);
         
-        setCourses(coursesData.courses || mockCourses);
-        setAssignments(assignmentsData.assignments || mockAssignments);
+        console.log('API返回的课程数据:', coursesData);
+        console.log('API返回的作业数据:', assignmentsData);
+        
+        if (coursesData && coursesData.courses) {
+          console.log('使用API返回的课程数据，课程数量:', coursesData.courses.length);
+          setCourses(coursesData.courses);
+        } else {
+          console.log('API返回的课程数据无效，使用测试数据');
+          setCourses(mockCourses);
+        }
+        
+        if (assignmentsData && assignmentsData.assignments) {
+          console.log('使用API返回的作业数据，作业数量:', assignmentsData.assignments.length);
+          setAssignments(assignmentsData.assignments);
+        } else {
+          console.log('API返回的作业数据无效，使用测试数据');
+          setAssignments(mockAssignments);
+        }
       } catch (error) {
         console.warn('获取课程或作业数据失败，使用测试数据:', error);
+        console.log('错误详情:', error.response?.data || error.message);
         setCourses(mockCourses);
         setAssignments(mockAssignments);
       }
@@ -463,6 +689,24 @@ const TeacherDashboardPage = () => {
         delete submitData.answer;
       }
       
+      // 如果是编程题，改为JSON结构提交测试用例
+      if (problemForm.type === 'programming') {
+        const testCases = problemForm.testCases || [];
+        if (testCases.length === 0) {
+          throw new Error('编程题至少需要一个测试用例');
+        }
+        // 以结构化JSON传输，支持多行输入/输出与空输入
+        const structured = testCases.map(tc => ({
+          input: tc.input || '',
+          output: tc.output || ''
+        }));
+        submitData.test_cases = JSON.stringify(structured);
+        // expected_output 保留为所有输出拼接（兼容旧后端或列表展示）
+        submitData.expected_output = testCases.map(tc => tc.output || '').join('\n');
+        // 删除前端特有字段
+        delete submitData.testCases;
+      }
+      
       // 添加调试信息
       console.log('提交的题目数据:', submitData);
       console.log('题目类型:', submitData.type);
@@ -483,8 +727,7 @@ const TeacherDashboardPage = () => {
         title: '',
         description: '',
         type: 'programming',
-        test_cases: '',
-        expected_output: '',
+        testCases: [],
         difficulty: 'easy',
         time_limit: 1000,
         memory_limit: 128,
@@ -506,8 +749,7 @@ const TeacherDashboardPage = () => {
       
     } catch (error) {
       console.error('题目操作失败:', error);
-      console.error('错误响应:', error.response);
-      setError(error.response?.data?.error || (isEditing ? '更新题目失败' : '创建题目失败'));
+      setError(error.response?.data?.error || error.message || '操作失败');
     } finally {
       setLoading(false);
     }
@@ -575,8 +817,7 @@ const TeacherDashboardPage = () => {
       title: problem.title,
       description: problem.description,
       type: problem.type || 'programming',
-      test_cases: problem.test_cases || '',
-      expected_output: problem.expected_output || '',
+      testCases: problem.type === 'programming' ? parseTestCases(problem.test_cases, problem.expected_output) : [],
       difficulty: problem.difficulty,
       time_limit: problem.time_limit || 1000,
       memory_limit: problem.memory_limit || 128,
@@ -713,8 +954,7 @@ const TeacherDashboardPage = () => {
       title: '',
       description: '',
       type: 'programming',
-      test_cases: '',
-      expected_output: '',
+      testCases: [],
       difficulty: 'easy',
       time_limit: 1000,
       memory_limit: 128,
@@ -764,7 +1004,11 @@ const TeacherDashboardPage = () => {
         requirements: '',
         due_date: '',
         course_id: '',
-        problem_ids: []
+        problem_ids: [],
+        // 重置补交设置
+        allow_overdue_submission: false,
+        overdue_deadline: '',
+        overdue_score_ratio: 0.8
       });
       
       setIsEditingAssignment(false);
@@ -796,7 +1040,11 @@ const TeacherDashboardPage = () => {
       requirements: assignment.requirements || '',
       due_date: assignment.due_date || '',
       course_id: assignment.course_id || '',
-      problem_ids: assignment.problem_ids || []
+      problem_ids: assignment.problem_ids || [],
+      // 补交作业相关字段
+      allow_overdue_submission: assignment.allow_overdue_submission || false,
+      overdue_deadline: assignment.overdue_deadline || '',
+      overdue_score_ratio: assignment.overdue_score_ratio || 0.8
     });
     setIsEditingAssignment(true);
     
@@ -853,10 +1101,11 @@ const TeacherDashboardPage = () => {
       
       // 使用API添加学生到课程
       try {
-        await addStudentToCourse(editingCourse.id, {
-          student_id: existingStudent.id,
-          class_id: editingCourse.class_id
-        });
+        const payload = { student_id: existingStudent.id };
+        if (editingCourse.class_id) {
+          payload.class_id = editingCourse.class_id;
+        }
+        await addStudentToCourse(editingCourse.id, payload);
         setSuccess('学生已成功添加到课程！');
         
         // 重新加载课程学生数据
@@ -871,6 +1120,23 @@ const TeacherDashboardPage = () => {
             added_at: student.added_at || new Date().toISOString()
           }));
           setStudentClassRelations(apiRelations);
+        } else {
+          setStudentClassRelations([]);
+        }
+        
+        // 刷新课程列表（因为学生数量发生变化）
+        try {
+          const coursesData = await getTeacherCourses();
+          if (coursesData && coursesData.courses) {
+            setCourses(coursesData.courses);
+            // 更新当前编辑的课程信息
+            const updatedCourse = coursesData.courses.find(c => c.id === editingCourse.id);
+            if (updatedCourse) {
+              setEditingCourse(updatedCourse);
+            }
+          }
+        } catch (error) {
+          console.warn('刷新课程列表失败:', error);
         }
       } catch (apiError) {
         console.error('添加学生到课程失败:', apiError);
@@ -927,6 +1193,21 @@ const TeacherDashboardPage = () => {
           setStudentClassRelations(apiRelations);
         } else {
           setStudentClassRelations([]);
+        }
+        
+        // 刷新课程列表（因为学生数量发生变化）
+        try {
+          const coursesData = await getTeacherCourses();
+          if (coursesData && coursesData.courses) {
+            setCourses(coursesData.courses);
+            // 更新当前编辑的课程信息
+            const updatedCourse = coursesData.courses.find(c => c.id === editingCourse.id);
+            if (updatedCourse) {
+              setEditingCourse(updatedCourse);
+            }
+          }
+        } catch (error) {
+          console.warn('刷新课程列表失败:', error);
         }
       } catch (apiError) {
         console.error('从课程中移除学生失败:', apiError);
@@ -1034,8 +1315,8 @@ const TeacherDashboardPage = () => {
             </button>
           </div>
           
-          <div className="add-student-form">
-            <div className="form-row">
+          <div className={`add-student-form ${scrollAnimations.formVisible ? 'form-visible' : ''}`}>
+            <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div className="form-group">
                 <label>学号：<span className="required-mark">*</span></label>
                 <input 
@@ -1057,7 +1338,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
             
-            <div className="form-row">
+            <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div className="form-group">
                 <label>密码：<span className="required-mark">*</span></label>
                 <input 
@@ -1079,7 +1360,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
             
-            <div className="form-row">
+            <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div className="form-group">
                 <label>手机号：</label>
                 <input 
@@ -1106,7 +1387,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
             
-            <div className="form-row">
+            <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div className="form-group">
                 <label>院部：</label>
                 <select 
@@ -1152,7 +1433,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
             
-            <div className="form-row">
+            <div className="form-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
               <div className="form-group">
                 <label>班级：</label>
                 <select 
@@ -1176,7 +1457,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
             
-            <div className="form-actions">
+            <div className={`form-actions ${scrollAnimations.bottomFormVisible ? 'bottom-form-visible' : ''}`}>
               <button 
                 className="submit-btn"
                 onClick={handleAddStudent}
@@ -1202,17 +1483,26 @@ const TeacherDashboardPage = () => {
           </div>
           
           <div className="import-form">
-            <div className="form-help">
-              <h3>导入说明</h3>
-              <p>请按以下步骤操作：</p>
-              <ol>
-                <li>点击下方"下载Excel模板"按钮，下载标准格式的Excel文件（.xlsx格式）</li>
-                <li>在Excel文件中填写学生信息（学号、姓名、密码）</li>
-                <li>选择学校、院部、专业、班级信息</li>
-                <li>上传填写好的Excel文件</li>
-                <li>系统将自动识别并添加学生信息</li>
+            <div className="form-help" style={{ 
+              display: 'block', 
+              visibility: 'visible', 
+              opacity: '1', 
+              background: '#f8f9fa',
+              padding: '20px',
+              borderRadius: '8px',
+              borderLeft: '4px solid #667eea',
+              marginBottom: '25px'
+            }}>
+              <h3 style={{ color: '#333', fontSize: '18px', fontWeight: '600', margin: '0 0 15px 0' }}>导入说明</h3>
+              <p style={{ color: '#666', fontSize: '14px', lineHeight: '1.6', margin: '10px 0' }}>请按以下步骤操作：</p>
+              <ol style={{ margin: '15px 0', paddingLeft: '20px' }}>
+                <li style={{ margin: '8px 0', color: '#495057', lineHeight: '1.5' }}>点击下方"下载Excel模板"按钮，下载标准格式的Excel文件（.xlsx格式）</li>
+                <li style={{ margin: '8px 0', color: '#495057', lineHeight: '1.5' }}>在Excel文件中填写学生信息（学号、姓名、密码）</li>
+                <li style={{ margin: '8px 0', color: '#495057', lineHeight: '1.5' }}>选择学校、院部、专业、班级信息</li>
+                <li style={{ margin: '8px 0', color: '#495057', lineHeight: '1.5' }}>上传填写好的Excel文件</li>
+                <li style={{ margin: '8px 0', color: '#495057', lineHeight: '1.5' }}>系统将自动识别并添加学生信息</li>
               </ol>
-              <p><strong>注意：</strong>学号、姓名、密码为必填项，学校、院部、专业、班级信息将应用到所有导入的学生</p>
+              <p style={{ color: '#666', fontSize: '14px', lineHeight: '1.6', margin: '10px 0' }}><strong style={{ color: '#dc3545', fontWeight: '600' }}>注意：</strong>学号、姓名、密码为必填项，学校、院部、专业、班级信息将应用到所有导入的学生</p>
             </div>
             
             <div className="form-row">
@@ -1641,25 +1931,65 @@ const TeacherDashboardPage = () => {
             {/* 编程题相关字段 */}
             {problemForm.type === 'programming' && (
               <>
-                <div className="form-row">
-                  <div className="form-group">
-                    <label>测试用例：<span className="required-mark">*</span></label>
-                    <textarea
-                      placeholder="请输入测试用例，每行一个"
-                      value={problemForm.test_cases}
-                      onChange={(e) => setProblemForm(prev => ({ ...prev, test_cases: e.target.value }))}
-                      rows={4}
-                    />
-                  </div>
-                  
-                  <div className="form-group">
-                    <label>期望输出：<span className="required-mark">*</span></label>
-                    <textarea
-                      placeholder="请输入期望输出，每行一个"
-                      value={problemForm.expected_output}
-                      onChange={(e) => setProblemForm(prev => ({ ...prev, expected_output: e.target.value }))}
-                      rows={4}
-                    />
+                <div className="form-group">
+                  <label>测试用例管理：<span className="required-mark">*</span></label>
+                  <div className="test-cases-manager">
+                    <div className="test-cases-header">
+                      <span>测试用例</span>
+                      <button 
+                        type="button" 
+                        className="add-test-case-btn"
+                        onClick={() => addTestCase()}
+                      >
+                        ➕ 添加测试用例
+                      </button>
+                    </div>
+                    
+                    {problemForm.testCases && problemForm.testCases.length > 0 ? (
+                      <div className="test-cases-list">
+                        {problemForm.testCases.map((testCase, index) => (
+                          <div key={testCase.id} className="test-case-item">
+                            <div className="test-case-header">
+                              <span className="test-case-number">测试用例 {index + 1}</span>
+                              <button 
+                                type="button"
+                                className="remove-test-case-btn"
+                                onClick={() => removeTestCase(testCase.id)}
+                              >
+                                ❌
+                              </button>
+                            </div>
+                            
+                            <div className="test-case-content">
+                              <div className="test-case-input">
+                                <label>输入：</label>
+                                <textarea
+                                  placeholder="输入数据（如果没有输入请留空）"
+                                  value={testCase.input || ''}
+                                  onChange={(e) => updateTestCase(testCase.id, 'input', e.target.value)}
+                                  rows={3}
+                                />
+                                <small>如果没有输入，请留空</small>
+                              </div>
+                              
+                              <div className="test-case-output">
+                                <label>期望输出：<span className="required-mark">*</span></label>
+                                <textarea
+                                  placeholder="期望的输出结果"
+                                  value={testCase.output || ''}
+                                  onChange={(e) => updateTestCase(testCase.id, 'output', e.target.value)}
+                                  rows={3}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="no-test-cases">
+                        <p>还没有添加测试用例，请点击"添加测试用例"按钮添加</p>
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -1698,7 +2028,8 @@ const TeacherDashboardPage = () => {
                 className="submit-btn"
                 onClick={handleCreateProblem}
                 disabled={loading || !problemForm.title || !problemForm.description || 
-                  (problemForm.type === 'programming' && (!problemForm.test_cases || !problemForm.expected_output)) ||
+                  (problemForm.type === 'programming' && (problemForm.testCases.length === 0 || 
+                    problemForm.testCases.some(tc => !tc.output.trim()))) ||
                   (problemForm.type === 'choice' && (problemForm.options.length < 2 || 
                     problemForm.options.some(option => !option.text) || 
                     problemForm.correct_answers.length === 0)) ||
@@ -1779,7 +2110,7 @@ const TeacherDashboardPage = () => {
                     <span className="course-status active">进行中</span>
                   </div>
                   <div className="course-info">
-                    <p><strong>教学班：</strong>{course.class_name}</p>
+                    <p><strong>教学班：</strong>{course.display_class_name || course.class_name || (course.teaching_class_name || '未设置')}</p>
                     <p><strong>专业：</strong>{course.major_name}</p>
                     <p><strong>学校：</strong>{course.school_name}</p>
                     <p><strong>学生数量：</strong>{course.student_count || 0}人</p>
@@ -1808,7 +2139,7 @@ const TeacherDashboardPage = () => {
           </div>
           
           <div className="course-detail">
-            <div className="course-info-section">
+            <div className={`course-info-section ${courseDetailAnimations.courseInfoVisible ? 'lotus-visible' : ''}`}>
               <h3>课程基本信息</h3>
               <div className="info-grid">
                 <div className="info-item">
@@ -1821,7 +2152,7 @@ const TeacherDashboardPage = () => {
                 </div>
                 <div className="info-item">
                   <label>教学班：</label>
-                  <span>{editingCourse.class_name}</span>
+                  <span>{editingCourse.display_class_name || editingCourse.class_name || (editingCourse.teaching_class_name || '未设置')}</span>
                 </div>
                 <div className="info-item">
                   <label>专业：</label>
@@ -1842,7 +2173,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
 
-            <div className="course-students-section">
+            <div className={`course-students-section ${courseDetailAnimations.studentsSectionVisible ? 'lotus-visible' : ''}`}>
               <div className="section-header">
                 <h3>教学班学生</h3>
                 <button 
@@ -1919,12 +2250,30 @@ const TeacherDashboardPage = () => {
                             </span>
                           </td>
                           <td>
-                            {student.isRelatedStudent && (
+                            {student.isRelatedStudent ? (
                               <button 
                                 className="action-btn delete"
                                 onClick={() => handleRemoveStudentFromCourse(student.relationId)}
                               >
                                 移除
+                              </button>
+                            ) : (
+                              <button 
+                                className="action-btn delete"
+                                onClick={async () => {
+                                  if (!window.confirm('确定要将该原班级学生从本课程中退课吗？此操作不会删除其账号。')) return;
+                                  try {
+                                    await excludeOriginalStudent(editingCourse.id, student.id);
+                                    setSuccess('该学生已从本课程退课');
+                                    // 刷新课程学生数据
+                                    await fetchStudentClassRelations(editingCourse.id);
+                                  } catch (apiError) {
+                                    console.error('退课失败:', apiError);
+                                    setError(apiError.response?.data?.error || '退课失败');
+                                  }
+                                }}
+                              >
+                                退课
                               </button>
                             )}
                           </td>
@@ -1936,7 +2285,7 @@ const TeacherDashboardPage = () => {
               </div>
             </div>
 
-            <div className="course-assignments-section">
+            <div className={`course-assignments-section ${courseDetailAnimations.assignmentsSectionVisible ? 'lotus-visible' : ''}`}>
               <div className="section-header">
                 <h3>已布置作业</h3>
                 <button 
@@ -1963,6 +2312,7 @@ const TeacherDashboardPage = () => {
                       <th>描述</th>
                       <th>截止时间</th>
                       <th>状态</th>
+                      <th>补交设置</th>
                       <th>操作</th>
                     </tr>
                   </thead>
@@ -1976,6 +2326,21 @@ const TeacherDashboardPage = () => {
                           <span className={`status-badge ${assignment.is_active ? 'active' : 'inactive'}`}>
                             {assignment.is_active ? '进行中' : '已结束'}
                           </span>
+                        </td>
+                        <td>
+                          {assignment.allow_overdue_submission ? (
+                            <div className="overdue-status">
+                              <span className="overdue-badge enabled">允许补交</span>
+                              {assignment.overdue_deadline && (
+                                <div className="overdue-detail">
+                                  <small>补交截止: {formatDate(assignment.overdue_deadline)}</small>
+                                  <small>得分比例: {Math.round((assignment.overdue_score_ratio || 0.8) * 100)}%</small>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <span className="overdue-badge disabled">不允许补交</span>
+                          )}
                         </td>
                         <td>
                           <button 
@@ -2202,6 +2567,16 @@ const TeacherDashboardPage = () => {
       const usersData = await getUsers(1, 50, 'student');
       setUsers(usersData.users);
       
+      // 刷新课程列表（因为学生数量可能发生变化）
+      try {
+        const coursesData = await getTeacherCourses();
+        if (coursesData && coursesData.courses) {
+          setCourses(coursesData.courses);
+        }
+      } catch (error) {
+        console.warn('刷新课程列表失败:', error);
+      }
+      
       // 切换到学生列表
       setActiveSubTab('list');
       
@@ -2237,6 +2612,17 @@ const TeacherDashboardPage = () => {
       // 刷新列表
       const usersData = await getUsers(1, 50, 'student');
       setUsers(usersData.users);
+      
+      // 刷新课程列表（因为学生数量可能发生变化）
+      try {
+        const coursesData = await getTeacherCourses();
+        if (coursesData && coursesData.courses) {
+          setCourses(coursesData.courses);
+        }
+      } catch (error) {
+        console.warn('刷新课程列表失败:', error);
+      }
+      
       setEditingUser(null);
     } catch (error) {
       setError(error.response?.data?.error || '更新学生信息失败');
@@ -2260,6 +2646,17 @@ const TeacherDashboardPage = () => {
       setSuccess('学生已删除');
       const usersData = await getUsers(1, 50, 'student');
       setUsers(usersData.users);
+      
+      // 刷新课程列表（因为学生数量可能发生变化）
+      try {
+        const coursesData = await getTeacherCourses();
+        if (coursesData && coursesData.courses) {
+          setCourses(coursesData.courses);
+        }
+      } catch (error) {
+        console.warn('刷新课程列表失败:', error);
+      }
+      
     } catch (error) {
       setError(error.response?.data?.error || '删除学生失败');
     } finally {
@@ -2668,6 +3065,102 @@ const TeacherDashboardPage = () => {
                 />
               </div>
             </div>
+            
+            {/* 补交作业设置 */}
+            <div className="overdue-settings-section">
+              <h4>📝 补交作业设置</h4>
+              <div className="form-group">
+                <label className="checkbox-label">
+                  <input
+                    type="checkbox"
+                    checked={assignmentForm.allow_overdue_submission}
+                    onChange={(e) => setAssignmentForm(prev => ({ 
+                      ...prev, 
+                      allow_overdue_submission: e.target.checked 
+                    }))}
+                  />
+                  <span>允许补交作业</span>
+                </label>
+                <div className="form-help">
+                  勾选此项后，学生可以在截止时间后补交作业（需要教师特别授权）
+                </div>
+              </div>
+              
+              {assignmentForm.allow_overdue_submission && (
+                <>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>补交截止时间：</label>
+                      <input 
+                        type="datetime-local" 
+                        value={assignmentForm.overdue_deadline}
+                        onChange={(e) => setAssignmentForm(prev => ({ 
+                          ...prev, 
+                          overdue_deadline: e.target.value 
+                        }))}
+                        min={assignmentForm.due_date}
+                      />
+                      <div className="form-help">
+                        设置补交的最终截止时间，必须晚于正常截止时间
+                      </div>
+                    </div>
+                    
+                    <div className="form-group">
+                      <label>逾期得分比例：</label>
+                      <div className="score-ratio-control">
+                        <input 
+                          type="range" 
+                          min="0" 
+                          max="1" 
+                          step="0.1"
+                          value={assignmentForm.overdue_score_ratio}
+                          onChange={(e) => setAssignmentForm(prev => ({ 
+                            ...prev, 
+                            overdue_score_ratio: parseFloat(e.target.value) 
+                          }))}
+                        />
+                        <span className="score-ratio-display">
+                          {Math.round(assignmentForm.overdue_score_ratio * 100)}%
+                        </span>
+                      </div>
+                      <div className="form-help">
+                        逾期提交的作业将按此比例得分（0% = 不得分，100% = 正常得分）
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="form-group">
+                    <label>补交说明：</label>
+                    <div className="overdue-info-box">
+                      <p>💡 <strong>补交机制说明：</strong></p>
+                      <ul>
+                        <li>只有被教师添加到白名单的学生可以补交</li>
+                        <li>补交截止时间后，系统将拒绝所有补交请求</li>
+                        <li>逾期提交的作业会标记为"逾期提交"</li>
+                        <li>补交作业的得分将按设定比例计算</li>
+                      </ul>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+            
+            {/* 白名单管理（仅在编辑模式下显示） */}
+            {isEditingAssignment && editingAssignment && assignmentForm.allow_overdue_submission && (
+              <div className="whitelist-section">
+                <AssignmentWhitelistManager 
+                  assignment={editingAssignment}
+                  onUpdate={() => {
+                    // 刷新作业数据
+                    if (editingCourse) {
+                      getCourseAssignments().then(data => {
+                        setAssignments(data.assignments || []);
+                      });
+                    }
+                  }}
+                />
+              </div>
+            )}
             
             <div className="form-group">
               <label>选择题目：</label>

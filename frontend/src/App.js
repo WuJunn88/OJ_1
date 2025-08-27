@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AdminRegisterPage from './pages/AdminRegisterPage';
@@ -9,8 +9,11 @@ import ProblemListPage from './pages/ProblemListPage';
 import ProblemDetailPage from './pages/ProblemDetailPage';
 import TeacherDashboardPage from './pages/TeacherDashboardPage';
 import AdminDashboardPage from './pages/AdminDashboardPage';
+import StudentDashboardPage from './pages/StudentDashboardPage';
 import SubmissionsPage from './pages/SubmissionsPage';
 import TestPage from './TestPage';
+import StudentChangePasswordPage from './pages/StudentChangePasswordPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import './App.css';
 
 
@@ -80,6 +83,11 @@ function App() {
                     <Link to="/admin/dashboard">管理员控制台</Link>
                   </>
                 )}
+                {auth.user.role === 'student' && (
+                  <>
+                    <Link to="/student/dashboard">学生控制台</Link>
+                  </>
+                )}
                 <div className="user-menu">
                   <span>欢迎, {auth.user.name}</span>
                   <button onClick={handleLogout} className="logout-btn">退出</button>
@@ -97,6 +105,7 @@ function App() {
               <Route path="/register" element={!auth.isLoggedIn ? <RegisterPage /> : <Navigate to="/" replace />} />
               <Route path="/admin/register" element={!auth.isLoggedIn ? <AdminRegisterPage /> : <Navigate to="/" replace />} />
               <Route path="/" element={<Navigate to="/login" replace />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/problems" element={
                 <ProtectedRoute>
                   <ProblemListPage />
@@ -130,6 +139,16 @@ function App() {
               <Route path="/admin/dashboard" element={
                 <ProtectedRoute allowedRoles={['admin']}>
                   <AdminDashboardPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/student/dashboard" element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentDashboardPage />
+                </ProtectedRoute>
+              } />
+              <Route path="/student/change-password" element={
+                <ProtectedRoute allowedRoles={['student']}>
+                  <StudentChangePasswordPage />
                 </ProtectedRoute>
               } />
             </Routes>

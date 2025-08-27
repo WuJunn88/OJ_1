@@ -1,0 +1,8 @@
+/Volumes/坞城/OJ_1/backend/judge-service/judge.py:51: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  submission = session.query(Submission).get(submission_id)
+/Volumes/坞城/OJ_1/backend/judge-service/judge.py:65: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  problem = session.query(Problem).get(submission.problem_id)
+/Volumes/坞城/OJ_1/backend/judge-service/judge.py:51: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  submission = session.query(Submission).get(submission_id)
+/Volumes/坞城/OJ_1/backend/judge-service/judge.py:65: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  problem = session.query(Problem).get(submission.problem_id)

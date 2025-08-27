@@ -20,6 +20,7 @@ class MSProblem(db.Model):
     created_by = db.Column(db.Integer, db.ForeignKey('user.id'))
     is_active = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+    deleted_at = db.Column(db.DateTime, nullable=True)  # 软删除时间
 
     def to_dict(self):
         return {
@@ -36,5 +37,6 @@ class MSProblem(db.Model):
             'memory_limit': self.memory_limit,
             'created_by': self.created_by,
             'is_active': self.is_active,
-            'created_at': self.created_at.isoformat() if self.created_at else None
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+            'deleted_at': self.deleted_at.isoformat() if self.deleted_at else None
         }

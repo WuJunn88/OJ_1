@@ -10,28 +10,48 @@ const SubmissionsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
-  const [filterProblemId, setFilterProblemId] = useState('');
+  const [filterProblemTitle, setFilterProblemTitle] = useState('');  // 改为题目名称筛选
+  const [appliedFilter, setAppliedFilter] = useState('');  // 新增：已应用的筛选条件
   
   const navigate = useNavigate();
 
+  // 新增：应用筛选函数
+  const handleApplyFilter = () => {
+    console.log('应用筛选，筛选条件:', filterProblemTitle);  // 调试信息
+    setAppliedFilter(filterProblemTitle);
+    // 不在这里设置currentPage，让useEffect处理
+  };
+
+  // 新增：清除筛选函数
+  const handleClearFilter = () => {
+    console.log('清除筛选');  // 调试信息
+    setFilterProblemTitle('');
+    setAppliedFilter('');
+    setCurrentPage(1);  // 重置到第一页
+  };
+
+  // 新增：useEffect来处理筛选条件变化
+  useEffect(() => {
+    if (appliedFilter !== '') {
+      setCurrentPage(1);  // 当筛选条件变化时，重置到第一页
+    }
+  }, [appliedFilter]);
+
+  // 主要的useEffect，处理API调用
   useEffect(() => {
     fetchSubmissions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, filterProblemId]);
+  }, [currentPage, appliedFilter]);  // 改为appliedFilter
 
   const fetchSubmissions = async () => {
     try {
       setLoading(true);
-      const params = {
-        page: currentPage,
-        per_page: 20
-      };
+      console.log('调用API，参数:', { currentPage, appliedFilter });  // 调试信息
       
-      if (filterProblemId) {
-        params.problem_id = parseInt(filterProblemId);
-      }
+      // 调用API时正确传递参数
+      const response = await getSubmissions(currentPage, 20, null, appliedFilter);
       
-      const response = await getSubmissions(params);
+      console.log('API响应:', response);  // 调试信息
       setSubmissions(response.submissions);
       setTotalPages(response.pages);
       setTotal(response.total);
@@ -94,6 +114,21 @@ const SubmissionsPage = () => {
     }
   };
 
+  const getProblemTypeText = (type) => {
+    switch (type) {
+      case 'programming':
+        return '编程题';
+      case 'choice':
+        return '选择题';
+      case 'judge':
+        return '判断题';
+      case 'short_answer':
+        return '简答题';
+      default:
+        return type || '未知';
+    }
+  };
+
   const formatTime = (seconds) => {
     if (!seconds) return '-';
     return `${(seconds * 1000).toFixed(0)}ms`;
@@ -127,17 +162,22 @@ const SubmissionsPage = () => {
 
       <div className="submissions-filters">
         <div className="filter-group">
-          <label htmlFor="problemFilter">题目ID:</label>
+          <label htmlFor="problemFilter">题目名称:</label>
           <input
             id="problemFilter"
-            type="number"
-            value={filterProblemId}
-            onChange={(e) => setFilterProblemId(e.target.value)}
-            placeholder="输入题目ID筛选"
-            min="1"
+            type="text"
+            value={filterProblemTitle}
+            onChange={(e) => setFilterProblemTitle(e.target.value)}
+            placeholder="输入题目名称筛选"
           />
           <button 
-            onClick={() => setFilterProblemId('')}
+            onClick={handleApplyFilter}
+            className="apply-filter-btn"
+          >
+            应用筛选
+          </button>
+          <button 
+            onClick={handleClearFilter}
             className="clear-filter-btn"
           >
             清除筛选
@@ -157,6 +197,7 @@ const SubmissionsPage = () => {
             <tr>
               <th>提交ID</th>
               <th>题目</th>
+              <th>题目类型</th>
               <th>语言</th>
               <th>状态</th>
               <th>执行时间</th>
@@ -173,9 +214,10 @@ const SubmissionsPage = () => {
                     className="problem-link"
                     onClick={() => handleProblemClick(submission.problem_id)}
                   >
-                    题目{submission.problem_id}
+                    {submission.problem_title || `题目${submission.problem_id}`}
                   </button>
                 </td>
+                <td>{getProblemTypeText(submission.problem_type)}</td>
                 <td>{submission.language}</td>
                 <td>
                   <span className={`status-badge ${getStatusColor(submission.status)}`}>
@@ -200,7 +242,7 @@ const SubmissionsPage = () => {
 
       {submissions.length === 0 && !loading && (
         <div className="no-submissions">
-          {filterProblemId ? '没有找到符合条件的提交记录' : '暂无提交记录'}
+          {appliedFilter ? '没有找到符合条件的提交记录' : '暂无提交记录'}
         </div>
       )}
 

@@ -134,9 +134,10 @@ export const getResult = async (submissionId) => {
 };
 
 // 获取提交历史
-export const getSubmissions = async (page = 1, perPage = 20, problemId = null) => {
+export const getSubmissions = async (page = 1, perPage = 20, problemId = null, problemTitle = null) => {
   const params = { page, per_page: perPage };
   if (problemId) params.problem_id = problemId;
+  if (problemTitle) params.problem_title = problemTitle;  // 新增：支持题目名称筛选
   
   const response = await api.get('/submissions', { params });
   return response.data;
@@ -371,6 +372,21 @@ export const getCourseAssignments = async (courseId = null) => {
   return response.data;
 };
 
+// 获取作业列表
+export const getAssignments = async (courseId = null) => {
+  const params = {};
+  if (courseId) params.course_id = courseId;
+  
+  const response = await api.get('/assignments', { params });
+  return response.data;
+};
+
+// 获取学生作业完成状态
+export const getAssignmentCompletionStatus = async (courseId) => {
+  const response = await api.get(`/assignments/completion-status?course_id=${courseId}`);
+  return response.data;
+};
+
 // 创建作业
 export const createAssignment = async (data) => {
   const response = await api.post('/assignments', data);
@@ -386,6 +402,42 @@ export const updateAssignment = async (assignmentId, data) => {
 // 删除作业
 export const deleteAssignment = async (assignmentId) => {
   const response = await api.delete(`/assignments/${assignmentId}`);
+  return response.data;
+};
+
+/**
+ * 补交作业相关API
+ */
+
+// 获取作业逾期用户白名单
+export const getAssignmentOverdueUsers = async (assignmentId) => {
+  const response = await api.get(`/assignments/${assignmentId}/overdue-users`);
+  return response.data;
+};
+
+// 添加用户到逾期白名单
+export const addUserToOverdueWhitelist = async (assignmentId, userId) => {
+  const response = await api.post(`/assignments/${assignmentId}/overdue-users`, {
+    user_id: userId
+  });
+  return response.data;
+};
+
+// 从逾期白名单移除用户
+export const removeUserFromOverdueWhitelist = async (assignmentId, userId) => {
+  const response = await api.delete(`/assignments/${assignmentId}/overdue-users/${userId}`);
+  return response.data;
+};
+
+// 更新作业逾期设置
+export const updateAssignmentOverdueSettings = async (assignmentId, settings) => {
+  const response = await api.put(`/assignments/${assignmentId}/overdue-settings`, settings);
+  return response.data;
+};
+
+// 检查学生是否可以补交作业
+export const checkStudentOverduePermission = async (assignmentId) => {
+  const response = await api.get(`/assignments/${assignmentId}/can-overdue-submit`);
   return response.data;
 };
 
@@ -411,8 +463,20 @@ export const addStudentToCourse = async (courseId, studentData) => {
   return response.data;
 };
 
-// 从课程中移除学生
+// 从课程中移除学生（关联添加的学生）
 export const removeStudentFromCourse = async (courseId, studentId) => {
   const response = await api.delete(`/courses/${courseId}/students/${studentId}`);
+  return response.data;
+};
+
+// 原班级学生退课（排除）
+export const excludeOriginalStudent = async (courseId, studentId) => {
+  const response = await api.post(`/courses/${courseId}/students/${studentId}/exclude`);
+  return response.data;
+};
+
+// 取消退课（恢复）
+export const cancelExcludeOriginalStudent = async (courseId, studentId) => {
+  const response = await api.delete(`/courses/${courseId}/students/${studentId}/exclude`);
   return response.data;
 };

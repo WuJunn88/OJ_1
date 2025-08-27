@@ -36,16 +36,19 @@ const AdminDashboardPage = () => {
     department_id: ''
   });
 
+  // 滚动动画相关状态
+  const [scrollAnimations, setScrollAnimations] = useState({
+    formVisible: false,
+    bottomFormVisible: false
+  });
+
   // 课程相关状态
   const [courses, setCourses] = useState([]);
   const [courseForm, setCourseForm] = useState({
     name: '',
     description: '',
-    class_id: '',
-    major_id: '',
-    department_id: '',
-    school_id: '',
-    teacher_id: ''
+    teacher_id: '',
+    teaching_class_name: ''
   });
 
   // 编辑课程状态
@@ -62,9 +65,100 @@ const AdminDashboardPage = () => {
   const [editingDepartment, setEditingDepartment] = useState(null);
   const [editingMajor, setEditingMajor] = useState(null);
   const [editingClass, setEditingClass] = useState(null);
+  // 查看院部下级组织
+  const [viewingDepartment, setViewingDepartment] = useState(null);
+  const [isClosingModal, setIsClosingModal] = useState(false);
+  const [addingClassForMajor, setAddingClassForMajor] = useState(null);
+
+  // 平滑关闭模态框
+  const handleCloseModal = () => {
+    setIsClosingModal(true);
+    setTimeout(() => {
+      setViewingDepartment(null);
+      setIsClosingModal(false);
+      setAddingClassForMajor(null);
+    }, 250); // 与CSS动画时长匹配
+  };
+
+  // 为指定专业添加班级
+  const handleAddClassForMajor = (major) => {
+    setAddingClassForMajor(major);
+    setNewClassForm({
+      name: '',
+      grade: '',
+      major_id: major.id,
+      department_id: viewingDepartment.id
+    });
+  };
+
+  // 保存班级
+  const handleSaveClassForMajor = async () => {
+    if (!newClassForm.name.trim()) {
+      alert('请输入班级名称');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await createClass(newClassForm);
+      setSuccess('班级创建成功！');
+      setAddingClassForMajor(null);
+      setNewClassForm({ name: '', grade: '', major_id: '', department_id: '' });
+      fetchInitialData(); // 刷新数据
+    } catch (error) {
+      setError(error?.response?.data?.error || '创建班级失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 删除班级（从院部模态框）
+  const handleDeleteClassFromModal = async (classId, className) => {
+    if (!window.confirm(`确定要删除班级"${className}"吗？此操作不可恢复。`)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await deleteClass(classId);
+      setSuccess('班级删除成功！');
+      fetchInitialData(); // 刷新数据
+    } catch (error) {
+      setError(error?.response?.data?.error || '删除班级失败');
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   useEffect(() => {
     fetchInitialData();
+  }, []);
+
+  // 滚动监听和动画触发
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      
+      // 检测表单是否进入视口
+      if (scrollY > 100) {
+        setScrollAnimations(prev => ({ ...prev, formVisible: true }));
+      }
+      
+      // 检测是否接近底部，触发底部表单动画
+      if (scrollY + windowHeight > documentHeight - 200) {
+        setScrollAnimations(prev => ({ ...prev, bottomFormVisible: true }));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    
+    // 初始触发
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const fetchInitialData = async () => {
@@ -101,7 +195,7 @@ const AdminDashboardPage = () => {
         setCourses([]);
       }
 
-      // 尝试从API获取院部数据
+      // 组织数据用于组织架构管理（与课程创建分离）
       try {
         const departmentsData = await getDepartments();
         setDepartments(departmentsData);
@@ -111,7 +205,6 @@ const AdminDashboardPage = () => {
         setDepartments([]);
       }
 
-      // 尝试从API获取专业数据
       try {
         const majorsData = await getMajors();
         setMajors(majorsData);
@@ -121,7 +214,6 @@ const AdminDashboardPage = () => {
         setMajors([]);
       }
 
-      // 尝试从API获取班级数据
       try {
         const classesData = await getClasses();
         setClasses(classesData);
@@ -229,12 +321,12 @@ const AdminDashboardPage = () => {
       setError('');
       setSuccess('');
       
-      // 准备提交数据，只包含后端需要的字段
+      // 仅提交教学班名，不再强制依赖行政班
       const submitData = {
         name: courseForm.name,
         description: courseForm.description || '',
         teacher_id: courseForm.teacher_id,
-        class_id: courseForm.class_id
+        teaching_class_name: (courseForm.teaching_class_name || '').trim() || null
       };
       
       if (isEditingCourse && editingCourse) {
@@ -249,11 +341,8 @@ const AdminDashboardPage = () => {
       setCourseForm({
         name: '',
         description: '',
-        class_id: '',
-        major_id: '',
-        department_id: '',
-        school_id: '',
-        teacher_id: ''
+        teacher_id: '',
+        teaching_class_name: ''
       });
       
       setIsEditingCourse(false);
@@ -279,11 +368,8 @@ const AdminDashboardPage = () => {
     setCourseForm({
       name: course.name,
       description: course.description || '',
-      school_id: course.school_id || '',
-      department_id: course.department_id || '',
-      major_id: course.major_id || '',
-      class_id: course.class_id || '',
-      teacher_id: course.teacher_id || ''
+      teacher_id: course.teacher_id || '',
+      teaching_class_name: course.teaching_class_name || course.display_class_name || ''
     });
     setIsEditingCourse(true);
     setActiveSubTab('add');
@@ -838,7 +924,7 @@ const AdminDashboardPage = () => {
                 </div>
               </div>
                 
-                <div className="add-teacher-form">
+                <div className={`add-teacher-form ${scrollAnimations.formVisible ? 'form-visible' : ''}`}>
                   <div className="form-row">
                     <div className="form-group">
                       <label>工号：<span className="required-mark">*</span></label>
@@ -938,13 +1024,13 @@ const AdminDashboardPage = () => {
                     </div>
                   </div>
                   
-                  <div className="form-actions">
+                  <div className={`form-actions ${scrollAnimations.bottomFormVisible ? 'bottom-form-visible' : ''}`}>
                     <button 
                       className="submit-btn"
                       onClick={handleAddTeacher}
                       disabled={loading || !addTeacherForm.job_no || !addTeacherForm.name || !addTeacherForm.password || !addTeacherForm.school_id || !addTeacherForm.department_id}
                     >
-                      {loading ? '创建中...' : '创建教师账号'}
+                      {loading ? '添加中...' : '添加教师'}
                     </button>
                   </div>
                 </div>
@@ -1006,7 +1092,7 @@ const AdminDashboardPage = () => {
                           <td>{course.description || '-'}</td>
                           <td>{course.teacher_username || '-'}</td>
                           <td>{course.teacher_name || '-'}</td>
-                          <td>{course.class_name || course.class_id || '-'}</td>
+                          <td>{course.display_class_name || course.teaching_class_name || course.class_name || '-'}</td>
                           <td>{course.major_name || '-'}</td>
                           <td>{course.department_name || '-'}</td>
                           <td>{course.school_name || '-'}</td>
@@ -1084,91 +1170,17 @@ const AdminDashboardPage = () => {
                       <small>可用教师数量: {teachers.length}</small>
                     </div>
                   </div>
-                  
+
                   <div className="form-row">
                     <div className="form-group">
-                      <label>学校：<span className="required-mark">*</span></label>
-                      <select 
-                        value={courseForm.school_id} 
-                        onChange={(e) => handleCourseSchoolChange(e.target.value)}
-                      >
-                        <option value="">请选择学校</option>
-                        {schools.map(school => (
-                          <option key={school.id} value={school.id}>
-                            {school.name}
-                          </option>
-                        ))}
-                      </select>
-                      <small>可用学校数量: {schools.length}</small>
-                    </div>
-                    
-                    <div className="form-group">
-                      <label>院部：<span className="required-mark">*</span></label>
-                      <select 
-                        value={courseForm.department_id} 
-                        onChange={(e) => handleCourseDepartmentChange(e.target.value)}
-                        disabled={!courseForm.school_id}
-                      >
-                        <option value="">请选择院部</option>
-                        {departments.filter(dept => 
-                          dept.school_id == courseForm.school_id
-                        ).map(dept => (
-                          <option key={dept.id} value={dept.id}>
-                            {dept.name}
-                          </option>
-                        ))}
-                      </select>
-                      <small>可用院部数量: {departments.filter(dept => 
-                        dept.school_id == courseForm.school_id
-                      ).length} | 学校ID: {courseForm.school_id}</small>
-                    </div>
-                  </div>
-                  
-                  <div className="form-row">
-                    <div className="form-group">
-                      <label>专业：<span className="required-mark">*</span></label>
-                      <select 
-                        value={courseForm.major_id} 
-                        onChange={(e) => handleCourseMajorChange(e.target.value)}
-                        disabled={!courseForm.department_id}
-                      >
-                        <option value="">请选择专业</option>
-                        {majors.filter(major => 
-                          major.department_id == courseForm.department_id && 
-                          major.school_id == courseForm.school_id
-                        ).map(major => (
-                          <option key={major.id} value={major.id}>
-                            {major.name}
-                          </option>
-                        ))}
-                      </select>
-                      <small>可用专业数量: {majors.filter(major => 
-                        major.department_id == courseForm.department_id && 
-                        major.school_id == courseForm.school_id
-                      ).length} | 院部ID: {courseForm.department_id}</small>
-                    </div>
-                    
-                    <div className="form-group">
-                      <label>班级：<span className="required-mark">*</span></label>
-                      <select 
-                        value={courseForm.class_id} 
-                        onChange={(e) => setCourseForm(prev => ({ ...prev, class_id: e.target.value }))}
-                        disabled={!courseForm.major_id}
-                      >
-                        <option value="">请选择班级</option>
-                        {classes.filter(cls => 
-                          cls.major_id == courseForm.major_id && 
-                          cls.department_id == courseForm.department_id
-                        ).map(cls => (
-                          <option key={cls.id} value={cls.id}>
-                            {cls.name}
-                          </option>
-                        ))}
-                      </select>
-                      <small>可用班级数量: {classes.filter(cls => 
-                        cls.major_id == courseForm.major_id && 
-                        cls.department_id == courseForm.department_id
-                      ).length} | 专业ID: {courseForm.major_id} | 院部ID: {courseForm.department_id}</small>
+                      <label>教学班名称（自定义）：</label>
+                      <input 
+                        type="text" 
+                        placeholder="例如：2024-春 数据结构(1)"
+                        value={courseForm.teaching_class_name}
+                        onChange={(e) => setCourseForm(prev => ({ ...prev, teaching_class_name: e.target.value }))}
+                      />
+                      <small>不再从行政班中选择；此处填写教学班名</small>
                     </div>
                   </div>
                   
@@ -1176,7 +1188,7 @@ const AdminDashboardPage = () => {
                     <button 
                       className="submit-btn"
                       onClick={handleCreateCourse}
-                      disabled={loading || !courseForm.name || !courseForm.teacher_id || !courseForm.school_id || !courseForm.department_id || !courseForm.major_id || !courseForm.class_id}
+                      disabled={loading || !courseForm.name || !courseForm.teacher_id}
                     >
                       {loading ? (isEditingCourse ? '更新中...' : '创建中...') : (isEditingCourse ? '更新课程' : '创建课程')}
                     </button>
@@ -1213,44 +1225,22 @@ const AdminDashboardPage = () => {
                     </div>
                   </div>
                   
-                  {/* 该学校下的院部 */}
+                  {/* 该学校下的院部（点击查看下级组织） */}
                   {departments.filter(d => d.school_id === school.id).map(department => (
                     <div key={department.id} className="department-node">
-                      <div className="department-header">
+                      <div 
+                        className="department-header"
+                        onClick={() => setViewingDepartment({ ...department, school_name: school.name })}
+                        role="button"
+                        title="点击查看该院部的下级组织"
+                      >
                         <h4>🏢 {department.name}</h4>
                         <div className="department-actions">
-                          <button className="action-btn edit" onClick={() => setEditingDepartment(department)}>编辑</button>
-                          <button className="action-btn delete" onClick={() => handleDeleteDepartment(department.id)}>删除</button>
-                          <button className="action-btn add" onClick={() => setEditingMajor({ school_id: school.id, department_id: department.id })}>+ 添加专业</button>
+                          <button className="action-btn edit" onClick={(e) => { e.stopPropagation(); setEditingDepartment(department); }}>编辑</button>
+                          <button className="action-btn delete" onClick={(e) => { e.stopPropagation(); handleDeleteDepartment(department.id); }}>删除</button>
+                          <button className="action-btn add" onClick={(e) => { e.stopPropagation(); setEditingMajor({ school_id: school.id, department_id: department.id }); }}>+ 添加专业</button>
                         </div>
                       </div>
-                      
-                      {/* 该院部下的专业 */}
-                      {majors.filter(m => m.department_id === department.id && m.school_id === school.id).map(major => (
-                        <div key={major.id} className="major-node">
-                          <div className="major-header">
-                            <h5>📚 {major.name}</h5>
-                            <div className="major-actions">
-                              <button className="action-btn edit" onClick={() => setEditingMajor(major)}>编辑</button>
-                              <button className="action-btn delete" onClick={() => handleDeleteMajor(major.id)}>删除</button>
-                              <button className="action-btn add" onClick={() => setEditingClass({ major_id: major.id, department_id: department.id })}>+ 添加班级</button>
-                            </div>
-                          </div>
-                          
-                          {/* 该专业下的班级 */}
-                          {classes.filter(c => c.major_id === major.id && c.department_id === department.id).map(cls => (
-                            <div key={cls.id} className="class-node">
-                              <div className="class-header">
-                                <span>👥 {cls.name}</span>
-                                <div className="class-actions">
-                                  <button className="action-btn edit" onClick={() => setEditingClass(cls)}>编辑</button>
-                                  <button className="action-btn delete" onClick={() => handleDeleteClass(cls.id)}>删除</button>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ))}
                     </div>
                   ))}
                 </div>
@@ -1571,6 +1561,114 @@ const AdminDashboardPage = () => {
           </div>
         </div>
       )}
+
+      {/* 院部下级组织查看模态框 */}
+      {viewingDepartment && (
+        <div className={`modal-overlay ${isClosingModal ? 'closing' : ''}`} onClick={handleCloseModal}>
+          <div className="modal wide" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>院部下级组织：{viewingDepartment.name}</h3>
+              <p className="modal-subtitle">所属学校：{viewingDepartment.school_name || '-'} | 院部ID：{viewingDepartment.id}</p>
+            </div>
+            <div className="modal-body">
+              {(() => {
+                const deptMajors = majors.filter(m => m.department_id == viewingDepartment.id);
+                if (deptMajors.length === 0) {
+                  return <p>暂无专业。</p>;
+                }
+                return (
+                  <div className="dept-children">
+                    {deptMajors.map(m => {
+                      const majorClasses = classes.filter(c => c.major_id == m.id);
+                      return (
+                        <div key={m.id} className="dept-major-block">
+                          <div className="dept-major-header">📚 {m.name}（ID: {m.id}）<span className="count">班级数：{majorClasses.length}</span></div>
+                          {majorClasses.length > 0 ? (
+                            <ul className="dept-class-list">
+                              {majorClasses.map(c => (
+                                <li key={c.id} className="class-item">
+                                  <span className="class-info">👥 {c.name}（ID: {c.id}）</span>
+                                  <button 
+                                    className="delete-class-btn"
+                                    onClick={() => handleDeleteClassFromModal(c.id, c.name)}
+                                    disabled={loading}
+                                    title={`删除班级"${c.name}"`}
+                                  >
+                                    🗑️
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <div className="empty">该专业暂无班级</div>
+                          )}
+                          
+                          {/* 添加班级按钮 */}
+                          <div className="dept-major-actions">
+                            <button 
+                              className="add-class-btn"
+                              onClick={() => handleAddClassForMajor(m)}
+                              disabled={addingClassForMajor?.id === m.id}
+                            >
+                              {addingClassForMajor?.id === m.id ? '添加中...' : '➕ 添加班级'}
+                            </button>
+                          </div>
+
+                          {/* 添加班级表单 */}
+                          {addingClassForMajor?.id === m.id && (
+                            <div className="add-class-form">
+                              <div className="form-row">
+                                <div className="form-group">
+                                  <label>班级名称：<span className="required-mark">*</span></label>
+                                  <input 
+                                    type="text" 
+                                    placeholder="请输入班级名称"
+                                    value={newClassForm.name}
+                                    onChange={(e) => setNewClassForm(prev => ({ ...prev, name: e.target.value }))}
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>年级：</label>
+                                  <input 
+                                    type="text" 
+                                    placeholder="请输入年级（可选）"
+                                    value={newClassForm.grade}
+                                    onChange={(e) => setNewClassForm(prev => ({ ...prev, grade: e.target.value }))}
+                                  />
+                                </div>
+                              </div>
+                              <div className="form-actions">
+                                <button 
+                                  className="secondary-btn small"
+                                  onClick={() => setAddingClassForMajor(null)}
+                                >
+                                  取消
+                                </button>
+                                <button 
+                                  className="submit-btn small"
+                                  onClick={handleSaveClassForMajor}
+                                  disabled={loading || !newClassForm.name.trim()}
+                                >
+                                  {loading ? '保存中...' : '保存'}
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+            </div>
+            <div className="modal-footer">
+              <button className="secondary-btn" onClick={handleCloseModal}>关闭</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
     </div>
   );
 };

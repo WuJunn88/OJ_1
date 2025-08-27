@@ -8,6 +8,7 @@ import pika
 import json
 import time
 import re
+from datetime import datetime
 from sandbox import run_code
 from database import Session
 
@@ -71,6 +72,43 @@ def start_judge_worker():
                     ch.basic_ack(delivery_tag=method.delivery_tag)
                     return
                 
+                # 检查是否为逾期提交（通过作业关联）
+                is_overdue = False
+                try:
+                    # 查找该题目是否属于某个作业
+                    from shared.models import Assignment, AssignmentProblem
+                    assignment_problem = session.query(AssignmentProblem).filter_by(
+                        problem_id=submission.problem_id
+                    ).first()
+                    
+                    if assignment_problem:
+                        assignment = session.query(Assignment).get(assignment_problem.assignment_id)
+                        if assignment and assignment.allow_overdue_submission:
+                            # 检查是否超过正常截止时间
+                            now = datetime.utcnow()
+                            if assignment.due_date and now > assignment.due_date:
+                                # 检查是否在补交截止时间内
+                                if assignment.overdue_deadline and now <= assignment.overdue_deadline:
+                                    # 检查用户是否在白名单中
+                                    overdue_user_ids = json.loads(assignment.overdue_allow_user_ids) if assignment.overdue_allow_user_ids else []
+                                    if submission.user_id in overdue_user_ids:
+                                        is_overdue = True
+                                        print(f"[*] 提交 {submission_id} 为逾期提交，用户ID: {submission.user_id}")
+                                    else:
+                                        print(f"[*] 提交 {submission_id} 超过截止时间，但用户不在白名单中")
+                                else:
+                                    print(f"[*] 提交 {submission_id} 超过补交截止时间")
+                            else:
+                                print(f"[*] 提交 {submission_id} 在正常截止时间内")
+                        else:
+                            print(f"[*] 提交 {submission_id} 不属于允许补交的作业")
+                except Exception as e:
+                    print(f"[!] 检查逾期状态时发生错误: {str(e)}")
+                    # 不影响正常判题流程
+                
+                # 标记逾期状态
+                submission.is_overdue = is_overdue
+                
                 print(f"[*] 题目信息: ID={problem.id}, 类型={problem.type}, 标题={problem.title}")
                 print(f"[*] 开始判题，题目类型: {problem.type}, 语言: {submission.language}")
                 
@@ -120,37 +158,203 @@ def start_judge_worker():
     channel.start_consuming()
 
 def judge_programming_problem(submission, problem, session):
-    """判题编程题"""
+    """判题编程题（支持多测试用例、空输入、多行输入/输出）"""
     print(f"[*] 开始执行代码，语言: {submission.language}")
-    
-    # 执行代码
-    start_time = time.time()
-    output, error = run_code(
-        code=submission.code,
-        language=submission.language,
-        input_data=problem.test_cases,
-        time_limit_ms=problem.time_limit,
-        memory_limit_mb=problem.memory_limit
-    )
-    execution_time = time.time() - start_time
-    
-    print(f"[*] 代码执行完成，耗时: {execution_time:.3f}s")
-    print(f"[*] 输出: {output[:100]}...")
-    if error:
-        print(f"[*] 错误: {error}")
-    
-    # 判断结果
-    if error:
-        submission.status = 'error'
-        submission.result = error
-    elif output.strip() == problem.expected_output.strip():
+    print(f"[*] 原始测试用例字段: {problem.test_cases}")
+    print(f"[*] 原始期望输出字段: {problem.expected_output}")
+
+    # 优先尝试解析结构化JSON测试用例：[{"input": "...", "output": "..."}, ...]
+    structured_cases = None
+    try:
+        parsed = json.loads(problem.test_cases) if problem.test_cases else None
+        if isinstance(parsed, list) and all(isinstance(c, dict) for c in parsed):
+            # 规范化为字符串
+            structured_cases = [
+                {
+                    'input': (str(c.get('input', '')) if c.get('input') is not None else ''),
+                    'output': (str(c.get('output', '')) if c.get('output') is not None else '')
+                }
+                for c in parsed
+            ]
+            print(f"[*] 解析到结构化测试用例 {len(structured_cases)} 个")
+    except Exception as e:
+        print(f"[!] 测试用例JSON解析失败，使用兼容模式: {e}")
+
+    def normalize_text_block(s: str) -> str:
+        # 统一换行/去除末尾多余空白行，但保留中间空行
+        if s is None:
+            return ''
+        # 统一换行
+        s = s.replace('\r\n', '\n').replace('\r', '\n')
+        # 去除每行末尾空格
+        lines = [line.rstrip() for line in s.split('\n')]
+        # 去除首尾空行
+        while lines and lines[0] == '':
+            lines.pop(0)
+        while lines and lines[-1] == '':
+            lines.pop()
+        return '\n'.join(lines)
+
+    if structured_cases is not None:
+        all_passed = True
+        failed_cases = []
+        total_execution_time = 0.0
+
+        for i, case in enumerate(structured_cases):
+            input_block = case.get('input', '')
+            expected_block = case.get('output', '')
+            print(f"[*] 执行用例 {i+1}: 输入(预览)='{input_block[:60]}'…")
+
+            # 执行代码
+            start_time = time.time()
+            output, error = run_code(
+                code=submission.code,
+                language=submission.language,
+                input_data=input_block,
+                time_limit_ms=problem.time_limit,
+                memory_limit_mb=problem.memory_limit
+            )
+            exec_time = time.time() - start_time
+            total_execution_time = max(total_execution_time, exec_time)
+
+            if error:
+                print(f"[*] 用例 {i+1} 执行错误: {error}")
+                all_passed = False
+                failed_cases.append(f"用例 {i+1}: 执行错误 - {error}")
+                continue
+
+            actual_norm = normalize_text_block(output)
+            expected_norm = normalize_text_block(expected_block)
+            print(f"[*] 用例 {i+1} 实际输出(预览)='{actual_norm[:60]}'…")
+
+            if actual_norm != expected_norm:
+                all_passed = False
+                failed_cases.append(
+                    f"用例 {i+1}: 输出不匹配\n期望: \n{expected_norm}\n实际: \n{actual_norm}"
+                )
+
+        if all_passed:
+            submission.status = 'accepted'
+            submission.result = '所有测试用例通过'
+            print(f"[*] 所有测试用例通过！")
+        else:
+            submission.status = 'wrong_answer'
+            submission.result = '部分测试用例失败:\n' + '\n'.join(failed_cases)
+            print(f"[*] 部分测试用例失败")
+        submission.execution_time = total_execution_time
+        session.commit()
+        return True
+
+    # 兼容模式（旧格式）：按行zip。保留无输入多行输出的特殊处理
+    print(f"[*] 使用兼容模式解析测试用例")
+    test_cases = problem.test_cases.split('\n') if problem.test_cases is not None else ['']
+    expected_outputs = problem.expected_output.split('\n') if problem.expected_output else ['']
+
+    # 过滤空行，但保留空字符串（表示无输入）
+    test_cases = [tc for tc in test_cases if tc.strip() != '' or tc == '']
+    expected_outputs = [eo for eo in expected_outputs if eo.strip()]
+
+    print(f"[*] 兼容模式下测试用例数量: {len(test_cases)} / 期望输出行数: {len(expected_outputs)}")
+
+    # 如果所有测试用例都是空字符串（可能被错误拆成多行空输入），按单个空输入对待
+    if test_cases and all(tc.strip() == '' for tc in test_cases):
+        print(f"[*] 检测到所有测试用例皆为空，按单个空输入处理")
+        test_cases = ['']
+        # 如果期望输出是多行，直接按无输入多行输出处理
+        if len(expected_outputs) > 1:
+            print(f"[*] 检测到无输入、多行输出题目")
+            all_expected_lines = [line.strip() for line in problem.expected_output.split('\n') if line.strip()]
+            start_time = time.time()
+            output, error = run_code(
+                code=submission.code,
+                language=submission.language,
+                input_data='',
+                time_limit_ms=problem.time_limit,
+                memory_limit_mb=problem.memory_limit
+            )
+            execution_time = time.time() - start_time
+            if error:
+                submission.status = 'error'
+                submission.result = error
+                submission.execution_time = execution_time
+                session.commit()
+                return True
+            actual_lines = [line.strip() for line in output.split('\n') if line.strip()]
+            if len(actual_lines) != len(all_expected_lines) or any(a != e for a, e in zip(actual_lines, all_expected_lines)):
+                submission.status = 'wrong_answer'
+                submission.result = f"输出不匹配\n期望:\n{chr(10).join(all_expected_lines)}\n实际:\n{chr(10).join(actual_lines)}"
+            else:
+                submission.status = 'accepted'
+                submission.result = '所有输出行都匹配'
+            submission.execution_time = execution_time
+            session.commit()
+            return True
+
+    # 无输入、多行输出（原有的逻辑，保留作为备用）
+    if len(test_cases) == 1 and test_cases[0] == '' and len(expected_outputs) > 1:
+        print(f"[*] 检测到无输入、多行输出题目")
+        all_expected_lines = [line.strip() for line in problem.expected_output.split('\n') if line.strip()]
+        start_time = time.time()
+        output, error = run_code(
+            code=submission.code,
+            language=submission.language,
+            input_data='',
+            time_limit_ms=problem.time_limit,
+            memory_limit_mb=problem.memory_limit
+        )
+        execution_time = time.time() - start_time
+        if error:
+            submission.status = 'error'
+            submission.result = error
+            submission.execution_time = execution_time
+            session.commit()
+            return True
+        actual_lines = [line.strip() for line in output.split('\n') if line.strip()]
+        if len(actual_lines) != len(all_expected_lines) or any(a != e for a, e in zip(actual_lines, all_expected_lines)):
+            submission.status = 'wrong_answer'
+            submission.result = f"输出不匹配\n期望:\n{chr(10).join(all_expected_lines)}\n实际:\n{chr(10).join(actual_lines)}"
+        else:
+            submission.status = 'accepted'
+            submission.result = '所有输出行都匹配'
+        submission.execution_time = execution_time
+        session.commit()
+        return True
+
+    # 多测试用例（单行输入/输出）
+    print(f"[*] 使用多测试用例模式(旧)")
+    all_passed = True
+    failed_cases = []
+    total_execution_time = 0.0
+
+    for i, (test_case, expected_output) in enumerate(zip(test_cases, expected_outputs)):
+        print(f"[*] 执行测试用例 {i+1}: 输入='{test_case}', 期望输出='{expected_output}'")
+        start_time = time.time()
+        output, error = run_code(
+            code=submission.code,
+            language=submission.language,
+            input_data=test_case,
+            time_limit_ms=problem.time_limit,
+            memory_limit_mb=problem.memory_limit
+        )
+        exec_time = time.time() - start_time
+        total_execution_time = max(total_execution_time, exec_time)
+        if error:
+            all_passed = False
+            failed_cases.append(f"测试用例 {i+1}: 执行错误 - {error}")
+            continue
+        if output.strip() != expected_output:
+            all_passed = False
+            failed_cases.append(f"测试用例 {i+1}: 期望 '{expected_output}', 实际 '{output.strip()}'")
+
+    if all_passed:
         submission.status = 'accepted'
-        submission.result = '答案正确'
+        submission.result = '所有测试用例通过'
+        print(f"[*] 所有测试用例通过！")
     else:
         submission.status = 'wrong_answer'
-        submission.result = f'答案错误\n期望输出: {problem.expected_output}\n实际输出: {output}'
-    
-    submission.execution_time = execution_time
+        submission.result = f'部分测试用例失败:\n' + '\n'.join(failed_cases)
+        print(f"[*] 部分测试用例失败")
+    submission.execution_time = total_execution_time
     session.commit()
     return True
 

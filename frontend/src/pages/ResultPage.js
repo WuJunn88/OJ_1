@@ -18,6 +18,18 @@ const ResultPage = () => {
         const data = await getResult(submissionId);
         setResult(data);
         
+        // 如果判题完成且状态为accepted，发送通知
+        if (data.status === 'accepted') {
+          console.log('判题成功，发送状态更新通知');
+          // 通知学生仪表盘刷新作业完成状态
+          localStorage.setItem('submissionStatusChanged', 'true');
+          // 触发storage事件（用于跨标签页通信）
+          window.dispatchEvent(new StorageEvent('storage', {
+            key: 'submissionStatusChanged',
+            newValue: 'true'
+          }));
+        }
+        
         // 如果还在判题中，每5秒轮询一次
         if (data.status === 'pending' || data.status === 'judging') {
           setTimeout(fetchResult, 5000);

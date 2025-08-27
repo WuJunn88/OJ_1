@@ -1,0 +1,33 @@
+使用SQLite数据库: /Volumes/坞城/OJ_1/judger.db
+已启用SQLite优化配置
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5001
+Press CTRL+C to quit
+ * Restarting with watchdog (fsevents)
+ * Debugger is active!
+ * Debugger PIN: 110-019-859
+ * Detected change in '/Volumes/坞城/OJ_1/backend/main-service/models/assignment.py', reloading
+ * Detected change in '/Volumes/坞城/OJ_1/backend/main-service/app.py', reloading
+ * Detected change in '/Volumes/坞城/OJ_1/backend/main-service/models/assignment.py', reloading
+ * Detected change in '/Volumes/坞城/OJ_1/backend/main-service/app.py', reloading
+使用SQLite数据库: /Volumes/坞城/OJ_1/judger.db
+已启用SQLite优化配置
+ * Restarting with watchdog (fsevents)
+ * Debugger is active!
+ * Debugger PIN: 110-019-859
+127.0.0.1 - - [26/Aug/2025 20:22:35] "OPTIONS /assignments/completion-status?course_id=1 HTTP/1.1" 200 -
+/Volumes/坞城/OJ_1/backend/main-service/app.py:423: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  current_user = User.query.get(data['user_id'])
+/Volumes/坞城/OJ_1/backend/main-service/app.py:2275: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  course = Course.query.get(course_id)
+/Volumes/坞城/OJ_1/backend/main-service/app.py:2313: LegacyAPIWarning: The Query.get() method is considered legacy as of the 1.x series of SQLAlchemy and becomes a legacy construct in 2.0. The method is now available as Session.get() (deprecated since: 2.0) (Background on SQLAlchemy 2.0 at: https://sqlalche.me/e/b8d9)
+  problem = Problem.query.get(problem_id)
+127.0.0.1 - - [26/Aug/2025 20:22:35] "GET /assignments/completion-status?course_id=1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Aug/2025 20:23:05] "OPTIONS /assignments/completion-status?course_id=1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Aug/2025 20:23:05] "GET /assignments/completion-status?course_id=1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Aug/2025 20:23:16] "OPTIONS /assignments/completion-status?course_id=1 HTTP/1.1" 200 -
+127.0.0.1 - - [26/Aug/2025 20:23:16] "GET /assignments/completion-status?course_id=1 HTTP/1.1" 200 -
+/opt/anaconda3/lib/python3.13/multiprocessing/resource_tracker.py:301: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown: {'/mp-7vkoowu4'}
+  warnings.warn(

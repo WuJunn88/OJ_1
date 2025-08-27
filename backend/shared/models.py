@@ -22,6 +22,7 @@ class Problem(Base):
     created_by = Column(Integer, ForeignKey('user.id'))
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    deleted_at = Column(DateTime, nullable=True)  # 软删除时间
 
 class Submission(Base):
     __tablename__ = 'submission'
