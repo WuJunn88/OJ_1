@@ -376,14 +376,15 @@
   margin-top: 30px;
   padding-top: 20px;
   border-top: 2px solid #f0f0f0;
-  opacity: 0;
-  transform: translateY(40px) scale(0.95);
-  transition: all 0.8s var(--easing-bounce);
+  /* 修复按钮不可见问题：默认显示，移除动画依赖 */
+  opacity: 1;
+  transform: none;
+  transition: all 0.3s ease;
 }
 
 .form-actions.bottom-form-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: none;
 }
 
 /* 表单帮助信息动画 */
@@ -1467,4 +1468,47 @@
     width: 100%;
     max-width: 300px;
   }
+}
+
+/* 通用按钮可见性修复 - 确保所有按钮都可见 */
+button,
+.btn,
+.submit-btn,
+.add-btn,
+.remove-btn,
+.edit-btn,
+.delete-btn,
+.cancel-btn,
+.back-btn,
+.register-btn,
+.login-btn {
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-block !important;
+  color: inherit !important;
+}
+
+/* 确保表单操作区域可见 */
+.form-actions,
+.form-actions button,
+.form-actions .submit-btn,
+.form-actions .add-btn,
+.form-actions .cancel-btn {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* 强制按钮文字颜色可见 */
+.submit-btn,
+.add-btn,
+.remove-btn,
+.edit-btn,
+.delete-btn {
+  color: white !important;
+}
+
+.cancel-btn,
+.back-btn {
+  color: #4a5568 !important;
 }

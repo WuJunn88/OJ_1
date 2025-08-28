@@ -375,6 +375,19 @@
   margin-top: 2px;
   order: -1;
 }
+/* 隐藏原生单选/复选圆点，保留可点击区域 */
+.option-item input[type="radio"],
+.option-item input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 为选项文本留出空间并展示自定义视觉（可后续扩展） */
+.option-item .option-label,
+.option-item .option-text {
+  padding-left: 0;
+}
 
 .option-text {
   font-size: 16px;
