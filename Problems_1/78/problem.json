@@ -1,0 +1,43 @@
+{
+    "display_id": 1113,
+    "title": "\u6c42\u5076\u6570\u548c",
+    "description": {
+        "format": "html",
+        "value": "&nbsp;\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;font-size:12pt;\">\u8f93\u5165</span><span style=\"font-size:12pt;\">n</span><span style=\"font-family:\u5b8b\u4f53;font-size:12pt;\">\u4e2a\u6574\u6570\uff0c\u5148\u5224\u65ad\u8fd9\u4e2a\u6574\u6570\u662f\u5426\u5076\u6570\uff0c\u5982\u679c\u662f\u5076\u6570\u5c31\u52a0\u8d77\u6765\u3002\u6c42\u6240\u6709\u5076\u6570\u7684\u548c\uff01</span><span style=\"font-size:12pt;\"></span> \n</p>\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;font-size:12pt;\"></span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;font-size:12pt;\">\u7b2c\u4e00\u884c\uff1a\u4e00\u4e2a\u6574\u6570n\uff1b</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;font-size:12pt;\">\u7b2c\u4e8c\u884c\uff1an\u4e2a\u6574\u6570\u3002</span> \n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u4e00\u4e2a\u6574\u6570\uff0c\u8868\u793a\u5076\u6570\u7684\u548c\u3002\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "10\n45 60 52 14 31 28 20 66 79 43",
+            "output": "240"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

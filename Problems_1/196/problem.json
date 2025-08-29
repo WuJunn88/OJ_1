@@ -1,0 +1,43 @@
+{
+    "display_id": 1231,
+    "title": "\u9493\u9c7c",
+    "description": {
+        "format": "html",
+        "value": "<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;\"><span style=\"font-size:14px;\">&nbsp;&nbsp;&nbsp; \u7ea6\u7ff0\u662f\u4e2a\u5782\u9493\u8c1c\uff0c\u661f\u671f\u5929\u4ed6\u51b3\u5b9a\u5916\u51fa\u9493\u9c7c</span><span style=\"font-size:14px;\">h</span><span style=\"font-size:14px;\">\u5c0f\u65f6\uff08</span><span style=\"font-size:14px;\">1</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">h</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">16</span><span style=\"font-size:14px;\">\uff09\uff0c\u7ea6\u7ff0\u5bb6\u9644\u8fd1\u5171\u6709</span><span style=\"font-size:14px;\">n</span><span style=\"font-size:14px;\">\u4e2a\u6c60\u5858\uff08</span><span style=\"font-size:14px;\">2</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">n</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">25</span><span style=\"font-size:14px;\">\uff09\uff0c\u8fd9\u4e9b\u6c60\u5858\u5206\u5e03\u5728\u4e00\u6761\u76f4\u7ebf\u4e0a\uff0c\u7ea6\u7ff0\u5c06\u8fd9\u4e9b\u6c60\u5858\u6309\u79bb\u5bb6\u7684\u8ddd\u79bb\u7f16\u4e0a\u53f7\uff0c\u4f9d\u6b21\u4e3a</span><span style=\"font-size:14px;\">L1,L2,</span><span style=\"font-size:14px;\">\u2026</span><span style=\"font-size:14px;\">,Ln</span><span style=\"font-size:14px;\">\uff0c\u7ea6\u7ff0\u5bb6\u95e8\u5916\u5c31\u662f\u7b2c\u4e00\u4e2a\u6c60\u5858\uff0c\u6240\u4ee5\u4ed6\u5230\u7b2c\u4e00\u4e2a\u6c60\u5858\u662f\u4e0d\u7528\u82b1\u65f6\u95f4\u7684\uff0c\u7ea6\u7ff0\u53ef\u4ee5\u4efb\u9009\u82e5\u5e72\u4e2a\u6c60\u5858\u5782\u9493\uff0c\u5e76\u4e14\u5728\u6bcf\u4e2a\u6c60\u5858\u4ed6\u90fd\u53ef\u4ee5\u5446\u4e0a\u4efb\u610f\u957f\u7684\u65f6\u95f4\uff0c\u4f46\u5446\u7684\u65f6\u95f4\u5fc5\u987b\u4e3a</span><span style=\"font-size:14px;\">5</span><span style=\"font-size:14px;\">\u5206\u949f\u7684\u500d\u6570\uff0c\uff08</span><span style=\"font-size:14px;\">5</span><span style=\"font-size:14px;\">\u5206\u949f\u4e3a\u4e00\u4e2a\u5355\u4f4d\u65f6\u95f4\uff09\uff0c\u5df2\u77e5\u4ece\u6c60\u5858</span><span style=\"font-size:14px;\">Li</span><span style=\"font-size:14px;\">\u5230\u6c60\u5858</span><span style=\"font-size:14px;\">Li+1</span><span style=\"font-size:14px;\">\u8981\u5316\u53bb\u7ea6\u7ff0</span><span style=\"font-size:14px;\">ti</span><span style=\"font-size:14px;\">\u4e2a\u5355\u4f4d\u65f6\u95f4\uff0c\u6bcf\u4e2a\u6c60\u5858\u7684\u4e0a\u9c7c\u7387\u9884\u5148\u4e5f\u662f\u5df2\u77e5\u7684\uff0c\u6c60\u5858</span><span style=\"font-size:14px;\">Li</span><span style=\"font-size:14px;\">\u5728\u7b2c\u4e00\u4e2a\u5355\u4f4d\u65f6\u95f4\u5185\u80fd\u9493\u5230\u7684\u9c7c\u4e3a</span><span style=\"font-size:14px;\">Fi</span><span style=\"font-size:14px;\">\uff08</span><span style=\"font-size:14px;\">0</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">Fi</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">100</span><span style=\"font-size:14px;\">\uff09\uff0c\u5e76\u4e14\u6bcf\u8fc7\u4e00\u4e2a\u5355\u4f4d\u65f6\u95f4\u5728\u5355\u4f4d\u65f6\u95f4\u5185\u80fd\u9493\u5230\u7684\u9c7c\u5c06\u51cf\u5c11\u4e00\u4e2a\u5e38\u6570</span><span style=\"font-size:14px;\">di</span><span style=\"font-size:14px;\">\uff08</span><span style=\"font-size:14px;\">0</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">di</span><span style=\"font-size:14px;\">\u2264</span><span style=\"font-size:14px;\">100</span><span style=\"font-size:14px;\">\uff09\uff0c\u73b0\u5728\u8bf7\u4f60\u7f16\u4e00\u4e2a\u7a0b\u5e8f\u8ba1\u7b97\u7ea6\u7ff0\u6700\u591a\u80fd\u9493\u5230\u591a\u5c11\u9c7c\u3002</span><span></span></span> \n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<span style=\"font-size:10.5pt;font-family:\u5b8b\u4f53;\"><span style=\"font-size:14px;\">\u8f93\u5165\u7b2c\u4e00\u884c\u4e3a\u4e00\u4e2a\u6574\u6570</span><span style=\"font-size:14px;\">n</span><span style=\"font-size:14px;\">\uff0c\u7b2c\u4e8c\u884c\u4e3a\u4e00\u4e2a\u6574\u6570</span><span style=\"font-size:14px;\">h</span><span style=\"font-size:14px;\">\uff0c\u7b2c\u4e09\u884c\u4e3a</span><span style=\"font-size:14px;\">n</span><span style=\"font-size:14px;\">\u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u8868\u793a</span><span style=\"font-size:14px;\">Fi</span><span style=\"font-size:14px;\">\uff08</span><span style=\"font-size:14px;\">i=1,2,</span><span style=\"font-size:14px;\">\u2026</span><span style=\"font-size:14px;\">,n</span><span style=\"font-size:14px;\">\uff09\uff0c\u7b2c\u56db\u884c\u4e3a</span><span style=\"font-size:14px;\">n</span><span style=\"font-size:14px;\">\u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u8868\u793a</span><span style=\"font-size:14px;\">di</span><span style=\"font-size:14px;\">\uff08</span><span style=\"font-size:14px;\">i=1,2,</span><span style=\"font-size:14px;\">\u2026</span><span style=\"font-size:14px;\">,n</span><span style=\"font-size:14px;\">\uff09\uff0c\u7b2c\u4e94\u884c\u4e3a</span><span style=\"font-size:14px;\">n-1</span><span style=\"font-size:14px;\">\u4e2a\u7528\u7a7a\u683c\u9694\u5f00\u7684\u6574\u6570\uff0c\u8868\u793a</span><span style=\"font-size:14px;\">ti</span><span style=\"font-size:14px;\">\uff08</span><span style=\"font-size:14px;\">i=1,2,</span><span style=\"font-size:14px;\">\u2026</span><span style=\"font-size:14px;\">,n-1</span><span style=\"font-size:14px;\">\uff09</span></span>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<span style=\"font-size:14px;font-family:\u5b8b\u4f53;\">\u8f93\u51fa\u4e00\u4e2a\u6574\u6570\uff0c\u8868\u793a\u7ea6\u7ff0\u6700\u591a\u80fd\u9493\u5230\u7684\u9c7c\u7684\u6570\u91cf\u3002</span>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "2\n1\n10 1\n2 5 \n2",
+            "output": "31"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

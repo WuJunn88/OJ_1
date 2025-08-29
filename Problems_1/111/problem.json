@@ -1,0 +1,43 @@
+{
+    "display_id": 1146,
+    "title": "\u7b2c\u4e8c\u6b21\u7ec3\u4e601",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u8bf7\u4f7f\u7528c\u8bed\u8a00\u8f93\u51fa\u4ee5\u4e0b\u6587\u5b57\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\thello\n</p>\n<p>\n\tmy name is C.\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "\u53ea\u9700\u8981printf"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "hello\nmy name is C."
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,43 @@
+{
+    "display_id": 1087,
+    "title": "\u3010\u57fa\u7840\u9898\u3011\u89e3\u65b9\u7a0b",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u4f8b2.23 \u6c42\u4e00\u5143\u4e8c\u6b21\u65b9\u7a0bx2+3x+2=0\u7684\u4e24\u4e2a\u5b9e\u6570\u6839\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t\u65e0\u8f93\u5165\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span>x1=\u4e00\u4e2a\u6839 x2=\u53e6\u4e00\u4e2a\u6839\uff0cx1&gt;=x2\uff0c\u4fdd\u75593\u4f4d\u5c0f\u6570\u3002</span> \n</p>\n<p>\n\t<span><br />\n</span> \n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "x1=-1.000 x2=-2.000"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,43 @@
+{
+    "display_id": 1064,
+    "title": "\u6210\u7ee9\u8f6c\u6362",
+    "description": {
+        "format": "html",
+        "value": "<p><font face=\"Times New Roman\">\u8f93\u5165\u4e00\u4e2a\u767e\u5206\u5236\u7684\u6210\u7ee9t\uff0c\u5c06\u5176\u8f6c\u6362\u6210\u5bf9\u5e94\u7684\u7b49\u7ea7\uff0c\u5177\u4f53\u8f6c\u6362\u89c4\u5219\u5982\u4e0b\uff1a <br />\n90~100\u4e3aA; <br />\n80~89\u4e3aB; <br />\n70~79\u4e3aC; <br />\n60~69\u4e3aD; <br />\n0~59\u4e3aE; </font><br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p><font size=\"3\" face=\"Times New Roman\">\u8f93\u5165\u6570\u636e\u6709\u591a\u7ec4\uff0c\u6bcf\u7ec4\u5360\u4e00\u884c\uff0c\u7531\u4e00\u4e2a\u6574\u6570\u7ec4\u6210\u3002</font></p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p><font size=\"3\" face=\"Times New Roman\">\u5bf9\u4e8e\u6bcf\u7ec4\u8f93\u5165\u6570\u636e\uff0c\u8f93\u51fa\u4e00\u884c\u3002\u5982\u679c\u8f93\u5165\u6570\u636e\u4e0d\u57280~100\u8303\u56f4\u5185\uff0c\u8bf7\u8f93\u51fa\u4e00\u884c\uff1a&ldquo;Score is error!&rdquo;\u3002</font></p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "56\n67\n100\n123",
+            "output": "E\nD\nA\nScore is error!"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

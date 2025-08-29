@@ -88,9 +88,10 @@ export const resetPassword = async (data) => {
  */
 
 // 获取题目列表
-export const getProblems = async (page = 1, perPage = 10, difficulty = '') => {
+export const getProblems = async (page = 1, perPage = 9, difficulty = '', getAll = false) => {
   const params = { page, per_page: perPage };
   if (difficulty) params.difficulty = difficulty;
+  if (getAll) params.get_all = 'true';
   
   const response = await api.get('/problems', { params });
   return response.data;
@@ -479,4 +480,53 @@ export const excludeOriginalStudent = async (courseId, studentId) => {
 export const cancelExcludeOriginalStudent = async (courseId, studentId) => {
   const response = await api.delete(`/courses/${courseId}/students/${studentId}/exclude`);
   return response.data;
+};
+
+// AI智能选题相关API
+export const aiSelectProblems = async (data) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/ai/select-problems`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'AI选题失败');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('AI选题API调用失败:', error);
+    throw error;
+  }
+};
+
+export const previewAiSelectedProblems = async (data) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE_URL}/ai/select-problems/preview`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || '预览失败');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('预览AI选题结果失败:', error);
+    throw error;
+  }
 };

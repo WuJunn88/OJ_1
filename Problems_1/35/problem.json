@@ -1,0 +1,43 @@
+{
+    "display_id": 1070,
+    "title": "C\u8bed\u8a00\u7a0b\u5e8f\u8bbe\u8ba1\u6559\u7a0b\uff08\u7b2c\u4e09\u7248\uff09\u8bfe\u540e\u4e60\u98986.11",
+    "description": {
+        "format": "html",
+        "value": "\u7528\u8fed\u4ee3\u6cd5\u6c42X\u7684\u5e73\u65b9\u6839\u3002\u6c42\u5e73\u65b9\u6839\u7684\u8fed\u4ee3\u516c\u5f0f\u4e3a\uff1a X[n+1]=1/2(X[n]+a/X[n]) \u8981\u6c42\u524d\u540e\u4e24\u6b21\u6c42\u51fa\u7684\u5dee\u7684\u7edd\u5bf9\u503c\u5c11\u4e8e0.00001\u3002\u8f93\u51fa\u4fdd\u75593\u4f4d\u5c0f\u6570"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "X"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "X\u7684\u5e73\u65b9\u6839"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "4",
+            "output": "2.000"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

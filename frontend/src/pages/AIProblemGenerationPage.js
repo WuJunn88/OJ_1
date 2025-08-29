@@ -577,7 +577,7 @@ const AIProblemGenerationPage = () => {
         
         // 尝试刷新题目列表
         try {
-          const problemsData = await getProblems(1, 50);
+          const problemsData = await getProblems(1, 9, '', true);  // 获取所有题目
           console.log('题目创建成功，新题目数据:', problemsData);
           
           // 尝试通过多种方式通知父组件刷新

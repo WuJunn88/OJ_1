@@ -1,0 +1,43 @@
+{
+    "display_id": 1068,
+    "title": "\u6bd4\u8d5b\u5b89\u6392",
+    "description": {
+        "format": "html",
+        "value": "<p class=\"MsoNormalIndent\" style=\"text-indent:0cm;\">\n\t\u8bbe\u67092<sup>n</sup>\uff08n&lt;=6\uff09\u4e2a\u7403\u961f\u8fdb\u884c\u5355\u5faa\u73af\u6bd4\u8d5b\uff0c\u8ba1\u5212\u57282<sup>&nbsp;n</sup>&nbsp;\u2013 1\u5929\u5185\u5b8c\u6210\uff0c\u6bcf\u4e2a\u961f\u6bcf\u5929\u8fdb\u884c\u4e00\u573a\u6bd4\u8d5b\u3002\u8bbe\u8ba1\u4e00\u4e2a\u6bd4\u8d5b\u7684\u5b89\u6392\uff0c\u4f7f\u57282<sup>n</sup>&nbsp;\u2013 1\u5929\u5185\u6bcf\u4e2a\u961f\u90fd\u4e0e\u4e0d\u540c\u7684\u5bf9\u624b\u6bd4\u8d5b\u3002\n</p>\n<p class=\"MsoNormal\" style=\"text-indent:21pt;\">\n\t\u4f8b\u5982n=2\u65f6\u7684\u6bd4\u8d5b\u5b89\u6392\uff1a\n</p>\n<p class=\"MsoNormal\" style=\"text-indent:21pt;\">\n\t&nbsp;&nbsp;&nbsp;&nbsp;\u961f&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1&nbsp; 2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;3&nbsp; 4\n</p>\n<p class=\"MsoNormal\" style=\"text-indent:21pt;\">\n\t&nbsp;&nbsp;&nbsp;&nbsp;\u6bd4\u8d5b&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1==2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;3==4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;\u4e00\u5929\n</p>\n<p class=\"MsoNormal\" style=\"text-indent:21pt;\">\n\t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 1==3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2==4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\u4e8c\u5929\n</p>\n<p>\n\t&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;1==4 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 2==3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;\u4e09\u5929\n</p>\n<p>\n\t<br />\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t\u6bcf\u4e2a\u6d4b\u8bd5\u6587\u4ef6\u53ea\u5305\u542b\u4e00\u7ec4\u6d4b\u8bd5\u6570\u636e\uff0c\u6bcf\u7ec4\u8f93\u5165\u6570\u636e\u4e3a\u4e00\u4e2a\u6b63\u6574\u6570n\uff08n&lt;=6\uff09\u3002\n</p>\n<p>\n\t<br />\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u5bf9\u4e8e\u6bcf\u7ec4\u8f93\u5165\u6570\u636e\uff0c\u8f93\u51fa\u6bd4\u8d5b\u5b89\u6392\uff0c\u4ece\u7b2c\u4e00\u5929\u7684\u5b89\u6392\u5f00\u59cb\uff0c\u6bcf\u5929\u5360\u4e00\u884c\uff0c\u6bcf\u884c\u5f00\u5934\u5148\u8f93\u51fa\u5929\u53f7\uff0c\u518d\u8f93\u51fa\u5f53\u5929\u7684\u5b89\u6392\uff0c\u4f18\u5148\u7ed9\u961f\u4f0d\u7f16\u53f7\u5c0f\u7684\u961f\u4f0d\u5b89\u6392\u6bd4\u8d5b\uff0c\u5177\u4f53\u683c\u5f0f\u89c1\u6837\u4f8b\u8f93\u51fa\u3002\n</p>\n<p>\n\t<br />\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "2",
+            "output": "<1>1-2,3-4\n<2>1-3,2-4\n<3>1-4,2-3"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

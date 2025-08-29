@@ -1,0 +1,43 @@
+{
+    "display_id": 1135,
+    "title": "\u4e60\u98985-10 \u5206\u6570\u5e8f\u5217\u6c42\u548c",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u6709\u5982\u4e0b\u5206\u6570\u5e8f\u5217\n</p>\n<img alt=\"\" src=\"http://tk.hustoj.com:80/attached/image/20141023/20141023210955_16216.jpg\" /> \n<p>\n\t\u6c42\u51fa\u6b21\u6570\u5217\u7684\u524d20\u9879\u4e4b\u548c\u3002\n</p>\n<p>\n\t\u8bf7\u5c06\u7ed3\u679c\u7684\u6570\u636e\u7c7b\u578b\u5b9a\u4e49\u4e3adouble\u7c7b\u578b\u3002\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u5c0f\u6570\u70b9\u540e\u4fdd\u75596\u4f4d\u5c0f\u6570\uff0c\u672b\u5c3e\u8f93\u51fa\u6362\u884c\u3002"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "32.660261"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

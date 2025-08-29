@@ -3,7 +3,8 @@ import './AssignmentWhitelistManager.css';
 import { 
   getAssignmentOverdueUsers, 
   addUserToOverdueWhitelist, 
-  removeUserFromOverdueWhitelist 
+  removeUserFromOverdueWhitelist,
+  getCourseStudents
 } from '../services/api';
 
 const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
@@ -30,18 +31,37 @@ const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
   // 加载课程学生列表
   const loadCourseStudents = useCallback(async () => {
     try {
-      // 这里应该调用获取课程学生的API
-      // 暂时使用模拟数据
-      const mockStudents = [
-        { id: 1, name: '张三', username: 'zhangsan001' },
-        { id: 2, name: '李四', username: 'lisi002' },
-        { id: 3, name: '王五', username: 'wangwu003' }
-      ];
-      setCourseStudents(mockStudents);
+      // 检查作业是否有课程ID
+      if (!assignment.course_id) {
+        console.error('作业缺少课程ID，无法获取学生列表');
+        setMessage('作业缺少课程信息，无法加载学生列表');
+        return;
+      }
+
+      // 使用真实API获取课程学生列表
+      const studentsData = await getCourseStudents(assignment.course_id);
+      if (studentsData && Array.isArray(studentsData)) {
+        // 统一处理学生数据字段名
+        const normalizedStudents = studentsData.map(student => ({
+          id: student.id || student.student_id,
+          name: student.name || student.student_name || '未知姓名',
+          username: student.username || student.student_no || '未知学号'
+        }));
+        
+        setCourseStudents(normalizedStudents);
+        console.log(`成功加载课程 ${assignment.course_id} 的学生列表，共 ${normalizedStudents.length} 人`);
+        console.log('学生数据示例:', normalizedStudents[0]);
+      } else {
+        console.error('获取课程学生数据格式错误:', studentsData);
+        setMessage('获取课程学生数据格式错误');
+        setCourseStudents([]);
+      }
     } catch (error) {
       console.error('加载课程学生失败:', error);
+      setMessage('加载课程学生失败: ' + (error.message || '未知错误'));
+      setCourseStudents([]);
     }
-  }, []);
+  }, [assignment.course_id]);
 
   // 添加用户到白名单
   const addUserToWhitelist = async () => {
@@ -54,7 +74,10 @@ const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
       setIsLoading(true);
       const response = await addUserToOverdueWhitelist(assignment.id, parseInt(selectedUser));
       
-      setOverdueUsers(response.overdue_users || []);
+      // 直接使用返回的完整用户信息更新状态
+      if (response && response.overdue_users) {
+        setOverdueUsers(response.overdue_users);
+      }
       setSelectedUser('');
       setMessage('学生已添加到白名单');
       
@@ -76,7 +99,10 @@ const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
       setIsLoading(true);
       const response = await removeUserFromOverdueWhitelist(assignment.id, userId);
       
-      setOverdueUsers(response.overdue_users || []);
+      // 直接使用返回的完整用户信息更新状态
+      if (response && response.overdue_users) {
+        setOverdueUsers(response.overdue_users);
+      }
       setMessage('学生已从白名单中移除');
       
       // 通知父组件更新
@@ -97,7 +123,7 @@ const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
       loadOverdueUsers();
       loadCourseStudents();
     }
-  }, [assignment.id, assignment.allow_overdue_submission, loadOverdueUsers, loadCourseStudents]);
+  }, [assignment.id, assignment.course_id, assignment.allow_overdue_submission, loadOverdueUsers, loadCourseStudents]);
 
   // 如果作业不允许补交，不显示组件
   if (!assignment.allow_overdue_submission) {
@@ -115,6 +141,9 @@ const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
         {/* 添加学生到白名单 */}
         <div className="add-student-section">
           <div className="add-student-form">
+            <div className="student-selector-info">
+              <small>课程学生总数: {courseStudents.length} | 已在白名单: {overdueUsers.length}</small>
+            </div>
             <select
               value={selectedUser}
               onChange={(e) => setSelectedUser(e.target.value)}
@@ -137,6 +166,11 @@ const AssignmentWhitelistManager = ({ assignment, onUpdate }) => {
               {isLoading ? '添加中...' : '添加到白名单'}
             </button>
           </div>
+          {courseStudents.length === 0 && (
+            <div className="no-students-warning">
+              <small>⚠️ 未找到课程学生，请检查作业是否关联了正确的课程</small>
+            </div>
+          )}
         </div>
 
         {/* 白名单学生列表 */}

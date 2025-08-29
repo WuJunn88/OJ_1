@@ -1,0 +1,43 @@
+{
+    "display_id": 1205,
+    "title": "\u5206\u884c\u8f93\u51fa\u201cHello World!\u201d\u548c\u201c I'm a C++ program.\u201d",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"font-family:SimSun;\">\u8bf7\u8f93\u51fa\u4ee5\u4e0b\u5185\u5bb9</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">Hello World!</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">I'm a C++ program.</span>\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"><br />\n</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u63d0\u793a:\u6240\u6709\u7684\u7b26\u53f7\u662f\u82f1\u6587\u7b26\u53f7</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u56de\u8f66\u7684\u65b9\u6cd5\u4e3e\u4f8b</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">cout&lt;&lt;\"First Line\"&lt;&lt;endl&lt;&lt;\"Second Line\";&nbsp; // \u8bf4\u660e\uff1aendl\u80fd\u8f93\u51fa\u6362\u884c</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u4e5f\u53ef\u4ee5\u8fd9\u6837 cout&lt;&lt;\"First Line\"&lt;&lt;endl; cout&lt;&lt;\"Second Line\";&nbsp;</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u8fd8\u53ef\u5199\u6210</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">cout&lt;&lt;\"First Line\"; cout&lt;&lt;endl; cout&lt;&lt;\"Second Line\"; <br />\n</span>\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"><br />\n</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u4eca\u540e\u5c31\u4e0d\u518d\u91cd\u590d\u63d0\u9192\u5fc5\u987b\u6ce8\u610f\u8f93\u51fa\u7684\u5927\u5c0f\u5199\u53ca\u82f1\u6587\u5b57\u7b26\uff0c\u8f93\u51fa\u5185\u5bb9\u4e2d\u8be5\u6709\u7684\u7a7a\u683c\u4ee5\u53ca\u8f93\u51fa\u6bcf\u884c\u9996\u5c3e\u4e0d\u8be5\u6709\u7a7a\u683c\u3002</span>\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"><br />\n</span>\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"><br />\n</span> \n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试用例显示测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        .test-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .test-cases-container {
+            margin-top: 20px;
+        }
+        
+        .test-case-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .test-case-header h4 {
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 16px;
+            font-weight: 600;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .test-case-input,
+        .test-case-output {
+            margin-bottom: 15px;
+        }
+        
+        .test-case-input:last-child,
+        .test-case-output:last-child {
+            margin-bottom: 0;
+        }
+        
+        .test-case-input strong,
+        .test-case-output strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .example-code {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin: 0;
+        }
+        
+        .example-code:empty::before {
+            content: "无输入";
+            color: #999;
+            font-style: italic;
+        }
+        
+        .raw-data {
+            background: #f1f3f4;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 测试用例显示测试</h1>
+    
+    <div class="test-container">
+        <h2>测试数据</h2>
+        <div class="raw-data">
+            原始测试用例数据: [{"input":"","output":"This is a C program."}]
+        </div>
+        
+        <h2>格式化后的显示</h2>
+        <div id="formatted-display"></div>
+    </div>
+
+    <script>
+        // 解析后端测试用例格式的函数
+        function parseTestCases(testCasesStr, expectedOutputStr) {
+            if (!testCasesStr && !expectedOutputStr) {
+                return [];
+            }
+            
+            // 优先尝试解析JSON数组格式：[ { input, output }, ... ]
+            try {
+                if (testCasesStr && testCasesStr.trim().startsWith('[')) {
+                    const parsed = JSON.parse(testCasesStr);
+                    if (Array.isArray(parsed)) {
+                        return parsed.map((tc, idx) => ({
+                            id: Date.now() + Math.random() + idx,
+                            input: (tc && typeof tc.input !== 'undefined') ? String(tc.input) : '',
+                            output: (tc && typeof tc.output !== 'undefined') ? String(tc.output) : ''
+                        }));
+                    }
+                }
+            } catch (e) {
+                // JSON解析失败则回退到旧格式
+                console.warn('解析JSON测试用例失败，回退旧格式:', e);
+            }
+            
+            const testCases = testCasesStr ? testCasesStr.split('\n').filter(line => line.trim()) : [];
+            const expectedOutputs = expectedOutputStr ? expectedOutputStr.split('\n').filter(line => line.trim()) : [];
+            
+            const maxLength = Math.max(testCases.length, expectedOutputs.length);
+            
+            const result = [];
+            for (let i = 0; i < maxLength; i++) {
+                result.push({
+                    id: Date.now() + Math.random() + i, // 生成唯一ID
+                    input: testCases[i] || '', // 如果没有输入则使用空字符串
+                    output: expectedOutputs[i] || '' // 输出是必填的
+                });
+            }
+            
+            return result;
+        }
+
+        // 格式化测试用例显示
+        function formatTestCases(testCasesStr, expectedOutputStr) {
+            const testCases = parseTestCases(testCasesStr, expectedOutputStr);
+            
+            if (testCases.length === 0) {
+                return '<p>暂无测试用例</p>';
+            }
+            
+            let html = '<div class="test-cases-container">';
+            testCases.forEach((tc, index) => {
+                html += `
+                    <div class="test-case-item">
+                        <div class="test-case-header">
+                            <h4>测试用例 ${index + 1}</h4>
+                        </div>
+                        ${tc.input ? `
+                            <div class="test-case-input">
+                                <strong>输入:</strong>
+                                <pre class="example-code">${tc.input}</pre>
+                            </div>
+                        ` : ''}
+                        ${tc.output ? `
+                            <div class="test-case-output">
+                                <strong>期望输出:</strong>
+                                <pre class="example-code">${tc.output}</pre>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+            html += '</div>';
+            
+            return html;
+        }
+
+        // 测试数据
+        const testData = {
+            test_cases: '[{"input":"","output":"This is a C program."}]',
+            expected_output: "This is a C program."
+        };
+
+        // 显示格式化后的测试用例
+        document.getElementById('formatted-display').innerHTML = formatTestCases(
+            testData.test_cases, 
+            testData.expected_output
+        );
+
+        console.log('解析后的测试用例:', parseTestCases(testData.test_cases, testData.expected_output));
+    </script>
+</body>
+</html>

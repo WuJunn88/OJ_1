@@ -1,0 +1,43 @@
+{
+    "display_id": 1228,
+    "title": "\u8bd5\u5377\u6279\u5206 grade [2*]",
+    "description": {
+        "format": "html",
+        "value": "<span>\u3010\u95ee\u9898\u63cf\u8ff0\uff1a\u3011 \u67d0\u5b66\u6821\u8fdb\u884c\u4e86\u4e00\u6b21\u82f1\u8bed\u8003\u8bd5\uff0c\u5171\u670910\u9053\u662f\u975e\u9898\uff0c\u6bcf\u9898\u4e3a10\u5206\uff0c\u89e3\u7b54\u75281\u8868\u793a\u201c\u662f\u201d\uff0c\u75280\u8868\u793a\u201c\u975e\u201d\u7684\u65b9\u5f0f\u3002\u4f46\u8001\u5e08\u6279\u5b8c\u5377\u540e\uff0c\u53d1\u73b0\u6f0f\u6279\u4e86\u4e00\u5f20\u8bd5\u5377\uff0c\u800c\u4e14\u6807\u51c6\u7b54\u6848\u4e5f\u4e22\u5931\u4e86\uff0c\u624b\u5934\u53ea\u5269\u4e0b\u4e863\u5f20\u6807\u6709\u5206\u6570\u7684\u8bd5\u5377\u3002 <br />\n\u8bd5\u5377\u4e00\uff1a <br />\n\u2460    \u2461    \u2462    \u2463    \u2464    \u2465    \u2466    \u2467    \u2468    \u2469 <br />\n0     0     1     0     1     0     0     1     0     0       \u5f97\u5206\uff1a70 <br />\n\u8bd5\u5377\u4e8c\uff1a <br />\n\u2460    \u2461    \u2462    \u2463    \u2464    \u2465    \u2466    \u2467    \u2468    \u2469 <br />\n0     1     1     1     0     1     0     1     1     1       \u5f97\u5206\uff1a50 <br />\n\u8bd5\u5377\u4e09\uff1a <br />\n\u2460    \u2461    \u2462    \u2463    \u2464    \u2465    \u2466    \u2467    \u2468    \u2469 <br />\n0     1     1     1     0     0     0     1     0     1       \u5f97\u5206\uff1a30 <br />\n\u5f85\u6279\u8bd5\u5377\uff1a <br />\n\u2460    \u2461    \u2462    \u2463    \u2464    \u2465    \u2466    \u2467    \u2468    \u2469 <br />\n0     0     1     1     1     0     0     1     1     1       \u5f97\u5206\uff1a\uff1f <br />\n\u3010\u95ee\u9898\u6c42\u89e3\uff1a\u3011 \u8bf7\u7f16\u4e00\u7a0b\u5e8f\u4f9d\u636e\u8fd9\u4e09\u5f20\u8bd5\u5377\uff0c\u7b97\u51fa\u6f0f\u6279\u7684\u90a3\u5f20\u8bd5\u5377\u7684\u5206\u6570\u3002</span>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,43 @@
+{
+    "display_id": 1049,
+    "title": "\u3010C\u8bed\u8a00\u8bad\u7ec3\u3011\u820d\u7f55\u738b\u7684\u5931\u7b97",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u76f8\u4f20\u56fd\u9645\u8c61\u68cb\u662f\u53e4\u5370\u5ea6\u820d\u7f55\u738b\u7684\u5bb0\u76f8\u8fbe\u4f9d\u5c14\u53d1\u660e\u7684.\u820d\u7f55\u738b\u5341\u5206\u559c\u7231\u8c61\u68cb,\u51b3\u5b9a\u8ba9\u5bb0\u76f8\u81ea\u5df1\u9009\u62e9\u4f55\u79cd\u8d4f\u8d50.\u8fd9\u4f4d\u806a\u660e\u7684\u5bb0\u76f8\u6307\u77408*8\u517164\u683c\u7684\u8c61\u68cb\u8bf4:\u965b\u4e0b,\u8bf7\u60a8\u8d4f\u7ed9\u6211\u4e00\u4e9b\u9ea6\u5b50\u5427.\u5c31\u5728\u68cb\u76d8\u7684\u7b2c1\u683c\u653e1\u7c92,\u7b2c2\u683c\u653e2\u7c92,\u7b2c\u4e09\u683c\u653e4\u7c92,\u4ee5\u540e\u6bcf\u4e00\u683c\u90fd\u6bd4\u524d\u4e00\u683c\u589e\u52a0\u4e00\u4f4d,\u4f9d\u6b64\u653e\u5b8c\u68cb\u76d8\u4e0064\u683c,\u6211\u5c31\u611f\u6fc0\u4e0d\u5c3d\u4e86.\u820d\u7f55\u738b\u8ba9\u4eba\u625b\u4e86\u4e00\u888b\u9ea6\u5b50,\u4ed6\u8981\u5151\u73b0\u4ed6\u7684\u8bb8\u8bfa. <br />\n\u8bf7\u95ee,\u56fd\u738b\u8981\u5151\u73b0\u4ed6\u7684\u8bb8\u8bfa\u5171\u8981\u591a\u5c11\u7c92\u9ea6\u5b50\u8d4f\u8d50\u4ed6\u7684\u5bb0\u76f8?</span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u4ee5\u6574\u6570\u5f62\u5f0f\u8f93\u51fa,\u4e0d\u8981\u5176\u5b83\u7b26\u53f7</span>\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u5e94\u8be5\u662f\u4e2a\u5f88\u5927\u7684\u6570,\u8981\u8003\u8651\u6570\u7684\u7cbe\u5ea6\u95ee\u9898! \u7528double\u7c7b\u578b\uff0c\u8f93\u51fa\u5c3d\u53ef\u80fd\u7cbe\u786e\u7684\u7ed3\u679c\u3002</span>\n</p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "18446744073709552000"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

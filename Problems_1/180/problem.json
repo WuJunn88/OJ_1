@@ -1,0 +1,43 @@
+{
+    "display_id": 1215,
+    "title": "\u6570\u5b66\u8fd0\u7b97\u5b9e\u9a8c",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u6309\u8981\u6c42\u5b8c\u6210\u4ee5\u4e0b\u64cd\u4f5c\uff0c\u8bf7\u6839\u636e\u5b9e\u9645\u786e\u5b9a\u53d8\u91cf\u7684\u7c7b\u578b\u3002\u5b9e\u6570\u4f7f\u7528double\u7c7b\u578b\n</p>\n<table style=\"width:450px;\" border=\"1\" cellspacing=\"2\" bordercolor=\"#000000\" cellpadding=\"2\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<p>\n\t\t\t\t\t&nbsp;\u5c06\u6574\u657017\u4fdd\u5b58\u5230\u53d8\u91cfa\uff0c\u5c06\u6574\u65706\u4fdd\u5b58\u5230\u53d8\u91cfb\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8ba1\u7b97a<strong>\u4e58\u4e8e</strong>b\u7684\u503c\u5e76\u4fdd\u5b58\u5230\u53d8\u91cfmul\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8ba1\u7b97a<strong>\u6574\u9664</strong>b\u7684\u503c\u5e76\u4fdd\u5b58\u5230\u53d8\u91cfdiv\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8ba1\u7b97a\u9664\u4ee5b\u7684<strong>\u4f59\u6570</strong>\u5e76\u4fdd\u5b58\u5230\u53d8\u91cfmod\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8ba1\u7b97a<strong>\u5b9e\u6570</strong><strong>\u9664\u4ee5</strong>b\u7684\u5b9e\u6570\u7ed3\u679c\u5e76\u4fdd\u5b58\u5230\u53d8\u91cfrdiv \uff08\u63d0\u793a\uff1a1.0*a/b\uff09\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u5c06\u53d8\u91cfb<strong>\u9012\u589e</strong>10\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u7ee7\u7eed\u5c06\u53d8\u91cfb<strong>\u9012\u589e</strong>20\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u5c06\u53d8\u91cfa<strong>\u9012\u51cf</strong>3\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u7ee7\u7eed\u5c06\u53d8\u91cfa<strong>\u9012\u51cf</strong>5\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8f93\u51fa\u201ca*b=\u201d\u4ee5\u53ca\u53d8\u91cfmul\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8f93\u51fa\u201ca/b=\u201d\u4ee5\u53ca\u53d8\u91cfdiv\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8f93\u51fa\u201ca%b=\u201d\u4ee5\u53ca\u53d8\u91cfmod\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8f93\u51fa\u201c1.0*a/b=\u201d\u4ee5\u53ca\u53d8\u91cfrdiv\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t\u8f93\u51fa\u201cb=\u201d\u4ee5\u53ca\u53d8\u91cfb\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t</p>\n\u8f93\u51fa\u201ca=\u201d\u4ee5\u53ca\u53d8\u91cfa\u7684\u503c\u5e76\u6362\u884c\n\t\t\t</td>\n\t\t</tr>\n\t</tbody>\n</table>\n<p>\n\t&nbsp;\u63d0\u793a\uff1a\n</p>\n<p>\n\t\u6574\u6570\u548c\u6574\u6570\u7684\u7b97\u6570\u8fd0\u7b97\uff0c\u7ed3\u679c\u4e3a\u6574\u6570\n</p>\n<p>\n\t\u5982\u679ca\uff0cb\u662f\u6574\u6570\uff0c\u5219 a/b \u6267\u884c\u6574\u9664\uff0c\u5373\u4fdd\u7559\u5546\u7684\u6574\u6570\u90e8\u5206\n</p>\n<p>\n\t\u5b9e\u6570\u4e0e\u6574\u6570\u7684\u6df7\u5408\u8fd0\u7b97\uff0c\u7ed3\u679c\u4e3a\u5b9e\u6570\n</p>\n<p>\n\t\u5982\u679ca\uff0cb\u662f\u6574\u6570\uff0c\u52191.0 * a / b\u5c31\u662f\u5b9e\u6570\u7ed3\u679c\n</p>\n<p>\n\t\u6ce8\u610f\u4f53\u4f1a\u6c42 \u4f59\u6570\u3001\u6574\u9664\u3001\u5b9e\u6570\u9664\u3001\u9012\u589e\u3001\u9012\u51cf\u3002\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

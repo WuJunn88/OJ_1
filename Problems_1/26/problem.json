@@ -1,0 +1,43 @@
+{
+    "display_id": 1061,
+    "title": "[\u6570\u503c\u95ee\u9898]\u9ad8\u7cbe\u5ea6\u9664\u4ee5\u9ad8\u7cbe\u5ea6",
+    "description": {
+        "format": "html",
+        "value": "<div style=\"padding:0px;margin:0px;font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;text-align:center;\">\n\t<span><strong><span style=\"font-size:16px;\">\u9ad8\u7cbe\u5ea6\u4e58\u4ee5\u9ad8\u7cbe\u5ea6</span></strong><strong><span style=\"font-size:16px;\">\uff08highdiv/c/cpp\uff09</span></strong>&nbsp;</span> \n</div>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u3010\u95ee\u9898\u63cf\u8ff0\u3011&nbsp;</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u8f93\u5165\u4e24\u4e2a\u9ad8\u7cbe\u5ea6\u6b63\u6574\u6570a\u548cb\uff08a\u4f4d\u6570&lt;=200\uff0cb\u7684\u4f4d\u6570&lt;=9\u4f4d\uff09\uff0c\u6c42\u4e24\u6570\u7684\u4e58\u79ef\u3002</span> \n</p>\n<span style=\"font-family:'Microsoft Yahei';font-size:14px;line-height:28px;background-color:#F5F5F5;\"><span>\u3010\u8f93\u5165\u683c\u5f0f\u3011highdiv.in</span></span><span style=\"font-family:'Microsoft Yahei';font-size:14px;line-height:28px;background-color:#F5F5F5;\"></span><span style=\"font-family:'Microsoft Yahei';font-size:14px;line-height:28px;background-color:#F5F5F5;\"></span> \n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u8f93\u5165\u5171\u4e24\u884c\uff0c\u5206\u522b\u4e3aa\u548cb\u3002</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u3010\u8f93\u51fa\u683c\u5f0f\u3011highdiv.out</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u8f93\u51fa\u5171\u4e00\u884c\uff0c\u8868\u793a\u4e24\u4e2a\u6570\u7684\u79ef\u3002</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u3010\u8f93\u5165\u6837\u4f8b1\u3011&nbsp;</span><span><br />\n9999999999999999999999999999999999</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span style=\"line-height:21px;\">1111111</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u3010\u8f93\u51fa\u6837\u4f8b1\u3011</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t9999999989999999999999999999999999999999999999999999999999999999999999999999\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p>\n\t<br />\n</p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

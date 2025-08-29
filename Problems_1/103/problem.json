@@ -1,0 +1,43 @@
+{
+    "display_id": 1138,
+    "title": "\u4e60\u98985-13 \u8fed\u4ee3\u6cd5\u6c42\u5e73\u65b9\u6839",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u8f93\u5165\u4e00\u4e2a\u975e\u8d1f\u5b9e\u6570a\uff0c\u7528\u8fed\u4ee3\u6cd5\u6c42\u5e73\u65b9\u6839\n</p>\n<img alt=\"\" src=\"http://tk.hustoj.com:80/attached/image/20141023/20141023214334_83003.jpg\" /> \n<p>\n\t\u6c42\u5e73\u65b9\u6839\u7684\u8fed\u4ee3\u516c\u5f0f\u4e3a\n</p>\n<img alt=\"\" src=\"http://tk.hustoj.com:80/attached/image/20141023/20141023214520_29089.jpg\" /> \n<p>\n\t\u8981\u6c42\u524d\u540e\u4e24\u6b21\u6c42\u51fa\u7684x\u7684\u5dee\u7684\u7edd\u5bf9\u503c\u5c0f\u4e8e10<sup>-5</sup>\n</p>\n<p>\n\t\u4ece\u952e\u76d8\u8f93\u5165\u975e\u8d1f\u5b9e\u6570a\u548c\u8fed\u4ee3\u521d\u503cx0\uff0c\u8f93\u51fa\u6ee1\u8db3\u6761\u4ef6\u7684x<sub>n+1</sub>\n</p>\n<p>\n\tC\u6570\u5b66\u5e93\u4e2d\u6709\u6c42\u7edd\u5bf9\u503c\u7684\u51fd\u6570fabs.\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t\u975e\u8d1f\u5b9e\u6570a\u548c\u8fed\u4ee3\u521d\u503cx0\uff08\u8981\u6c42double\u7c7b\u578b)\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u8f93\u5165\u975e\u8d1f\u5b9e\u6570\u7684\u5e73\u65b9\u6839\uff0c\u4fdd\u75596\u4f4d\u5c0f\u6570\uff0c\u672b\u5c3e\u6362\u884c\u3002"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "10 3",
+            "output": "3.162278"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

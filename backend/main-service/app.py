@@ -771,11 +771,22 @@ def get_problems():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
     difficulty = request.args.get('difficulty')
+    get_all = request.args.get('get_all', 'false').lower() == 'true'
     
     query = Problem.query.filter_by(is_active=True)
     
     if difficulty:
         query = query.filter_by(difficulty=difficulty)
+    
+    # 如果请求所有题目，则不使用分页
+    if get_all:
+        problems_list = query.all()
+        return jsonify({
+            'problems': [problem.to_dict() for problem in problems_list],
+            'total': len(problems_list),
+            'pages': 1,
+            'current_page': 1
+        }), 200
     
     problems = query.paginate(page=page, per_page=per_page, error_out=False)
     
@@ -875,9 +886,9 @@ def update_problem(current_user, problem_id):
     if not problem:
         return jsonify({'error': '题目不存在'}), 404
     
-    # 检查权限：只能更新自己创建的题目
-    if problem.created_by != current_user.id and current_user.role != 'admin':
-        return jsonify({'error': '只能更新自己创建的题目'}), 403
+    # 检查权限：教师可以编辑所有题目，管理员也可以编辑所有题目
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足，只有教师和管理员可以编辑题目'}), 403
     
     data = request.json
     allowed_fields = ['title', 'description', 'type', 'test_cases', 'expected_output', 'choice_options', 'is_multiple_choice', 'difficulty', 'time_limit', 'memory_limit', 'is_active']
@@ -901,9 +912,9 @@ def delete_problem(current_user, problem_id):
     if not problem:
         return jsonify({'error': '题目不存在'}), 404
     
-    # 检查权限：只能删除自己创建的题目
-    if problem.created_by != current_user.id and current_user.role != 'admin':
-        return jsonify({'error': '只能删除自己创建的题目'}), 403
+    # 检查权限：教师可以删除所有题目，管理员也可以删除所有题目
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足，只有教师和管理员可以删除题目'}), 403
     
     # 检查题目是否已被作业使用
     from models.assignment import AssignmentProblem
@@ -929,9 +940,9 @@ def restore_problem(current_user, problem_id):
     if not problem:
         return jsonify({'error': '题目不存在'}), 404
     
-    # 检查权限：只能恢复自己创建的题目
-    if problem.created_by != current_user.id and current_user.role != 'admin':
-        return jsonify({'error': '只能恢复自己创建的题目'}), 403
+    # 检查权限：教师可以恢复所有题目，管理员也可以恢复所有题目
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足，只有教师和管理员可以恢复题目'}), 403
     
     # 检查题目是否已被软删除
     if problem.is_active:
@@ -1891,17 +1902,36 @@ def get_course_students(current_user, course_id):
             continue
         original_students_data.append({
             'id': s.id,
-            'student_id': s.id,
-            'student_name': s.name,
-            'student_no': s.username,
+            'name': s.name,
+            'username': s.username,
+            'email': s.email,
             'class_id': s.class_id,
             'course_id': course_id,
-            'is_original': True
+            'is_original': True,
+            # 保持向后兼容
+            'student_id': s.id,
+            'student_name': s.name,
+            'student_no': s.username
         })
 
     # 通过关联关系添加的学生
     course_students = CourseStudent.query.filter_by(course_id=course_id).all()
-    related_students_data = [cs.to_dict() for cs in course_students]
+    related_students_data = []
+    for cs in course_students:
+        if cs.student:
+            related_students_data.append({
+                'id': cs.student.id,
+                'name': cs.student.name,
+                'username': cs.student.username,
+                'email': cs.student.email,
+                'class_id': cs.class_id,
+                'course_id': course_id,
+                'is_related': True,
+                # 保持向后兼容
+                'student_id': cs.student.id,
+                'student_name': cs.student.name,
+                'student_no': cs.student.username
+            })
 
     # 合并
     combined = original_students_data + related_students_data
@@ -2444,7 +2474,16 @@ def add_overdue_user(current_user, assignment_id):
         
         db.session.commit()
         
-        return jsonify({'message': '用户已添加到白名单', 'overdue_users': overdue_user_ids}), 200
+        # 返回完整的用户信息，而不是ID列表
+        users = User.query.filter(User.id.in_(overdue_user_ids)).all()
+        result = [{
+            'id': user.id,
+            'name': user.name,
+            'username': user.username,
+            'email': user.email
+        } for user in users]
+        
+        return jsonify({'message': '用户已添加到白名单', 'overdue_users': result}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f'添加用户到白名单失败: {str(e)}'}), 500
@@ -2473,7 +2512,16 @@ def remove_overdue_user(current_user, assignment_id, user_id):
         
         db.session.commit()
         
-        return jsonify({'message': '用户已从白名单中移除', 'overdue_users': overdue_user_ids}), 200
+        # 返回完整的用户信息，而不是ID列表
+        users = User.query.filter(User.id.in_(overdue_user_ids)).all()
+        result = [{
+            'id': user.id,
+            'name': user.name,
+            'username': user.username,
+            'email': user.email
+        } for user in users]
+        
+        return jsonify({'message': '用户已从白名单中移除', 'overdue_users': result}), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f'从白名单中移除用户失败: {str(e)}'}), 500
@@ -2875,6 +2923,252 @@ def delete_class(current_user, class_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({'error': f'删除班级失败: {str(e)}'}), 500
+
+# ============ 智能选题相关API ============
+
+@app.route('/ai/select-problems', methods=['POST'])
+@token_required
+def ai_select_problems(current_user):
+    """AI智能选题接口"""
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足'}), 403
+    
+    data = request.get_json()
+    required_fields = ['requirements', 'course_id', 'problem_count']
+    for field in required_fields:
+        if not data.get(field):
+            return jsonify({'error': f'缺少必填字段: {field}'}), 400
+    
+    requirements = data['requirements']
+    course_id = data['course_id']
+    problem_count = data['problem_count']
+    
+    # 检查课程是否存在
+    course = Course.query.get(course_id)
+    if not course:
+        return jsonify({'error': '课程不存在'}), 404
+    
+    # 检查权限：教师只能为自己的课程选题
+    if current_user.role == 'teacher' and course.teacher_id != current_user.id:
+        return jsonify({'error': '权限不足'}), 403
+    
+    try:
+        # 获取所有可用的题目
+        available_problems = Problem.query.filter_by(is_active=True).all()
+        
+        if not available_problems:
+            return jsonify({'error': '没有可用的题目'}), 404
+        
+        # 构建题目信息用于AI分析
+        problem_info = []
+        for problem in available_problems:
+            problem_info.append({
+                'id': problem.id,
+                'title': problem.title,
+                'description': problem.description,
+                'difficulty': problem.difficulty,
+                'tags': problem.tags if hasattr(problem, 'tags') else []
+            })
+        
+        # 调用DeepSeek API进行智能选题
+        selected_problems = call_ai_problem_selection(
+            requirements, problem_info, problem_count
+        )
+        
+        if not selected_problems:
+            return jsonify({'error': 'AI选题失败，请重试'}), 500
+        
+        return jsonify({
+            'message': 'AI智能选题成功',
+            'selected_problems': selected_problems,
+            'total_count': len(selected_problems)
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': f'AI选题失败: {str(e)}'}), 500
+
+def call_ai_problem_selection(requirements, problem_info, problem_count):
+    """调用DeepSeek API进行智能选题"""
+    try:
+        # 构建AI提示词
+        prompt = f"""
+你是一个专业的编程教育专家，需要根据教师的要求从题目库中选择合适的编程题目。
+
+教师选题需求：
+{requirements}
+
+需要选择的题目数量：{problem_count}题
+
+可用题目库：
+{json.dumps(problem_info, ensure_ascii=False, indent=2)}
+
+请根据教师的需求，从题目库中选择最合适的{problem_count}道题目。选择标准：
+1. 题目难度要适合课程要求
+2. 题目内容要符合教师描述的需求
+3. 题目类型要多样化，覆盖不同的编程概念
+4. 题目难度要有梯度，从简单到困难
+
+请严格按照以下JSON格式返回结果，只返回JSON，不要其他内容：
+{{
+    "selected_problems": [
+        {{
+            "problem_id": 题目ID,
+            "reason": "选择理由",
+            "difficulty_level": "难度等级",
+            "concept_coverage": "覆盖的编程概念"
+        }}
+    ],
+    "selection_summary": "选题总结说明"
+}}
+"""
+        
+        # 调用DeepSeek API
+        url = f"{DEEPSEEK_API_BASE}/chat/completions"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
+        }
+        
+        data = {
+            "model": "deepseek-chat",
+            "messages": [
+                {"role": "system", "content": "你是一个专业的编程教育专家，专门负责根据教师需求选择最合适的编程题目。"},
+                {"role": "user", "content": prompt}
+            ],
+            "max_tokens": 3000,
+            "temperature": 0.3
+        }
+        
+        response = requests.post(url, headers=headers, json=data, timeout=AI_REQUEST_TIMEOUT)
+        response.raise_for_status()
+        
+        result = response.json()
+        ai_response = result['choices'][0]['message']['content']
+        
+        # 解析AI返回的JSON
+        try:
+            ai_result = json.loads(ai_response)
+            selected_problems = ai_result.get('selected_problems', [])
+            
+            # 验证返回的题目ID是否有效
+            valid_problems = []
+            for selected in selected_problems:
+                problem_id = selected.get('problem_id')
+                if problem_id and any(p['id'] == problem_id for p in problem_info):
+                    valid_problems.append(selected)
+            
+            return valid_problems[:problem_count]
+            
+        except json.JSONDecodeError:
+            # 如果AI返回的不是有效JSON，使用备用方案
+            return fallback_problem_selection(requirements, problem_info, problem_count)
+            
+    except Exception as e:
+        print(f"AI选题API调用失败: {str(e)}")
+        # 使用备用方案
+        return fallback_problem_selection(requirements, problem_info, problem_count)
+
+def fallback_problem_selection(requirements, problem_info, problem_count):
+    """备用选题方案：基于关键词匹配的简单选题"""
+    try:
+        # 简单的关键词匹配逻辑
+        selected_problems = []
+        requirements_lower = requirements.lower()
+        
+        # 按难度分组题目
+        easy_problems = [p for p in problem_info if p.get('difficulty', '').lower() in ['easy', '简单', '初级']]
+        medium_problems = [p for p in problem_info if p.get('difficulty', '').lower() in ['medium', '中等', '中级']]
+        hard_problems = [p for p in problem_info if p.get('difficulty', '').lower() in ['hard', '困难', '高级']]
+        
+        # 根据需求数量分配不同难度的题目
+        if problem_count >= 3:
+            # 选择1个简单题，1个中等题，1个困难题
+            if easy_problems:
+                selected_problems.append({
+                    'problem_id': easy_problems[0]['id'],
+                    'reason': '基于难度梯度选择：简单题目',
+                    'difficulty_level': '简单',
+                    'concept_coverage': '基础编程概念'
+                })
+            if medium_problems:
+                selected_problems.append({
+                    'problem_id': medium_problems[0]['id'],
+                    'reason': '基于难度梯度选择：中等题目',
+                    'difficulty_level': '中等',
+                    'concept_coverage': '进阶编程概念'
+                })
+            if hard_problems:
+                selected_problems.append({
+                    'problem_id': hard_problems[0]['id'],
+                    'reason': '基于难度梯度选择：困难题目',
+                    'difficulty_level': '困难',
+                    'concept_coverage': '高级编程概念'
+                })
+        else:
+            # 选择中等难度的题目
+            if medium_problems:
+                selected_problems.append({
+                    'problem_id': medium_problems[0]['id'],
+                    'reason': '基于难度选择：中等题目',
+                    'difficulty_level': '中等',
+                    'concept_coverage': '综合编程概念'
+                })
+        
+        # 如果还不够，从剩余题目中随机选择
+        remaining_count = problem_count - len(selected_problems)
+        if remaining_count > 0:
+            used_ids = {p['problem_id'] for p in selected_problems}
+            available_problems = [p for p in problem_info if p['id'] not in used_ids]
+            
+            for i in range(min(remaining_count, len(available_problems))):
+                selected_problems.append({
+                    'problem_id': available_problems[i]['id'],
+                    'reason': '补充选择：平衡题目数量',
+                    'difficulty_level': available_problems[i].get('difficulty', '未知'),
+                    'concept_coverage': '补充编程概念'
+                })
+        
+        return selected_problems[:problem_count]
+        
+    except Exception as e:
+        print(f"备用选题方案失败: {str(e)}")
+        return []
+
+@app.route('/ai/select-problems/preview', methods=['POST'])
+@token_required
+def preview_ai_selected_problems(current_user):
+    """预览AI选择的题目"""
+    if current_user.role not in ['teacher', 'admin']:
+        return jsonify({'error': '权限不足'}), 403
+    
+    data = request.get_json()
+    selected_problem_ids = data.get('selected_problem_ids', [])
+    
+    if not selected_problem_ids:
+        return jsonify({'error': '没有选择题目'}), 400
+    
+    try:
+        # 获取选中题目的详细信息
+        problems = Problem.query.filter(Problem.id.in_(selected_problem_ids)).all()
+        
+        problem_details = []
+        for problem in problems:
+            problem_details.append({
+                'id': problem.id,
+                'title': problem.title,
+                'description': problem.description,
+                'difficulty': problem.difficulty,
+                'tags': problem.tags if hasattr(problem, 'tags') else [],
+                'created_at': problem.created_at.isoformat() if problem.created_at else None
+            })
+        
+        return jsonify({
+            'message': '预览成功',
+            'problems': problem_details
+        }), 200
+        
+    except Exception as e:
+        return jsonify({'error': f'预览失败: {str(e)}'}), 500
 
 #启动时初始化数据库表，运行在 5000 端口。
 if __name__ == '__main__':

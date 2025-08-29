@@ -1,0 +1,43 @@
+{
+    "display_id": 1126,
+    "title": "\u56fe\u5f62\u6253\u5370\u957f\u65b9\u5f62",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t&nbsp;<span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u8f93\u5165</span><span style=\"font-size:14pt;\">n,m</span><span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u8f93\u51fa\u4e00\u4e2a</span><span style=\"font-size:14pt;\">n*m</span><span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u7684\u957f\u65b9\u5f62\u56fe\u5f62\u3002</span> \n</p>\n<p>\n\t\u8f93\u5165\n</p>\n<p>\n\t3 5\n</p>\n<p>\n\t\u8f93\u51fa\n</p>\n<p>\n\t@@@@@\n</p>\n<p>\n\t@@@@@\n</p>\n<p>\n\t@@@@@\n</p>\n<p>\n\t&nbsp;\n</p>\n<p>\n\t\u8f93\u5165 5 10\n</p>\n<p>\n\t\u8f93\u51fa\n</p>\n@@@@@@@@@@<br />\n@@@@@@@@@@<br />\n@@@@@@@@@@<br />\n@@@@@@@@@@<br />\n@@@@@@@@@@\n<p>\n\t&nbsp;\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,43 @@
+{
+    "display_id": 1204,
+    "title": "\u5728\u540c\u4e00\u884c\u8f93\u51fa\u201cHello World! I'm a C++ program.\u201d",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"font-family:Courier New;\">\u7f16\u7a0b\u8f93\u51fa\u4ee5\u4e0b\u5185\u5bb9</span> \n</p>\n<p>\n\t<span style=\"font-family:Courier New;\">Hello World! I'm a C++ program.</span> \n</p>\n<p>\n\t<span style=\"font-family:Courier New;\">\u8fd9\u662f\u5165\u95e8\u7ec3\u4e60\u9898\uff0c\u8981\u6c42\u5fc5\u987b\u7528\u4e24\u6761\u8f93\u51fa\u547d\u4ee4\u8fdb\u884c\u8f93\u51fa\u3002</span> \n</p>\n<p>\n\t<span style=\"font-family:Courier New;\"><br />\n</span> \n</p>\n<p>\n\t<span style=\"font-family:Courier New;\">\u6837\u4f8b\u8f93\u51fa</span> \n</p>\n<p>\n\t<span style=\"font-family:Courier New;\">Hello World! I'm a C++ program.</span>\n</p>\n<p>\n\t<span style=\"font-family:Courier New;\"><br />\n</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u6ce8\u610f\u5927\u5c0f\u5199\u3001\u7a7a\u683c\u3001\u611f\u53f9\u53f7\uff0c\u53e5\u53f7\uff0c\u5355\u5f15\u53f7\u90fd\u5fc5\u987b\u4f7f\u7528\u82f1\u6587\u8f93\u5165\u6cd5\u91cc\u7684\u7b26\u53f7\u3002 <br />\n\u6ce8\u610f\uff1a<span style=\"font-family:Courier New;\">Hello World! I'm a C++ program.</span><span style=\"font-family:SimSun;\"></span>\u524d\u540e\u4e0d\u80fd\u6dfb\u52a0\u7a7a\u683c\uff0c</span>\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u4e25\u683c\u6309\u7167\u9898\u76ee\u8981\u6c42\u8f93\u51fa<br />\n</span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

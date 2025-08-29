@@ -11,6 +11,7 @@ import re
 from datetime import datetime
 from sandbox import run_code
 from database import Session
+from special_judge import SpecialJudgeEngine
 
 # 将 backend 目录加入 sys.path，确保可以导入 shared.models
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -227,11 +228,60 @@ def judge_programming_problem(submission, problem, session):
             expected_norm = normalize_text_block(expected_block)
             print(f"[*] 用例 {i+1} 实际输出(预览)='{actual_norm[:60]}'…")
 
-            if actual_norm != expected_norm:
-                all_passed = False
-                failed_cases.append(
-                    f"用例 {i+1}: 输出不匹配\n期望: \n{expected_norm}\n实际: \n{actual_norm}"
-                )
+            # 检查是否启用Special Judge
+            if hasattr(problem, 'enable_special_judge') and problem.enable_special_judge:
+                print(f"[*] 用例 {i+1} 启用Special Judge")
+                try:
+                    # 初始化Special Judge引擎
+                    judge_config = json.loads(problem.judge_config) if problem.judge_config else {}
+                    special_judge = SpecialJudgeEngine(judge_config)
+                    
+                    # 执行Special Judge
+                    result, message, score = special_judge.judge(
+                        user_output=actual_norm,
+                        expected_output=expected_norm,
+                        input_data=input_block,
+                        judge_script=problem.special_judge_script,
+                        judge_config=judge_config
+                    )
+                    
+                    print(f"[*] Special Judge结果: {result} - {message} (得分: {score})")
+                    
+                    if result == "ACCEPTED":
+                        print(f"[*] 用例 {i+1} Special Judge通过")
+                        continue
+                    elif result == "PARTIALLY_CORRECT":
+                        print(f"[*] 用例 {i+1} Special Judge部分正确，得分: {score}")
+                        # 可以选择是否接受部分正确
+                        if score >= 0.8:  # 80%以上算通过
+                            print(f"[*] 用例 {i+1} 部分正确，接受")
+                            continue
+                        else:
+                            all_passed = False
+                            failed_cases.append(
+                                f"用例 {i+1}: Special Judge部分正确 - {message} (得分: {score})"
+                            )
+                    else:
+                        all_passed = False
+                        failed_cases.append(
+                            f"用例 {i+1}: Special Judge失败 - {message}"
+                        )
+                        
+                except Exception as e:
+                    print(f"[!] Special Judge执行失败: {str(e)}")
+                    # 回退到标准判题
+                    if actual_norm != expected_norm:
+                        all_passed = False
+                        failed_cases.append(
+                            f"用例 {i+1}: 输出不匹配\n期望: \n{expected_norm}\n实际: \n{actual_norm}"
+                        )
+            else:
+                # 标准判题
+                if actual_norm != expected_norm:
+                    all_passed = False
+                    failed_cases.append(
+                        f"用例 {i+1}: 输出不匹配\n期望: \n{expected_norm}\n实际: \n{actual_norm}"
+                    )
 
         if all_passed:
             submission.status = 'accepted'
@@ -342,9 +392,56 @@ def judge_programming_problem(submission, problem, session):
             all_passed = False
             failed_cases.append(f"测试用例 {i+1}: 执行错误 - {error}")
             continue
-        if output.strip() != expected_output:
-            all_passed = False
-            failed_cases.append(f"测试用例 {i+1}: 期望 '{expected_output}', 实际 '{output.strip()}'")
+        # 检查是否启用Special Judge
+        if hasattr(problem, 'enable_special_judge') and problem.enable_special_judge:
+            print(f"[*] 测试用例 {i+1} 启用Special Judge")
+            try:
+                # 初始化Special Judge引擎
+                judge_config = json.loads(problem.judge_config) if problem.judge_config else {}
+                special_judge = SpecialJudgeEngine(judge_config)
+                
+                # 执行Special Judge
+                result, message, score = special_judge.judge(
+                    user_output=output.strip(),
+                    expected_output=expected_output,
+                    input_data=test_case,
+                    judge_script=problem.special_judge_script,
+                    judge_config=judge_config
+                )
+                
+                print(f"[*] Special Judge结果: {result} - {message} (得分: {score})")
+                
+                if result == "ACCEPTED":
+                    print(f"[*] 测试用例 {i+1} Special Judge通过")
+                    continue
+                elif result == "PARTIALLY_CORRECT":
+                    print(f"[*] 测试用例 {i+1} Special Judge部分正确，得分: {score}")
+                    # 可以选择是否接受部分正确
+                    if score >= 0.8:  # 80%以上算通过
+                        print(f"[*] 测试用例 {i+1} 部分正确，接受")
+                        continue
+                    else:
+                        all_passed = False
+                        failed_cases.append(
+                            f"测试用例 {i+1}: Special Judge部分正确 - {message} (得分: {score})"
+                        )
+                else:
+                    all_passed = False
+                    failed_cases.append(
+                        f"测试用例 {i+1}: Special Judge失败 - {message}"
+                    )
+                    
+            except Exception as e:
+                print(f"[!] Special Judge执行失败: {str(e)}")
+                # 回退到标准判题
+                if output.strip() != expected_output:
+                    all_passed = False
+                    failed_cases.append(f"测试用例 {i+1}: 期望 '{expected_output}', 实际 '{output.strip()}'")
+        else:
+            # 标准判题
+            if output.strip() != expected_output:
+                all_passed = False
+                failed_cases.append(f"测试用例 {i+1}: 期望 '{expected_output}', 实际 '{output.strip()}'")
 
     if all_passed:
         submission.status = 'accepted'

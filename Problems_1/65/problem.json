@@ -1,0 +1,43 @@
+{
+    "display_id": 1100,
+    "title": "\u3010\u57fa\u7840\u9898\u3011\u9636\u4e58\u4e4b\u548c(\u4f8b\u9898\uff09",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<br />\n</p>\n<p>\n\t<b>\u4f8b4.12 &nbsp;&nbsp;</b><b>&nbsp;</b>\u6c42 S=1!+2!+3!+....+10!\n</p>\n<p>\n\t<br />\n</p>\n<div>\n</div>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t\u65e0\u8f93\u5165\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u6240\u6c42\u7684\u548c\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "4037913"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

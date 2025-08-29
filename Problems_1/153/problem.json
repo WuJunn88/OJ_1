@@ -1,0 +1,43 @@
+{
+    "display_id": 1188,
+    "title": "abc",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u8bbea\u3001b\u3001c\u5747\u662f0\u52309\u4e4b\u95f4\u7684\u6570\u5b57\uff0cabc\u3001bcc\u662f\u4e24\u4e2a\u4e09\u4f4d\u6570\uff0c\u4e14\u6709\uff1aabc+bcc=532\u3002\u6c42\u6ee1\u8db3\u6761\u4ef6\u7684\u6240\u6709a\u3001b\u3001c\u7684\u503c\u3002</span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u9898\u76ee\u6ca1\u6709\u4efb\u4f55\u8f93\u5165\u3002</span>\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u8bf7\u8f93\u51fa\u6240\u6709\u6ee1\u8db3\u9898\u76ee\u6761\u4ef6\u7684a\u3001b\u3001c\u7684\u503c\u3002</span><br />\n<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">a\u3001b\u3001c\u4e4b\u95f4\u7528\u7a7a\u683c\u9694\u5f00\u3002</span><br />\n<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u6bcf\u4e2a\u8f93\u51fa\u5360\u4e00\u884c\u3002</span>\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

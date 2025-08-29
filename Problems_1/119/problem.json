@@ -1,0 +1,43 @@
+{
+    "display_id": 1154,
+    "title": "C\u8bed\u8a00\u7a0b\u5e8f\u8bbe\u8ba1\u6559\u7a0b\uff08\u7b2c\u4e09\u7248\uff09\u8bfe\u540e\u4e60\u98988.3",
+    "description": {
+        "format": "html",
+        "value": "\u5199\u4e00\u4e2a\u5224\u65ad\u7d20\u6570\u7684\u51fd\u6570prim\uff0c\u5728\u4e3b\u51fd\u6570\u8f93\u5165\u4e00\u4e2a\u6574\u6570\uff0c\u8f93\u51fa\u662f\u5426\u662f\u7d20\u6570\u7684\u6d88\u606f\u3002"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u4e00\u4e2a\u6570"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u5982\u679c\u662f\u7d20\u6570\u8f93\u51faprime \u5982\u679c\u4e0d\u662f\u8f93\u51fanot prime"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "97",
+            "output": "prime"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

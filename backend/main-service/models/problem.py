@@ -13,6 +13,14 @@ class MSProblem(db.Model):
     # 选择题专用字段
     choice_options = db.Column(db.Text, nullable=True)  # 选择题选项，JSON格式或换行分隔
     is_multiple_choice = db.Column(db.Boolean, default=False)  # 是否为多选题
+    # Special Judge 相关字段
+    enable_special_judge = db.Column(db.Boolean, default=False)  # 是否启用特殊判题
+    special_judge_script = db.Column(db.Text, nullable=True)  # 特殊判题脚本（Python代码）
+    special_judge_language = db.Column(db.String(20), default='python')  # 判题脚本语言
+    special_judge_timeout = db.Column(db.Integer, default=5000)  # 判题脚本超时时间(ms)
+    special_judge_memory_limit = db.Column(db.Integer, default=256)  # 判题脚本内存限制(MB)
+    # 判题参数配置
+    judge_config = db.Column(db.Text, nullable=True)  # JSON格式的判题配置
     # 其他字段
     difficulty = db.Column(db.String(20), default='easy')
     time_limit = db.Column(db.Integer, default=1000)
@@ -32,6 +40,12 @@ class MSProblem(db.Model):
             'expected_output': self.expected_output,
             'choice_options': self.choice_options,
             'is_multiple_choice': self.is_multiple_choice,
+            'enable_special_judge': self.enable_special_judge,
+            'special_judge_script': self.special_judge_script,
+            'special_judge_language': self.special_judge_language,
+            'special_judge_timeout': self.special_judge_timeout,
+            'special_judge_memory_limit': self.special_judge_memory_limit,
+            'judge_config': self.judge_config,
             'difficulty': self.difficulty,
             'time_limit': self.time_limit,
             'memory_limit': self.memory_limit,

@@ -16,6 +16,14 @@ class Problem(Base):
     type = Column(String(20), default='programming')  # 题目类型：programming, choice, judge, short_answer
     test_cases = Column(Text, nullable=True)  # 对于非编程题可以为空
     expected_output = Column(Text, nullable=True)  # 对于非编程题可以为空
+    # Special Judge 相关字段
+    enable_special_judge = Column(Boolean, default=False)
+    special_judge_script = Column(Text, nullable=True)
+    special_judge_language = Column(String(20), default='python')
+    special_judge_timeout = Column(Integer, default=5000)
+    special_judge_memory_limit = Column(Integer, default=256)
+    judge_config = Column(Text, nullable=True)
+    # 其他字段
     difficulty = Column(String(20), default='easy')  # easy, medium, hard
     time_limit = Column(Integer, default=1000)  # 毫秒
     memory_limit = Column(Integer, default=128)  # MB

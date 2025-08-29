@@ -1,0 +1,43 @@
+{
+    "display_id": 1114,
+    "title": "C\u8bed\u8a00\u7a0b\u5e8f\u8bbe\u8ba1\u6559\u7a0b\uff08\u7b2c\u4e09\u7248\uff09\u8bfe\u540e\u4e60\u98987.4",
+    "description": {
+        "format": "html",
+        "value": "\u5df2\u6709\u4e00\u4e2a\u5df2\u6392\u597d\u76849\u4e2a\u5143\u7d20\u7684\u6570\u7ec4\uff0c\u4eca\u8f93\u5165\u4e00\u4e2a\u6570\u8981\u6c42\u6309\u539f\u6765\u6392\u5e8f\u7684\u89c4\u5f8b\u5c06\u5b83\u63d2\u5165\u6570\u7ec4\u4e2d\u3002"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u7b2c\u4e00\u884c\uff0c\u539f\u59cb\u6570\u5217\u3002\u7b2c\u4e8c\u884c\uff0c\u9700\u8981\u63d2\u5165\u7684\u6570\u5b57\u3002"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u6392\u5e8f\u540e\u7684\u6570\u5217"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "1 7 8 17 23 24 59 62 101\n50",
+            "output": "1\n7\n8\n17\n23\n24\n50\n59\n62\n101"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

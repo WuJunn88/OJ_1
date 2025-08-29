@@ -3,99 +3,27 @@ import subprocess
 import tempfile
 import os
 import signal
+import resource
 import time
-import platform
 from typing import Tuple, Optional
-
-# 跨平台资源限制实现
-def _get_platform_resource_limits():
-    """获取平台特定的资源限制设置函数"""
-    system = platform.system()
-    
-    if system in ["Linux", "Darwin"]:  # Linux 或 macOS
-        try:
-            import resource
-            return resource
-        except ImportError:
-            return None
-    elif system == "Windows":
-        try:
-            import psutil
-            return psutil
-        except ImportError:
-            return None
-    else:
-        return None
 
 class SandboxError(Exception):
     """沙箱运行错误"""
     pass
 
 def set_resource_limits(memory_limit_mb: int, time_limit_ms: int):
-    """设置资源限制（跨平台兼容）"""
-    system = platform.system()
-    
-    if system in ["Linux", "Darwin"]:  # Linux 或 macOS
-        try:
-            import resource
-            # 设置内存限制 (MB -> KB)
-            memory_limit_kb = memory_limit_mb * 1024
-            resource.setrlimit(resource.RLIMIT_AS, (memory_limit_kb * 1024, memory_limit_kb * 1024))
-            
-            # 设置CPU时间限制 (毫秒 -> 秒)
-            time_limit_sec = time_limit_ms / 1000
-            resource.setrlimit(resource.RLIMIT_CPU, (time_limit_sec, time_limit_sec))
-            print(f"资源限制设置成功 (Unix系统): 内存{memory_limit_mb}MB, 时间{time_limit_ms}ms")
-        except ImportError:
-            print("resource模块不可用，跳过资源限制设置")
-        except Exception as e:
-            print(f"设置资源限制失败: {e}")
-    
-    elif system == "Windows":
-        try:
-            import psutil
-            # Windows 下设置进程优先级（无法设置严格的资源限制）
-            process = psutil.Process()
-            process.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
-            print(f"Windows系统：已设置进程优先级，内存限制{memory_limit_mb}MB, 时间限制{time_limit_ms}ms")
-            print("注意：Windows系统无法设置严格的资源限制，主要依赖超时控制")
-        except ImportError:
-            print("Windows系统：psutil不可用，跳过资源限制设置")
-            print("建议安装: pip install psutil")
-        except Exception as e:
-            print(f"Windows资源限制设置失败: {e}")
-    
-    else:
-        print(f"未知系统: {system}，跳过资源限制设置")
-        print(f"配置的内存限制: {memory_limit_mb}MB, 时间限制: {time_limit_ms}ms")
-
-def check_memory_usage():
-    """检查当前进程内存使用情况（跨平台）"""
+    """设置资源限制"""
     try:
-        import psutil
-        process = psutil.Process()
-        memory_info = process.memory_info()
-        return memory_info.rss  # 返回内存使用量（字节）
-    except ImportError:
-        # 如果没有 psutil，返回估算值
-        return 0
-
-def enforce_timeout(timeout_seconds=5):
-    """强制超时控制（跨平台）"""
-    def timeout_handler(signum, frame):
-        raise TimeoutError("执行超时")
-    
-    if platform.system() != "Windows":  # Windows 下 signal 有限制
-        try:
-            signal.signal(signal.SIGALRM, timeout_handler)
-            signal.alarm(timeout_seconds)
-            return timeout_handler
-        except Exception as e:
-            print(f"设置超时信号失败: {e}")
-            return None
-    else:
-        print("Windows系统：使用subprocess超时控制")
-        return None
+        # 设置内存限制 (MB -> KB)
+        memory_limit_kb = memory_limit_mb * 1024
+        resource.setrlimit(resource.RLIMIT_AS, (memory_limit_kb * 1024, memory_limit_kb * 1024))
+        
+        # 设置CPU时间限制 (毫秒 -> 秒)
+        time_limit_sec = time_limit_ms / 1000
+        resource.setrlimit(resource.RLIMIT_CPU, (time_limit_sec, time_limit_sec))
+    except Exception:
+        # 在某些系统上可能不支持资源限制，忽略错误
+        pass
 
 def run_code(code: str, language: str, input_data: str, 
              time_limit_ms: int = 1000, memory_limit_mb: int = 128) -> Tuple[str, Optional[str]]:
@@ -251,13 +179,47 @@ def run_java_code(code: str, input_data: str, time_limit_ms: int, memory_limit_m
     with open(java_file, 'w') as f:
         f.write(code)
     
+    # 设置Java环境变量
+    env = os.environ.copy()
+    
+    # 尝试设置JAVA_HOME，如果未设置的话
+    if 'JAVA_HOME' not in env:
+        # 在macOS上，Java通常安装在以下位置
+        possible_java_homes = [
+            '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home',  # Homebrew OpenJDK
+            '/Library/Java/JavaVirtualMachines',
+            '/System/Library/Java/JavaVirtualMachines',
+            '/usr/local/opt/openjdk'
+        ]
+        
+        for java_home in possible_java_homes:
+            if os.path.exists(java_home):
+                # 检查是否有bin目录和java可执行文件
+                java_bin = os.path.join(java_home, 'bin')
+                java_exe = os.path.join(java_bin, 'java')
+                if os.path.exists(java_bin) and os.path.exists(java_exe):
+                    env['JAVA_HOME'] = java_home
+                    break
+    
+    # 如果找到了JAVA_HOME，更新PATH
+    if 'JAVA_HOME' in env:
+        java_bin = os.path.join(env['JAVA_HOME'], 'bin')
+        if os.path.exists(java_bin):
+            env['PATH'] = java_bin + os.pathsep + env.get('PATH', '')
+    else:
+        # 如果还是没找到，尝试直接使用Homebrew的Java路径
+        homebrew_java = '/opt/homebrew/opt/openjdk/libexec/openjdk.jdk/Contents/Home/bin'
+        if os.path.exists(homebrew_java):
+            env['PATH'] = homebrew_java + os.pathsep + env.get('PATH', '')
+    
     try:
         # 编译Java代码
         compile_process = subprocess.run(
             ['javac', java_file],
             capture_output=True,
             text=True,
-            timeout=10
+            timeout=10,
+            env=env
         )
         
         if compile_process.returncode != 0:
@@ -270,7 +232,8 @@ def run_java_code(code: str, input_data: str, time_limit_ms: int, memory_limit_m
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            cwd=tmp_dir
+            cwd=tmp_dir,
+            env=env
         )
         
         try:
@@ -348,34 +311,3 @@ def run_javascript_code(code: str, input_data: str, time_limit_ms: int, memory_l
             os.unlink(js_file)
         except:
             pass
-
-def test_cross_platform_compatibility():
-    """测试跨平台兼容性"""
-    print("=== 跨平台兼容性测试 ===")
-    system = platform.system()
-    print(f"当前系统: {system}")
-    
-    # 测试资源限制设置
-    print("\n1. 测试资源限制设置:")
-    set_resource_limits(128, 1000)
-    
-    # 测试内存监控
-    print("\n2. 测试内存监控:")
-    memory_usage = check_memory_usage()
-    if memory_usage > 0:
-        print(f"当前内存使用: {memory_usage / 1024 / 1024:.2f} MB")
-    else:
-        print("内存监控不可用")
-    
-    # 测试超时控制
-    print("\n3. 测试超时控制:")
-    timeout_handler = enforce_timeout(5)
-    if timeout_handler:
-        print("超时控制设置成功")
-    else:
-        print("超时控制不可用")
-    
-    print("\n=== 测试完成 ===")
-
-if __name__ == "__main__":
-    test_cross_platform_compatibility()

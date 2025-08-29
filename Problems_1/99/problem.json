@@ -1,0 +1,43 @@
+{
+    "display_id": 1134,
+    "title": "\u4e60\u98985-9 \u5b8c\u6570",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u4e00\u4e2a\u6570\u5982\u679c\u6070\u597d\u7b49\u4e8e\u5b83\u7684\u56e0\u5b50\u548c\uff0c\u8fd9\u4e2a\u6570\u5c31\u79f0\u4e3a\u201c\u5b8c\u6570\u201d\u3002\u4f8b\u5982\uff0c6\u7684\u56e0\u5b50\u4e3a1,2,3\uff0c\u800c6=1+2+3\uff0c\u6240\u4ee56\u662f\u201c\u5b8c\u6570\u201d\u3002\n</p>\n<p>\n\t\u7f16\u7a0b\u8f93\u51fa1000\u4ee5\u5185\u7684\u6240\u6709\u5b8c\u6570\uff0c\u6bcf\u4e2a\u5b8c\u6570\u8f93\u51fa\u4e00\u884c\uff0c\u5e76\u6309\u4e0b\u9762\u7684\u683c\u5f0f\u8f93\u51fa\u5176\u56e0\u5b50\uff1a\n</p>\n<p>\n\t6 its factors are 1,2,3\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u6bcf\u4e2a\u5b8c\u6570\u8f93\u51fa\u4e00\u884c\uff0c\u5e76\u6309\u4e0b\u9762\u7684\u683c\u5f0f\u8f93\u51fa\u5176\u56e0\u5b50\uff1a\n</p>\n<p>\n\t\uff1f&nbsp;its factors are ?,?,?\n</p>\n<p>\n\t&nbsp;\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p>\n\t\u56e0\u5b50\u5305\u542b1\u4f46\u4e0d\u5305\u542b\u5176\u672c\u8eab\u3002\n</p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "6 its factors are 1,2,3\n28 its factors are 1,2,4,7,14 \n496 its factors are 1,2,4,8,16,31,62,124,248"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

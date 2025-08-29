@@ -1,0 +1,43 @@
+{
+    "display_id": 1062,
+    "title": "[\u8d2a\u5fc3\u7b97\u6cd5]\u6392\u961f\u63a5\u6c34",
+    "description": {
+        "format": "html",
+        "value": "<p style=\"text-align:center;\">\n\t<span style=\"font-size:18px;\"><strong>\u6392\u961f\u63a5\u6c34 wate</strong></span><span style=\"font-size:18px;\"><strong>r.pas/c/cpp</strong></span> \n</p>\n<p>\n\t<span style=\"font-size:18px;\">\u6709n\u4e2a\u4eba\u5728\u4e00\u4e2a\u6c34\u9f99\u5934\u524d\u6392\u961f\u63a5\u6c34\uff0c\u5047\u5982\u6bcf\u4e2a\u4eba\u63a5\u6c34\u7684\u65f6\u95f4\u4e3aTi\uff0c\u8bf7\u7f16\u7a0b\u627e\u51fa\u8fd9n\u4e2a\u4eba\u6392\u961f\u7684\u4e00\u79cd\u987a\u5e8f\uff0c\u4f7f\u5f97n\u4e2a\u4eba\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4\u6700\u5c0f\u3002</span><br />\n<span style=\"font-size:18px;\">[\u8f93\u5165\u683c\u5f0f]</span> \n</p>\n<p>\n\t<span style=\"font-size:18px;\">&nbsp;&nbsp;\u8f93\u5165\u6587\u4ef6\u5171\u4e24\u884c\uff0c\u7b2c\u4e00\u884c\u4e3an\uff1b\u7b2c\u4e8c\u884c\u5206\u522b\u8868\u793a\u7b2c1\u4e2a\u4eba\u5230\u7b2cn\u4e2a\u4eba\u6bcf\u4eba\u7684\u63a5\u6c34\u65f6\u95f4T1\uff0cT2\uff0c\u2026\uff0cTn\uff0c\u6bcf\u4e2a\u6570\u636e\u4e4b\u95f4\u67091\u4e2a\u7a7a\u683c\u3002</span><br />\n<span style=\"font-size:18px;\"><span style=\"font-size:18px;line-height:27px;\">[\u8f93\u5165\u683c\u5f0f]</span></span> \n</p>\n<p>\n\t<span style=\"font-size:18px;\">&nbsp; \u8f93\u51fa\u6587\u4ef6\u6709\u4e24\u884c\uff0c\u7b2c\u4e00\u884c\u4e3a\u4e00\u79cd\u6392\u961f\u987a\u5e8f\uff0c\u53731\u5230n\u7684\u4e00\u79cd\u6392\u5217\uff1b\u7b2c\u4e8c\u884c\u4e3a\u8fd9\u79cd\u6392\u5217\u65b9\u6848\u4e0b\u7684\u5e73\u5747\u7b49\u5f85\u65f6\u95f4(\u8f93\u51fa\u7ed3\u679c\u7cbe\u786e\u5230\u5c0f\u6570\u70b9\u540e\u4e24\u4f4d)\u3002&nbsp;</span><br />\n<span style=\"font-size:18px;\"><br />\n</span> \n</p>\n<p>\n\t<span style=\"font-size:18px;\"><span style=\"font-size:18px;line-height:27px;\">[\u8f93\u5165\u6837\u4f8b]</span>water.in </span><br />\n<span style=\"font-size:18px;\">&nbsp; 10</span><br />\n<span style=\"font-size:18px;\">&nbsp; 56 12 1 99 1000 234 33 55 99 812 </span><br />\n<span style=\"font-size:18px;\"><span style=\"font-size:18px;line-height:27px;\">[\u8f93\u51fa\u6837\u4f8b]</span><span style=\"font-size:18px;line-height:27px;\"></span><span style=\"font-size:18px;line-height:27px;\">w</span>ater.out</span><br />\n<span style=\"font-size:18px;\">&nbsp; 3 2 7 8 1 4 9 6 10 5</span><br />\n<span style=\"font-size:18px;\">&nbsp; 291.90&nbsp;</span>\n</p>\n<div>\n\t<br />\n</div>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

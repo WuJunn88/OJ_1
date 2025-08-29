@@ -1,0 +1,43 @@
+{
+    "display_id": 1225,
+    "title": "\u8f93\u51faN\u4ee5\u5185\u7684\u7d20\u6570 nprime [1*+]",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span> \u8f93\u5165\u4e00\u4e2a\u6574\u6570n <br />\n\u8f93\u51faN\u4ee5\u5185\u7684\u6240\u6709\u7d20\u6570 <br />\n</span>\n</p>\n<p align=\"left\">\n\t<b><span>Input</span> </b> \n</p>\n<p>\n\t<span> \u4e00\u4e2a\u6574\u6570n <br />\n</span>\n</p>\n<p align=\"left\">\n\t<b><span>Output</span> </b> \n</p>\n<p>\n\t<span> \u7531\u5c0f\u5230\u5927\u8f93\u51faN\u4ee5\u5185\u7684\u6240\u6709\u7d20\u6570 <br />\n\u6bcf\u884c\u4e00\u4e2a\u6570 <br />\n</span>\n</p>\n<p align=\"left\">\n\t<b><span>Sample Input</span> </b> \n</p>\n<pre><span>\u6837\u4f8b\u8f93\u51651\n10\n\n\u6837\u4f8b\u8f93\u51fa1\n2\n3\n5\n7</span></pre>\n<p align=\"left\">\n\t<b><span>Sample Output</span> </b> \n</p>\n<pre><span>\u3000</span></pre>\n<p align=\"left\">\n\t<b><span>Hint</span> </b> \n</p>\n<span> 2&lt;=N&lt;=5000 </span>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

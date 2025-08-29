@@ -1,0 +1,43 @@
+{
+    "display_id": 1041,
+    "title": "\u3010C\u8bed\u8a00\u8bad\u7ec3\u3011\u4eb2\u5bc6\u6570",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u4e24\u4e2a\u4e0d\u540c\u7684\u81ea\u7136\u6570A\u548cB\uff0c\u5982\u679c\u6574\u6570A\u7684\u5168\u90e8\u56e0\u5b50(\u5305\u62ec1\uff0c\u4e0d\u5305\u62ecA\u672c\u8eab)\u4e4b\u548c\u7b49\u4e8eB\uff1b\u4e14\u6574\u6570B\u7684\u5168\u90e8\u56e0\u5b50(\u5305\u62ec1\uff0c\u4e0d\u5305\u62ecB\u672c\u8eab)\u4e4b\u548c\u7b49\u4e8eA\uff0c\u5219\u5c06\u6574\u6570A\u548cB\u79f0\u4e3a\u4eb2\u5bc6\u6570\u3002\u6c423000\u4ee5\u5185\u7684\u5168\u90e8\u4eb2\u5bc6\u6570\u3002</span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span>3000\u4ee5\u5185\u7684\u5168\u90e8\u4eb2\u5bc6\u6570(\u8f93\u51fa\u683c\u5f0f:(A,B)\uff0c\u4e0d\u52a0\u6362\u884c\uff0c\u4e0d\u52a0\u5206\u9694\u7b26\u53f7) <br />\n\u4e00\u5bf9\u4eb2\u5bc6\u6570\u53ea\u8f93\u51fa\u4e00\u6b21, \u5c0f\u7684\u5728\u524d</span>\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u6309\u7167\u4eb2\u5bc6\u6570\u5b9a\u4e49\uff0c\u8981\u5224\u65ad\u6570a\u662f\u5426\u6709\u4eb2\u5bc6\u6570\uff0c\u53ea\u8981\u8ba1\u7b97\u51faa\u7684\u5168\u90e8\u56e0\u5b50\u7684\u7d2f\u52a0\u548c\u4e3ab\uff0c\u518d\u8ba1\u7b97b\u7684\u5168\u90e8\u56e0\u5b50\u7684\u7d2f\u52a0\u548c\u4e3an\uff0c\u82e5n\u7b49\u4e8ea\u5219\u53ef\u5224\u5b9aa\u548cb\u662f\u4eb2\u5bc6\u6570\u3002\u8ba1\u7b97\u6570a\u7684\u5404\u56e0\u5b50\u7684\u7b97\u6cd5\uff1a <br />\n\u7528a\u4f9d\u6b21\u5bf9i(i=1~a/2)\u8fdb\u884c\u6a21\u8fd0\u7b97\uff0c\u82e5\u6a21\u8fd0\u7b97\u7ed3\u679c\u7b49\u4e8e0\uff0c\u5219i\u4e3aa\u7684\u4e00\u4e2a\u56e0\u5b50\uff1b\u5426\u5219i\u5c31\u4e0d\u662fa\u7684\u56e0\u5b50\u3002</span>\n</p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "(220,284)(1184,1210)(2620,2924)"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,43 @@
+{
+    "display_id": 1229,
+    "title": "C\u8bed\u8a00\u7a0b\u5e8f\u8bbe\u8ba1\u6559\u7a0b\uff08\u7b2c\u4e09\u7248\uff09\u8bfe\u540e\u4e60\u98986.7",
+    "description": {
+        "format": "html",
+        "value": "<p>\u4e00\u4e2a\u6570\u5982\u679c\u6070\u597d\u7b49\u4e8e\u5b83\u7684\u56e0\u5b50\u4e4b\u548c\uff0c\u8fd9\u4e2a\u6570\u5c31\u79f0\u4e3a&quot;\u5b8c\u6570&quot;\u3002 \u4f8b\u5982\uff0c6\u7684\u56e0\u5b50\u4e3a1\u30012\u30013\uff0c\u800c6=1+2+3\uff0c\u56e0\u6b646\u662f&quot;\u5b8c\u6570&quot;\u3002 \u7f16\u7a0b\u5e8f\u627e\u51faN\u4e4b\u5185\u7684\u6240\u6709\u5b8c\u6570\uff0c\u5e76\u6309\u4e0b\u9762\u683c\u5f0f\u8f93\u51fa\u5176\u56e0\u5b50\uff1a</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "N"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>? its factors are ? ? ?</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "1000",
+            "output": "6 its factors are 1 2 3 \n28 its factors are 1 2 4 7 14 \n496 its factors are 1 2 4 8 16 31 62 124 248"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

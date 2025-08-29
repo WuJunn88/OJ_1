@@ -1,0 +1,43 @@
+{
+    "display_id": 1036,
+    "title": "C\u8bed\u8a001.1",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u8f93\u51fa\u4e00\u884c\u4fe1\u606f\u3002\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t&nbsp;\u65e0\u3002\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u53ea\u6709\u4e00\u884c\uff0c\u201cThis is a C program.\u201d\u3002\n</p>\n<p>\n\t\u8bf7\u6ce8\u610f\u4e0d\u9700\u8981\u8f93\u51fa\u5f15\u53f7\uff0c\u884c\u5c3e\u8f93\u51fa\u6362\u884c\u3002&nbsp;\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0\u3002",
+            "output": "This is a C program."
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

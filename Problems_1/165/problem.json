@@ -1,0 +1,43 @@
+{
+    "display_id": 1200,
+    "title": "2005\u5e74\u6625\u6d59\u6c5f\u7701\u8ba1\u7b97\u673a\u7b49\u7ea7\u8003\u8bd5\u4e8c\u7ea7C \u7f16\u7a0b\u9898(2)",
+    "description": {
+        "format": "html",
+        "value": "<p><!--[if gte mso 9]><xml>\n<w:WordDocument>\n<w:View>Normal</w:View>\n<w:Zoom>0</w:Zoom>\n<w:PunctuationKerning />\n<w:DrawingGridVerticalSpacing>7.8 \u78c5</w:DrawingGridVerticalSpacing>\n<w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>\n<w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>\n<w:ValidateAgainstSchemas />\n<w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>\n<w:IgnoreMixedContent>false</w:IgnoreMixedContent>\n<w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>\n<w:Compatibility>\n<w:SpaceForUL />\n<w:BalanceSingleByteDoubleByteWidth />\n<w:DoNotLeaveBackslashAlone />\n<w:ULTrailSpace />\n<w:DoNotExpandShiftReturn />\n<w:AdjustLineHeightInTable />\n<w:BreakWrappedTables />\n<w:SnapToGridInCell />\n<w:WrapTextWithPunct />\n<w:UseAsianBreakRules />\n<w:DontGrowAutofit />\n<w:UseFELayout />\n</w:Compatibility>\n<w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>\n</w:WordDocument>\n</xml><![endif]--><!--[if gte mso 9]><xml>\n<w:LatentStyles DefLockedState=\"false\" LatentStyleCount=\"156\">\n</w:LatentStyles>\n</xml><![endif]--><!--[if !mso]><object\nclassid=\"clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D\" id=ieooui></object>\n<style>\nst1\\:*{behavior:url(#ieooui) }\n</style>\n<![endif]--><!--[if gte mso 10]>\n<style>\n/* Style Definitions */\ntable.MsoNormalTable\n{mso-style-name:\u666e\u901a\u8868\u683c;\nmso-tstyle-rowband-size:0;\nmso-tstyle-colband-size:0;\nmso-style-noshow:yes;\nmso-style-parent:\"\";\nmso-padding-alt:0cm 5.4pt 0cm 5.4pt;\nmso-para-margin:0cm;\nmso-para-margin-bottom:.0001pt;\nmso-pagination:widow-orphan;\nfont-size:10.0pt;\nfont-family:\"Times New Roman\";\nmso-fareast-font-family:\"Times New Roman\";\nmso-ansi-language:#0400;\nmso-fareast-language:#0400;\nmso-bidi-language:#0400;}\n</style>\n<![endif]--></p>\n<p style=\"margin-top: 2pt; text-indent: 21pt; line-height: 16pt;\" class=\"MsoNormal\"><span style=\"font-family: \u5b8b\u4f53;\">\u8f93\u51fa\u4e00\u5f20\u6444\u6c0f\u4e00\u534e\u6c0f\u6e29\u5ea6\u8f6c\u6362\u8868\uff0c\u6444\u6c0f\u6e29\u5ea6\u7684\u53d6\u503c\u533a\u95f4\u662f<span lang=\"EN-US\">[-100<sup>0</sup> C</span>\uff0c<span lang=\"EN-US\">150<sup>0</sup>C</span><span lang=\"EN-US\"> ]</span>\uff0c\u6e29\u5ea6\u95f4\u9694<span lang=\"EN-US\">5<sup>0</sup>C</span>\u3002\u8981\u6c42\u5b9a\u4e49\u548c\u8c03\u7528\u51fd\u6570<span lang=\"EN-US\"> ctof(c),</span>\u5c06\u6444\u6c0f\u6e29\u5ea6<span lang=\"EN-US\">C</span>\u8f6c\u6362\u6210\u534e\u6c0f\u6e29\u5ea6<span lang=\"EN-US\">F</span>\uff0c\u8ba1\u7b97\u516c\u5f0f\uff1a<span lang=\"EN-US\"> </span></span></p>\n<p><span lang=\"EN-US\" style=\"font-size: 10.5pt; font-family: \u5b8b\u4f53;\">F = 32 + C* 9/5</span><span style=\"font-size: 10.5pt; font-family: \u5b8b\u4f53;\">\u3002</span></p>\n<p>\u4f8b\u5982</p>\n<p>c=0-&gt;f=32<br />\nc=5-&gt;f=41<br />\nc=10-&gt;f=50<br />\nc=15-&gt;f=59<br />\nc=20-&gt;f=68<br />\nc=25-&gt;f=77<br />\nc=30-&gt;f=86<br />\nc=35-&gt;f=95<br />\nc=40-&gt;f=104<br />\nc=45-&gt;f=113<br />\nc=50-&gt;f=122<br />\nc=55-&gt;f=131<br />\nc=60-&gt;f=140<br />\nc=65-&gt;f=149</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

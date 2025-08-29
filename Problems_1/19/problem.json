@@ -1,0 +1,43 @@
+{
+    "display_id": 1054,
+    "title": "[\u6570\u503c\u95ee\u9898]\u9ad8\u7cbe\u5ea6\u6bd4\u8f83",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<br />\n</p>\n<p>\n\t<br />\n</p>\n<div style=\"padding:0px;margin:0px;font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;text-align:center;\">\n\t<span>\u9ad8\u7cbe\u5ea6\u6bd4\u8f83\uff08bigpas/c/cpp\uff09&nbsp;</span> \n</div>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u3010\u95ee\u9898\u63cf\u8ff0\u3011&nbsp;</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u8f93\u5165\u4e24\u4e2a\u9ad8\u7cbe\u5ea6\u6b63\u6574\u6570a\u548cb\uff08a\uff0cb\u7684\u4f4d\u6570&lt;=200\uff09\uff0c\u6bd4\u8f83\u8fd9\u4e24\u4e2a\u6570\u7684\u7684\u5927\u5c0f</span> \n</p>\n<span><span style=\"font-size:14px;line-height:28px;background-color:#F5F5F5;\">\u3010\u8f93\u5165\u683c\u5f0f\u3011</span></span> \n<p>\n\t<br />\n</p>\n<p>\n\t<span><span style=\"font-size:14px;line-height:28px;\">\u8f93\u5165\u5171\u4e24\u884c\uff0c\u5206\u522b\u4e3aa\u548cb</span></span> \n</p>\n<p>\n\t<span><span style=\"font-size:14px;line-height:28px;\">\u3010\u8f93\u51fa\u683c\u5f0f\u3011</span></span> \n</p>\n<p>\n\t<span><span style=\"font-size:14px;line-height:28px;\">\u8f93\u51fa\u5171\u4e00\u884c\uff0c\u4e00\u4e2a\u6570</span></span> \n</p>\n<p>\n\t<span><span style=\"font-size:14px;line-height:28px;\">\u82e5a&gt;=b \u5219\u8f93\u51fa\u7ed3\u679c1</span></span> \n</p>\n<p>\n\t<span><span style=\"font-size:14px;line-height:28px;\">\u82e5a&lt;b &nbsp;\u5219\u8f93\u51fa\u7ed3\u679c2</span></span> \n</p>\n<p>\n\t<span style=\"font-family:'Microsoft Yahei';font-size:14px;line-height:28px;background-color:#F5F5F5;\">\u3010\u8f93\u5165\u6837\u4f8b1\u3011&nbsp;</span><br />\n<span><span style=\"font-size:14px;line-height:28px;background-color:#F5F5F5;\">1234567890000</span></span> \n</p>\n<p>\n\t<span><span style=\"font-size:14px;line-height:28px;\"><span style=\"font-family:'Microsoft Yahei';font-size:14px;line-height:28px;background-color:#F5F5F5;\">1234567890001</span><br />\n</span></span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t<span>\u3010\u8f93\u51fa\u6837\u4f8b1\u3011</span> \n</p>\n<p style=\"font-family:'Microsoft Yahei';font-size:14px;background-color:#F5F5F5;\">\n\t2\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "Const<br />\n&nbsp; &nbsp; SIZE = 200;<br />\n<br />\nType<br />\n&nbsp; &nbsp; hugeint = Record<br />\n&nbsp; &nbsp; &nbsp; &nbsp; len : Integer;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; num : Array[1..SIZE] Of Integer;<br />\n&nbsp; &nbsp; End;<br />\nvar a,b:hugeint;<br />\n&nbsp; &nbsp; s1,s2:string;<br />\n&nbsp; &nbsp; i:integer;<br />\nFunction over(a, b : hugeint) : integer;<br />\n&nbsp; &nbsp; Var<br />\n&nbsp; &nbsp; &nbsp; &nbsp; i : Integer;<br />\n&nbsp; &nbsp; Begin<br />\n&nbsp; &nbsp; &nbsp; &nbsp; If (a.len&gt;b.len) Then<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Begin<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; over :=1 ;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Exit;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; If a.len &lt; b.len Then<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Begin<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; over := 2;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Exit;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; For i := a.len DownTo 1 Do<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Begin<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If a.num[i] &gt; b.num[i] Then<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Begin<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; over := 1;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Exit;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; If a.num[i] &lt; b.num[i] Then<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Begin<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; over := 2;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Exit;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; End;<br />\n&nbsp; &nbsp; &nbsp; &nbsp; over := 1;<br />\n&nbsp; &nbsp; End;<br />\n&nbsp; &nbsp;procedure datain;<br />\n&nbsp; &nbsp;begin<br />\n&nbsp; &nbsp; assign(input,'big.in'); &nbsp;assign(output,'big.out');<br />\n&nbsp; &nbsp; reset(input); rewrite(output);<br />\n&nbsp; &nbsp; readln(s1);<br />\n&nbsp; &nbsp; readln(s2);<br />\n&nbsp; &nbsp; a.len:=length(s1);<br />\n&nbsp; &nbsp; b.len:=length(s2);<br />\n&nbsp; &nbsp; for i:=1 to a.len do &nbsp;a.num[i]:=ord(s1[a.len-i+1])-ord('0');<br />\n&nbsp; &nbsp; for i:=1 to b.len do &nbsp;b.num[i]:=ord(s2[b.len-i+1])-ord('0');<br />\n&nbsp; &nbsp;end;<br />\n&nbsp; &nbsp;begin<br />\n&nbsp; &nbsp; datain;<br />\n&nbsp; &nbsp; writeln(over(a,b));<br />\n&nbsp; &nbsp;close(input);close(output);<br />\n&nbsp; &nbsp;end.<br />\n<div>\n\t<br />\n</div>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

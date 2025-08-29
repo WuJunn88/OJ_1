@@ -1,0 +1,43 @@
+{
+    "display_id": 1086,
+    "title": "\u3010\u57fa\u7840\u9898\u3011\u5206\u94b1\u6e38\u620f",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<strong>\u4f8b2.22 </strong>&nbsp;\u5206\u94b1\u6e38\u620f\u3002\u7532\u3001\u4e59\u3001\u4e19\u4e09\u4eba\u5171\u670924\u5143\u94b1\uff0c\u5148\u7531\u7532\u5206\u94b1\u7ed9\u4e59\u3001\u4e19\u4e24\u4eba\uff0c\u6240\u5206\u7ed9\u7684\u6570\u4e0e\u5404\u4eba\u5df2\u6709\u6570\u76f8\u540c\uff1b\u63a5\u7740\u7531\u4e59\u5206\u7ed9\u7532\u3001\u4e19\uff0c\u5206\u6cd5\u540c\u524d\uff1b\u518d\u7531\u4e19\u5206\u94b1\u7ed9\u7532\u3001\u4e59\uff0c\u5206\u6cd5\u4ea6\u540c\u524d\u3002\u7ecf\u4e0a\u8ff0\u4e09\u6b21\u5206\u94b1\u4e4b\u540e\uff0c\u6bcf\u4e2a\u4eba\u7684\u94b1\u6570\u6070\u597d\u4e00\u6837\u591a\u3002 \u6c42\u539f\u5148\u5404\u4eba\u7684\u94b1\u6570\u5206\u522b\u662f\u591a\u5c11?\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u65e0\u8f93\u5165\u3002</span> \n</p>\n<p>\n\t<span><br />\n</span> \n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u4e00\u884c\u4e09\u4e2a\u6570\uff0c\u8868\u793a\u7532\u3001\u4e59\u3001\u4e19\u4e09\u4eba\u539f\u5148\u7684\u94b1\u6570\u3002</span> \n</p>\n<p>\n\t<span><br />\n</span> \n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "13 7 4"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

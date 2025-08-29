@@ -1,0 +1,43 @@
+{
+    "display_id": 1127,
+    "title": "\u56fe\u5f62\u6253\u5370\u6b63\u65b9\u5f62",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u8f93\u5165\u4e00\u4e2an,\u8f93\u51fa\u4e00\u4e2a</span><span style=\"font-size:14pt;\">n*n</span><span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u7684\u6b63\u65b9\u5f62\u56fe\u5f62\u3002</span> \n</p>\n<p>\n\t\u8f93\u5165\n</p>\n<p>\n\t2\n</p>\n<p>\n\t\u8f93\u51fa\n</p>\n<p>\n\t##\n</p>\n<p>\n\t##\n</p>\n<p>\n\t&nbsp;\n</p>\n<p>\n\t\u8f93\u5165\n</p>\n<p>\n\t5\n</p>\n<p>\n\t\u8f93\u51fa\n</p>\n<p>\n\t<span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">#####<br />\n#####<br />\n#####<br />\n#####<br />\n#####</span><span style=\"font-family:'Times New Roman';font-size:10.5pt;\"></span> \n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

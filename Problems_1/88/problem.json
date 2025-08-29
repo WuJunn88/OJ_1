@@ -1,0 +1,43 @@
+{
+    "display_id": 1123,
+    "title": "\u4e60\u98984-12 \u6c42\u5efa\u7b51\u7269\u9ad8\u5ea6",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u67094\u4e2a\u5706\u5854\uff0c\u5706\u5fc3\u5206\u522b\u4e3a(2, 2)\u3001(-2, 2)\u3001(-2, -2)\u3001(2, -2)\uff0c\u5706\u534a\u5f84\u4e3a1\uff0c\u5982\u4e0b\u56fe\u6240\u793a\u3002\u8fd94\u4e2a\u5854\u7684\u9ad8\u5ea6\u4e3a10\u7c73\uff08m\uff09\uff0c\u5854\u4ee5\u5916\u65e0\u5efa\u7b51\u7269\u3002\n</p>\n<img style=\"height:170px;width:215px;\" alt=\"\" src=\"http://tk.hustoj.com:80/attached/image/20141018/20141018154437_86801.jpeg\" width=\"639\" height=\"547\" /> \n<p>\n\t&nbsp;\n</p>\n<p>\n\t\u73b0\u8f93\u5165\u4efb\u4e00\u70b9\u7684\u5750\u6807\uff0c\u6c42\u8be5\u70b9\u7684\u5efa\u7b51\u7269\u9ad8\u5ea6\uff08\u5854\u5916\u7684\u9ad8\u5ea6\u4e3a\u96f6\uff09\u3002\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t\u8f93\u5165\u4ee5\u5706\u62ec\u53f7\u62ec\u8d77\u6765\u7684\u4e24\u4e2a\u6570\u5b57\uff0c\u4e24\u4e2a\u6570\u5b57\u4e4b\u95f4\u4ee5\u9017\u53f7(,)\u5206\u9694\uff0c\u683c\u5f0f\u5982\uff1a(x,y)\n</p>\n<p>\n\t\u5982\u4e0b\u4e3a\u6b63\u786e\u8f93\u5165\uff1a\n</p>\n<p>\n\t(1.5,1.9)\n</p>\n<p>\n\t\u6d6e\u70b9\u578b\u53d8\u91cf\uff0c\u8bf7\u5b9a\u4e49\u4e3afloat\u7c7b\u578b\u3002\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u8be5\u5efa\u7b51\u7269\u7684\u9ad8\u5ea6\uff0c\u672b\u5c3e\u6362\u884c\u3002\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "\u6839\u636e\u8f93\u5165\u7684\u70b9\u7684\u5750\u6807\uff0c\u5224\u65ad\u8be5\u70b9\u5728\u5706\u5185\uff0c\u8fd8\u662f\u5728\u5706\u5916\u3002\u5728\u5706\u5185\u7684\u8bdd\uff0c\u5efa\u7b51\u7269\u7684\u9ad8\u5ea6\u5c31\u662f10\uff1b\u5426\u5219\uff0c\u5efa\u7b51\u7269\u7684\u9ad8\u5ea6\u5c31\u662f0."
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "(1.8,1.9)",
+            "output": "10"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

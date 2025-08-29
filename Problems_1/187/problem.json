@@ -1,0 +1,43 @@
+{
+    "display_id": 1222,
+    "title": "\u5b57\u7b26\u4e32\u5b9a\u4e49\u4e0e\u8d4b\u503c\u5b9e\u9a8c",
+    "description": {
+        "format": "html",
+        "value": "\u8bf7\u7528\u5b57\u7b26\u4e32\u65b9\u5f0f\u5904\u7406\u65b9\u5f0f\u5b9e\u73b0\u4ee5\u4e0b\u529f\u80fd\u3002\u5fc5\u987b#include &lt;string&gt;\u624d\u80fd\u4f7f\u7528\u5b57\u7b26\u4e32\u7684\u5904\u7406\u51fd\u6570\u3002<br />\n<p>\n\t\u5b57\u7b26\u6570\u7ec4\u662fc\u8bed\u8a00\u65f6\u4ee3\u7684\u65b9\u6cd5\uff0c\u5b57\u7b26\u4e32string\u662fc++\u540e\u6765\u53d1\u5c55\u7684\u65b0\u65b9\u6cd5\u3002\n</p>\n<p>\n\tstring\u7c7b\u578b\u7684\u5b57\u7b26\u4e32\u4fdd\u7559\u4e86\u5b57\u7b26\u6570\u7ec4\u7684\u4e00\u4e9b\u4f7f\u7528\u65b9\u6cd5\u3002\n</p>\n<p>\n\t<table style=\"width:600px;\" cellpadding=\"1\" cellspacing=\"1\" border=\"1\" bordercolor=\"#000000\">\n\t\t<tbody>\n\t\t\t<tr>\n\t\t\t\t<td>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u7528string\u7c7b\u578b\u5b9a\u4e49\u7a7a\u5b57\u7b26\u4e32s0\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u7528\u53cc\u5f15\u53f7\u6cd5\u5b9a\u4e49\u5b57\u7b26\u4e32s1\u5e76\u76f4\u63a5\u8d4b\u503c\u201cYou Can Make It\u201d\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u5b9a\u4e49\u5b57\u7b26\u4e32s2\u5e76\u76f4\u63a5\u8d4b\u503c\u4e3as1+'2'\u7684\u503c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u7528string strNew(str)\u7684\u65b9\u6cd5\u5b9a\u4e49\u5b57\u7b26\u4e32s3\u5e76\u76f4\u63a5\u8d4b\u503c\u4e3as1+\"new3\"\u7684\u503c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u7528string strNew(n,char)\u7684\u65b9\u6cd5\u5b9a\u4e49\u5b57\u7b26\u4e32s4\u5e76\u76f4\u63a5\u8d4b\u503c\u4e3a100\u4e2a\u5b57\u7b26'k'\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u8f93\u51fa\u5b57\u7b26\u4e32s1,s2,s3,s4\u7684\u503c\uff0c\u6bcf\u4e2a\u5b57\u7b26\u4e32\u4e00\u884c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t\u8fde\u7eed\u8f93\u51fas1\u7684\u7b2c1\u4e2a\u5b57\u7b26\uff0cs2<span>\u7684\u7b2c2\u4e2a\u5b57\u7b26\uff0c</span>s3<span>\u7684\u7b2c3\u4e2a\u5b57\u7b26\uff0c</span>s4<span>\u7684\u7b2c4\u4e2a\u5b57\u7b26\u5e76\u56de\u8f66\u3002</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<br />\n\t\t\t\t\t</p>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n</p>\n<p>\n\t\u53ef\u4ee5\u53c2\u8003\u4e00\u672c\u901a P133-135\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

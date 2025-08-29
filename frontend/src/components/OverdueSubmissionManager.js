@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import './OverdueSubmissionManager.css';
 import { api } from '../services/api';
+import { getCourseStudents } from '../services/api';
 
 const OverdueSubmissionManager = ({ assignment, onUpdate }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [overdueUsers, setOverdueUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState('');
+  const [courseStudents, setCourseStudents] = useState([]);
   const [settings, setSettings] = useState({
     allow_overdue_submission: assignment.allow_overdue_submission || false,
     overdue_deadline: assignment.overdue_deadline || '',
@@ -28,6 +30,49 @@ const OverdueSubmissionManager = ({ assignment, onUpdate }) => {
     }
   };
 
+  // 加载课程学生列表
+  const loadCourseStudents = useCallback(async () => {
+    try {
+      // 检查作业是否有课程ID
+      if (!assignment.course_id) {
+        console.error('作业缺少课程ID，无法获取学生列表');
+        setMessage('作业缺少课程信息，无法加载学生列表');
+        return;
+      }
+
+      // 使用真实API获取课程学生列表
+      const studentsData = await getCourseStudents(assignment.course_id);
+      if (studentsData && Array.isArray(studentsData)) {
+        // 统一处理学生数据字段名
+        const normalizedStudents = studentsData.map(student => ({
+          id: student.id || student.student_id,
+          name: student.name || student.student_name || '未知姓名',
+          username: student.username || student.student_no || '未知学号'
+        }));
+        
+        setCourseStudents(normalizedStudents);
+        console.log(`成功加载课程 ${assignment.course_id} 的学生列表，共 ${normalizedStudents.length} 人`);
+        console.log('学生数据示例:', normalizedStudents[0]);
+      } else {
+        console.error('获取课程学生数据格式错误:', studentsData);
+        setMessage('获取课程学生数据格式错误');
+        setCourseStudents([]);
+      }
+    } catch (error) {
+      console.error('加载课程学生失败:', error);
+      setMessage('加载课程学生失败: ' + (error.message || '未知错误'));
+      setCourseStudents([]);
+    }
+  }, [assignment.course_id]);
+
+  // 组件挂载时加载数据
+  useEffect(() => {
+    if (assignment.allow_overdue_submission) {
+      loadOverdueUsers();
+      loadCourseStudents();
+    }
+  }, [assignment.id, assignment.course_id, assignment.allow_overdue_submission, loadCourseStudents]);
+
   // 添加用户到白名单
   const addUserToWhitelist = async () => {
     if (!selectedUser) {
@@ -41,7 +86,10 @@ const OverdueSubmissionManager = ({ assignment, onUpdate }) => {
         user_id: parseInt(selectedUser)
       });
       
-      setOverdueUsers(response.data.overdue_users);
+      // 直接使用返回的完整用户信息更新状态
+      if (response.data && response.data.overdue_users) {
+        setOverdueUsers(response.data.overdue_users);
+      }
       setSelectedUser('');
       setMessage('用户已添加到白名单');
       
@@ -63,10 +111,12 @@ const OverdueSubmissionManager = ({ assignment, onUpdate }) => {
       setIsLoading(true);
       const response = await api.delete(`/assignments/${assignment.id}/overdue-users/${userId}`);
       
-      setOverdueUsers(response.data.overdue_users);
+      // 直接使用返回的完整用户信息更新状态
+      if (response.data && response.data.overdue_users) {
+        setOverdueUsers(response.data.overdue_users);
+      }
       setMessage('用户已从白名单中移除');
       
-      // 通知父组件更新
       if (onUpdate) {
         onUpdate();
       }
@@ -203,15 +253,22 @@ const OverdueSubmissionManager = ({ assignment, onUpdate }) => {
               <h5>补交白名单</h5>
               
               <div className="add-user-form">
+                <div className="student-selector-info">
+                  <small>课程学生总数: {courseStudents.length} | 已在白名单: {overdueUsers.length}</small>
+                </div>
                 <select
                   value={selectedUser}
                   onChange={(e) => setSelectedUser(e.target.value)}
                   disabled={isLoading}
                 >
                   <option value="">选择学生...</option>
-                  {/* 这里应该从课程学生列表中选择 */}
-                  <option value="1">学生1</option>
-                  <option value="2">学生2</option>
+                  {courseStudents
+                    .filter(student => !overdueUsers.some(u => u.id === student.id))
+                    .map(student => (
+                      <option key={student.id} value={student.id}>
+                        {student.name} ({student.username})
+                      </option>
+                    ))}
                 </select>
                 <button
                   onClick={addUserToWhitelist}
@@ -220,6 +277,11 @@ const OverdueSubmissionManager = ({ assignment, onUpdate }) => {
                   {isLoading ? '添加中...' : '添加到白名单'}
                 </button>
               </div>
+              {courseStudents.length === 0 && (
+                <div className="no-students-warning">
+                  <small>⚠️ 未找到课程学生，请检查作业是否关联了正确的课程</small>
+                </div>
+              )}
 
               <div className="whitelist-users">
                 <h6>当前白名单 ({overdueUsers.length}人)</h6>

@@ -1,0 +1,43 @@
+{
+    "display_id": 1223,
+    "title": "\u5b57\u7b26\u4e32\u8f93\u5165\u8f93\u51fa\u5904\u7406\u5b9e\u9a8c",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u7528\u5b57\u7b26\u4e32\u5b8c\u6210\u4ee5\u4e0b\u8981\u6c42\n</p>\n<p>\n\t\u3010\u8f93\u5165\u3011\u7b2c\u4e00\u884c\uff1a\u4e0d\u5e26\u7a7a\u683c\u7684\u5b57\u7b26\u4e32\u3002\u7b2c\u4e8c\u884c\u5f00\u59cb\uff1a\u5305\u542b\u7a7a\u683c\u7684\u5b57\u7b26\u4e32\u3002\n</p>\n<p>\n\t\u3010\u8f93\u51fa\u3011\u5c06\u8f93\u5165\u7684\u7b2c\u4e00\u884c\u6587\u5b57\u63a5\u5230\u8f93\u5165\u7684\u7b2c\u4e8c\u884c\u6587\u5b57\u540e\u9762\uff0c\u505a\u4e3a\u8f93\u51fa\u7684\u7b2c\u4e00\u884c\n</p>\n<p>\n\t\u7b2c\u4e8c\u884c\u8f93\u51fa\uff1a\u4f9d\u6b21\u5c06\u7b2c\u4e09\u884c\u8f93\u5165\u5f00\u59cb\u7684\u6bcf\u884c\u7684\u6700\u540e\u4e00\u4e2a\u5b57\u7b26\u53d6\u51fa\u8fdb\u884c\u8f93\u51fa\n</p>\n<p>\n\t\u7b2c\u4e09\u884c\u8f93\u51fa\uff1a\u603b\u5171\u8f93\u5165\u7684\u884c\u6570\u3002\n</p>\n<p>\n\t\u3010\u8bf4\u660e\u3011\u603b\u5171\u4e0d\u8d85\u8fc7100\u884c\n</p>\n<p>\n\t\u3010\u6837\u4f8b\u8f93\u51651\u3011\n</p>\n<p>\n\tabc\n</p>\n<p>\n\t123 456&nbsp;789\n</p>\n<p>\n\tb b c\n</p>\n<p>\n\ta p p\n</p>\n<p>\n\tf p\n</p>\n<p>\n\t\u3010\u6837\u4f8b\u8f93\u51fa1\u3011\n</p>\n<p>\n\t123 456 789abc\n</p>\n<p>\n\tcpp\n</p>\n<p>\n\t5\n</p>\n<p>\n\t<br />\n</p>\n<p>\n\t\u3010\u63d0\u793a\u3011\n</p>\n<p>\n\t\u53c2\u8003\u4e00\u672c\u901aP133-135 \u9875\n</p>\n<p>\n\t<br />\n</p>\n<p>\n\tcin\u8bfb\u5165\u6570\u636e\uff08\u5305\u62ec\u5b57\u7b26\u4e32\uff09\u65f6\u4f1a\u5c06\u7a7a\u683c\u3001\u5236\u8868\u4ed8\u3001\u56de\u8f66\u7b49\u5f53\u505a\u6570\u636e\u5206\u5272\u7b26\u3002\u4e00\u884c\u4e2d\u6709\u7a7a\u683c\u89c6\u4e3a\u591a\u4e2a\u8f93\u5165\u6570\u636e\u3002\n</p>\n<p>\n\t\u5982\u679c\u8981\u5c06\u5305\u542b\u7a7a\u683c\u7684\u6574\u884c\u6570\u636e\u6574\u884c\u6570\u636e\u8bfb\u5165\u5b57\u7b26\u4e32\uff0c\u53ef\u4ee5\u7528getline(cin,str)\u3002\n</p>\n<p>\n\t\u4f8b\u5982\u8f93\u5165\u4e24\u884c\u6570\u636e\n</p>\n<p>\n\tabc\n</p>\n<p>\n\txmlz fj xm\n</p>\n<p>\n\t\u65b9\u6cd5\u4e00\uff1a\n</p>\n<p>\n\tstring str1,str2;\n</p>\n<p>\n\tcin&lt;&lt;str1; //\u7b2c\u4e00\u884c\u6570\u636e\u6ca1\u6709\u7a7a\u683c\uff0c\u76f4\u63a5\u7528cin\u8bfb\u5165\uff0c\u8bfb\u5165\u540e&nbsp;<span>str1\u7684\u503c\u4e3a\"abc\"&nbsp;</span>\n</p>\n<p>\n\tgetline(cin,<span style=\"background-color:#E53333;\">str2</span>); //\u524d\u9762\u7684cin\u6ca1\u6709\u5c06\u7b2c\u4e00\u884c\u7684\u56de\u8f66\u5904\u7406\uff0c\u8fd9\u65f6<span>getline\u5c06\u7ee7\u7eed\u5904\u7406\uff0c\u53bb\u6389\u7b2c\u4e00\u884c\u7684\u56de\u8f66\uff0cstr2\u6ca1\u6709\u88ab\u8d4b\u503c</span>\n</p>\n<p>\n\t<span>getline(cin,<span style=\"background-color:#E53333;\">str2</span>);</span> // \u8fd9\u65f6getline\u5c06\u5f97\u5230\u7b2c\u4e8c\u884c<span>\u6574</span>\u884c\u7684\u4fe1\u606f\uff0c\u5e76\u5c06\u7b2c\u4e8c\u884c\u7684\u56de\u8f66\u53bb\u6389\u3002<span>\u8bfb\u5165\u540e&nbsp;</span><span>str2\u7684\u503c\u4e3a\"<span>xmlz fj xm</span>\"</span>\n</p>\n<p>\n\t\u65b9\u6cd5\u4e8c\uff1a\n</p>\n<p>\n\t<p>\n\t\tstring str1,str2;\n\t</p>\n\t<p>\n\t\tgetline(cin,<span style=\"color:#E53333;\"><strong>str1</strong></span>); //\u8bfb\u5165\u7b2c\u4e00\u884c\uff0c<span>\u8bfb\u5165\u540e&nbsp;str1\u7684\u503c\u4e3a\"abc</span>\"\u3002\u4e14\u7b2c\u4e00\u884c\u7684\u56de\u8f66\u88ab\u53bb\u6389\n\t</p>\n\t<p>\n\t\tgetline(cin,<span style=\"color:#E53333;\"><strong>str2</strong></span>); // \u8fd9\u65f6getline\u5c06\u5f97\u5230\u7b2c\u4e8c\u884c\u6574\u884c\u7684\u4fe1\u606f\uff0c\u5e76\u5c06\u7b2c\u4e8c\u884c\u7684\u56de\u8f66\u53bb\u6389\u3002\u8bfb\u5165\u540e&nbsp;str2\u7684\u503c\u4e3a\"xmlz fj xm\"\n\t</p>\n</p>\n<p>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

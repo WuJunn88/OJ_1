@@ -1,0 +1,43 @@
+{
+    "display_id": 1066,
+    "title": "\u65b9\u7816\u95ee\u9898",
+    "description": {
+        "format": "html",
+        "value": "<p><span style=\"color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; \" class=\"Apple-style-span\">\u7528\u8fb9\u957f\u5c0f\u4e8eN\u7684\u6b63\u65b9\u5f62\u65b9\u7816\uff08\u6ce8\u610f\uff0c\u4e0d\u8981\u6c42\u6240\u6709\u7684\u65b9\u7816\u5927\u5c0f\u76f8\u540c\uff0c\u8bf7\u770b\u6837\u4f8b\u8bf4\u660e\uff09\u4e0d\u91cd\u53e0\u5730\u94fa\u6ee1N*N\u7684\u6b63\u65b9\u5f62\u623f\u95f4\uff0c\u6700\u5c11\u8981\u51e0\u5757\u65b9\u7816\u3002</span></p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p><span style=\"color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; \" class=\"Apple-style-span\">\u7b2c\u4e00\u884c\u662f\u4e00\u4e2a\u6574\u6570T,\u8868\u793a\u6d4b\u8bd5\u6570\u636e\u7684\u7ec4\u6570,\u63a5\u4e0b\u6765\u7684T \u884c\uff0c\u6bcf\u4e00\u884c\u662f\u4e00\u4e2aN(2&lt;=N&lt;=100)</span></p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p><span style=\"color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; \" class=\"Apple-style-span\">\u5bf9\u4e8e\u6bcf\u4e00\u7ec4\u6d4b\u8bd5\u6570\u636e\u8f93\u51fa\u4e00\u884c\uff0c\u4e3a\u6700\u5c11\u9700\u8981\u7684\u5757\u6570\u3002</span></p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p><span style=\"color: rgb(0, 0, 0); font-family: 'Times New Roman'; font-style: normal; font-variant: normal; font-weight: normal; letter-spacing: normal; line-height: normal; orphans: 2; text-align: -webkit-auto; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-decorations-in-effect: none; -webkit-text-size-adjust: auto; -webkit-text-stroke-width: 0px; font-size: medium; \" class=\"Apple-style-span\">\u5f53N\uff1d4\u65f6<span class=\"Apple-converted-space\">&nbsp;</span><br />\n\u6700\u4f18\u7684\u94fa\u7816\u65b9\u6cd5<span class=\"Apple-converted-space\">&nbsp;</span><br />\nAABB<span class=\"Apple-converted-space\">&nbsp;</span><br />\nAABB<span class=\"Apple-converted-space\">&nbsp;</span><br />\nCCDD<span class=\"Apple-converted-space\">&nbsp;</span><br />\nCCDD<span class=\"Apple-converted-space\">&nbsp;</span><br />\nA\uff0cB\uff0cC\uff0cD\u4e3a\u56db\u5757\u65b9\u7816\u7684\u4ee3\u53f7\u3002<span class=\"Apple-converted-space\">&nbsp;</span><br />\n\u5176\u4ed6\u7684\u94fa\u7816\u65b9\u6cd5\uff0c\u4f8b\u5982\uff1a<span class=\"Apple-converted-space\">&nbsp;</span><br />\nAAAB<span class=\"Apple-converted-space\">&nbsp;</span><br />\nAAAC<span class=\"Apple-converted-space\">&nbsp;</span><br />\nAAAD<span class=\"Apple-converted-space\">&nbsp;</span><br />\nEFGH<span class=\"Apple-converted-space\">&nbsp;</span><br />\n\u9700\u8981\u76848\u5757\u65b9\u7816\uff0c\u4e0d\u662f\u6700\u5c11\u7684\u3002<span class=\"Apple-converted-space\"> </span><br />\n</span></p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "2 \n4 \n5",
+            "output": "4 \n8"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

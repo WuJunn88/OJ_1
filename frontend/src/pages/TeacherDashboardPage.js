@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { getUsers, getSchools, getMajors, getClasses, batchImportStudents, getProblems, createProblem, updateProblem, deleteProblem, updateUser, deleteUser, registerStudent, getTeacherCourses, getCourseAssignments, createAssignment, updateAssignment, deleteAssignment, getCourseStudents, addStudentToCourse, removeStudentFromCourse, getDepartments, batchImportStudentsFromExcel, excludeOriginalStudent, cancelExcludeOriginalStudent } from '../services/api';
+import React, { useState, useEffect, useCallback } from 'react';
+import { getUsers, getSchools, getMajors, getClasses, getProblems, createProblem, updateProblem, deleteProblem, updateUser, deleteUser, registerStudent, getTeacherCourses, getCourseAssignments, createAssignment, updateAssignment, deleteAssignment, getCourseStudents, addStudentToCourse, removeStudentFromCourse, getDepartments, batchImportStudentsFromExcel, excludeOriginalStudent, aiSelectProblems, previewAiSelectedProblems } from '../services/api';
 import * as XLSX from 'xlsx';
 import './TeacherDashboardPage.css';
 import AIProblemGenerationPage from './AIProblemGenerationPage';
@@ -60,6 +60,12 @@ const TeacherDashboardPage = () => {
   // 编辑题目状态
   const [editingProblem, setEditingProblem] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  // 分页相关状态
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(20); // 每页显示20个题目
+  const [totalProblems, setTotalProblems] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
 
   // 测试用例管理函数
   const addTestCase = () => {
@@ -183,6 +189,15 @@ const TeacherDashboardPage = () => {
   
   // 学生-教学班关联关系状态
   const [studentClassRelations, setStudentClassRelations] = useState([]); // 存储学生与教学班的关联关系
+
+  // 智能选题相关状态
+  const [aiSelectionForm, setAiSelectionForm] = useState({
+    requirements: '',
+    problem_count: 3
+  });
+  const [aiSelectedProblems, setAiSelectedProblems] = useState([]);
+  const [isAiSelecting, setIsAiSelecting] = useState(false);
+  const [aiSelectionResult, setAiSelectionResult] = useState(null);
 
   useEffect(() => {
     fetchInitialData();
@@ -320,16 +335,31 @@ const TeacherDashboardPage = () => {
   };
 
   // 刷新题目列表
-  const fetchProblems = async () => {
+  const fetchProblems = async (page = currentPage) => {
     try {
-      const problemsData = await getProblems(1, 50);
+      const problemsData = await getProblems(page, perPage);
       if (problemsData && problemsData.problems) {
         setProblems(problemsData.problems);
-        console.log('题目列表刷新成功，题目数量:', problemsData.problems.length);
+        setTotalProblems(problemsData.total);
+        setTotalPages(problemsData.pages);
+        setCurrentPage(page);
+        console.log(`题目列表刷新成功，第${page}页，题目数量: ${problemsData.problems.length}，总计: ${problemsData.total}`);
       }
     } catch (error) {
       console.warn('刷新题目列表失败:', error);
     }
+  };
+
+  // 分页控制函数
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+    fetchProblems(newPage);
+  };
+
+  const handlePerPageChange = (newPerPage) => {
+    setPerPage(newPerPage);
+    setCurrentPage(1); // 重置到第一页
+    fetchProblems(1);
   };
 
   // 监听课程变化，加载课程学生关联关系
@@ -344,7 +374,7 @@ const TeacherDashboardPage = () => {
     loadCourseStudents();
   }, [editingCourse]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const fetchInitialData = async () => {
+  const fetchInitialData = useCallback(async () => {
     try {
       setLoading(true);
       setError('');
@@ -352,12 +382,15 @@ const TeacherDashboardPage = () => {
       const [schoolsData, usersData, problemsData] = await Promise.all([
         getSchools(),
         getUsers(1, 50, 'student'),
-        getProblems(1, 50)
+        getProblems(1, perPage)  // 使用分页参数
       ]);
       
       setSchools(schoolsData);
       setUsers(usersData.users);
       setProblems(problemsData.problems);
+      setTotalProblems(problemsData.total);
+      setTotalPages(problemsData.pages);
+      setCurrentPage(1);
       
       // 获取所有专业和班级数据 - 确保schools数据已经设置
       if (schoolsData && schoolsData.length > 0) {
@@ -417,7 +450,7 @@ const TeacherDashboardPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [perPage]);
 
   // 获取所有专业和班级数据的函数
   const fetchAllMajorsAndClasses = async (schoolsData = null) => {
@@ -741,8 +774,11 @@ const TeacherDashboardPage = () => {
       setEditingProblem(null);
       
       // 刷新题目列表
-      const problemsData = await getProblems(1, 50);
+      const problemsData = await getProblems(1, perPage);  // 使用分页参数
       setProblems(problemsData.problems);
+      setTotalProblems(problemsData.total);
+      setTotalPages(problemsData.pages);
+      setCurrentPage(1);
       
       // 切换到题目列表
       setActiveSubTab('list');
@@ -844,8 +880,11 @@ const TeacherDashboardPage = () => {
       setSuccess('题目删除成功！');
       
       // 刷新题目列表
-      const problemsData = await getProblems(1, 50);
+      const problemsData = await getProblems(1, perPage);  // 使用分页参数
       setProblems(problemsData.problems);
+      setTotalProblems(problemsData.total);
+      setTotalPages(problemsData.pages);
+      setCurrentPage(1);
     } catch (error) {
       setError(error.response?.data?.error || '删除题目失败');
     } finally {
@@ -1745,6 +1784,89 @@ const TeacherDashboardPage = () => {
               </tbody>
             </table>
           </div>
+          
+          {/* 分页组件 */}
+          <div className="pagination-container">
+            <div className="pagination-info">
+              <span>显示第 {((currentPage - 1) * perPage) + 1} - {Math.min(currentPage * perPage, totalProblems)} 题，共 {totalProblems} 题</span>
+            </div>
+            
+            <div className="pagination-controls">
+              <div className="per-page-selector">
+                <label>每页显示：</label>
+                <select 
+                  value={perPage} 
+                  onChange={(e) => handlePerPageChange(parseInt(e.target.value))}
+                >
+                  <option value={10}>10</option>
+                  <option value={20}>20</option>
+                  <option value={50}>50</option>
+                  <option value={100}>100</option>
+                </select>
+              </div>
+              
+              <div className="page-navigation">
+                <button 
+                  className="page-btn"
+                  onClick={() => handlePageChange(1)}
+                  disabled={currentPage === 1}
+                >
+                  « 首页
+                </button>
+                
+                <button 
+                  className="page-btn"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  ‹ 上一页
+                </button>
+                
+                {/* 页码显示 */}
+                <div className="page-numbers">
+                  {(() => {
+                    const pages = [];
+                    const maxVisiblePages = 5;
+                    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+                    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+                    
+                    if (endPage - startPage + 1 < maxVisiblePages) {
+                      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+                    }
+                    
+                    for (let i = startPage; i <= endPage; i++) {
+                      pages.push(
+                        <button
+                          key={i}
+                          className={`page-btn ${i === currentPage ? 'active' : ''}`}
+                          onClick={() => handlePageChange(i)}
+                        >
+                          {i}
+                        </button>
+                      );
+                    }
+                    return pages;
+                  })()}
+                </div>
+                
+                <button 
+                  className="page-btn"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  下一页 ›
+                </button>
+                
+                <button 
+                  className="page-btn"
+                  onClick={() => handlePageChange(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  末页 »
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -2437,6 +2559,116 @@ const TeacherDashboardPage = () => {
                   
                   <div className="form-group">
                     <label>选择题目：</label>
+                    
+                    {/* 智能选题功能 */}
+                    <div className="ai-selection-section">
+                      <div className="ai-selection-header">
+                        <h4>🤖 AI智能选题</h4>
+                        <p className="ai-selection-desc">输入选题需求，AI将自动从题目库中选择最合适的题目</p>
+                      </div>
+                      
+                      <div className="ai-selection-form">
+                        <div className="form-row">
+                          <div className="form-group">
+                            <label>选题需求描述：</label>
+                            <textarea
+                              placeholder="例如：需要3道关于数组和循环的题目，难度从简单到困难，适合大一学生"
+                              value={aiSelectionForm.requirements}
+                              onChange={(e) => setAiSelectionForm(prev => ({ ...prev, requirements: e.target.value }))}
+                              rows={3}
+                            />
+                          </div>
+                          
+                          <div className="form-group">
+                            <label>题目数量：</label>
+                            <select
+                              value={aiSelectionForm.problem_count}
+                              onChange={(e) => setAiSelectionForm(prev => ({ ...prev, problem_count: parseInt(e.target.value) }))}
+                            >
+                              <option value={1}>1题</option>
+                              <option value={2}>2题</option>
+                              <option value={3}>3题</option>
+                              <option value={4}>4题</option>
+                              <option value={5}>5题</option>
+                            </select>
+                          </div>
+                        </div>
+                        
+                        <div className="ai-selection-actions">
+                          <button 
+                            className="ai-select-btn"
+                            onClick={handleAiSelectProblems}
+                            disabled={isAiSelecting || !aiSelectionForm.requirements.trim()}
+                          >
+                            {isAiSelecting ? 'AI选题中...' : '🤖 开始AI选题'}
+                          </button>
+                          
+                          {aiSelectedProblems.length > 0 && (
+                            <>
+                              <button 
+                                className="preview-btn"
+                                onClick={handlePreviewAiSelection}
+                              >
+                                👁️ 预览结果
+                              </button>
+                              
+                              <button 
+                                className="apply-btn"
+                                onClick={handleApplyAiSelection}
+                              >
+                                ✅ 应用选题
+                              </button>
+                              
+                              <button 
+                                className="clear-btn"
+                                onClick={handleClearAiSelection}
+                              >
+                                🗑️ 清空结果
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                      
+                      {/* AI选题结果展示 */}
+                      {aiSelectionResult && aiSelectedProblems.length > 0 && (
+                        <div className="ai-selection-result">
+                          <h5>🎯 AI选题结果</h5>
+                          <div className="ai-selected-problems">
+                            {aiSelectedProblems.map((selected, index) => {
+                              const problem = problems.find(p => p.id === selected.problem_id);
+                              return problem ? (
+                                <div key={selected.problem_id} className="ai-selected-problem">
+                                  <div className="problem-info">
+                                    <span className="problem-number">{index + 1}</span>
+                                    <span className="problem-title">{problem.title}</span>
+                                    <span className={`difficulty-badge ${problem.difficulty}`}>
+                                      {problem.difficulty === 'easy' ? '简单' : 
+                                       problem.difficulty === 'medium' ? '中等' : '困难'}
+                                    </span>
+                                  </div>
+                                  <div className="ai-reason">
+                                    <strong>选择理由：</strong>{selected.reason}
+                                  </div>
+                                  <div className="ai-details">
+                                    <span>难度：{selected.difficulty_level}</span>
+                                    <span>概念：{selected.concept_coverage}</span>
+                                  </div>
+                                </div>
+                              ) : null;
+                            })}
+                          </div>
+                          
+                          {aiSelectionResult.selection_summary && (
+                            <div className="ai-summary">
+                              <strong>AI选题总结：</strong>
+                              {aiSelectionResult.selection_summary}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    
                     <div className="problem-selection">
                       {problems.map(problem => (
                         <label key={problem.id} className="problem-checkbox">
@@ -2816,11 +3048,7 @@ const TeacherDashboardPage = () => {
     });
   };
 
-  // 获取当前选中学校对应的专业列表（用于选择器显示）
-  const getCurrentSchoolMajors = () => {
-    if (!selectedSchool) return [];
-    return majors.filter(major => major.school_id === selectedSchool);
-  };
+
 
   // 获取当前选中专业对应的班级列表（用于选择器显示）
   const getCurrentMajorClasses = () => {
@@ -2836,19 +3064,7 @@ const TeacherDashboardPage = () => {
     return filteredClasses;
   };
 
-  // 获取添加学生表单中选中学校对应的专业列表
-  const getAddStudentSchoolMajors = () => {
-    if (!addStudentForm.school_id) return [];
-    
-    const schoolId = addStudentForm.school_id;
-    const filteredMajors = majors.filter(major => {
-      const majorSchoolId = major.school_id;
-      const isMatch = majorSchoolId === schoolId || majorSchoolId === parseInt(schoolId) || parseInt(majorSchoolId) === schoolId;
-      return isMatch;
-    });
-    
-    return filteredMajors;
-  };
+
 
   // 获取添加学生表单中选中学校对应的院部列表
   const getAddStudentSchoolDepartments = () => {
@@ -2947,6 +3163,94 @@ const TeacherDashboardPage = () => {
     
     return filteredMajors;
   };
+
+  // 智能选题处理函数
+  const handleAiSelectProblems = async () => {
+    if (!aiSelectionForm.requirements.trim()) {
+      setError('请输入选题需求描述');
+      return;
+    }
+
+    if (!editingCourse) {
+      setError('请先选择课程');
+      return;
+    }
+
+    try {
+      setIsAiSelecting(true);
+      setError('');
+      
+      const result = await aiSelectProblems({
+        requirements: aiSelectionForm.requirements,
+        course_id: editingCourse.id,
+        problem_count: aiSelectionForm.problem_count
+      });
+
+      setAiSelectedProblems(result.selected_problems || []);
+      setAiSelectionResult(result);
+      setSuccess('AI智能选题成功！');
+      
+      // 自动将AI选择的题目添加到作业表单中
+      const selectedProblemIds = result.selected_problems.map(p => p.problem_id);
+      setAssignmentForm(prev => ({
+        ...prev,
+        problem_ids: [...new Set([...prev.problem_ids, ...selectedProblemIds])]
+      }));
+
+    } catch (error) {
+      setError(error.message || 'AI选题失败，请重试');
+      console.error('AI选题失败:', error);
+    } finally {
+      setIsAiSelecting(false);
+    }
+  };
+
+  const handlePreviewAiSelection = async () => {
+    if (aiSelectedProblems.length === 0) {
+      setError('没有AI选择的题目可预览');
+      return;
+    }
+
+    try {
+      const result = await previewAiSelectedProblems({
+        selected_problem_ids: aiSelectedProblems.map(p => p.problem_id)
+      });
+      
+      // 可以在这里显示预览结果
+      console.log('AI选题预览结果:', result);
+      
+    } catch (error) {
+      setError(error.message || '预览失败');
+      console.error('预览失败:', error);
+    }
+  };
+
+  const handleApplyAiSelection = () => {
+    if (aiSelectedProblems.length === 0) {
+      setError('没有AI选择的题目可应用');
+      return;
+    }
+
+    // 将AI选择的题目应用到作业表单
+    const selectedProblemIds = aiSelectedProblems.map(p => p.problem_id);
+    setAssignmentForm(prev => ({
+      ...prev,
+      problem_ids: [...new Set([...prev.problem_ids, ...selectedProblemIds])]
+    }));
+
+    setSuccess(`已应用AI选择的${aiSelectedProblems.length}道题目`);
+  };
+
+  const handleClearAiSelection = () => {
+    setAiSelectedProblems([]);
+    setAiSelectionResult(null);
+    setAiSelectionForm({
+      requirements: '',
+      problem_count: 3
+    });
+  };
+
+  // 作业创建处理函数
 
 
 
@@ -3164,6 +3468,116 @@ const TeacherDashboardPage = () => {
             
             <div className="form-group">
               <label>选择题目：</label>
+              
+              {/* 智能选题功能 */}
+              <div className="ai-selection-section">
+                <div className="ai-selection-header">
+                  <h4>🤖 AI智能选题</h4>
+                  <p className="ai-selection-desc">输入选题需求，AI将自动从题目库中选择最合适的题目</p>
+                </div>
+                
+                <div className="ai-selection-form">
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label>选题需求描述：</label>
+                      <textarea
+                        placeholder="例如：需要3道关于数组和循环的题目，难度从简单到困难，适合大一学生"
+                        value={aiSelectionForm.requirements}
+                        onChange={(e) => setAiSelectionForm(prev => ({ ...prev, requirements: e.target.value }))}
+                        rows={3}
+                      />
+                    </div>
+                    
+                    <div className="form-group">
+                      <label>题目数量：</label>
+                      <select
+                        value={aiSelectionForm.problem_count}
+                        onChange={(e) => setAiSelectionForm(prev => ({ ...prev, problem_count: parseInt(e.target.value) }))}
+                      >
+                        <option value={1}>1题</option>
+                        <option value={2}>2题</option>
+                        <option value={3}>3题</option>
+                        <option value={4}>4题</option>
+                        <option value={5}>5题</option>
+                      </select>
+                    </div>
+                  </div>
+                  
+                  <div className="ai-selection-actions">
+                    <button 
+                      className="ai-select-btn"
+                      onClick={handleAiSelectProblems}
+                      disabled={isAiSelecting || !aiSelectionForm.requirements.trim()}
+                    >
+                      {isAiSelecting ? 'AI选题中...' : '🤖 开始AI选题'}
+                    </button>
+                    
+                    {aiSelectedProblems.length > 0 && (
+                      <>
+                        <button 
+                          className="preview-btn"
+                          onClick={handlePreviewAiSelection}
+                        >
+                          👁️ 预览结果
+                        </button>
+                        
+                        <button 
+                          className="apply-btn"
+                          onClick={handleApplyAiSelection}
+                        >
+                          ✅ 应用选题
+                        </button>
+                        
+                        <button 
+                          className="clear-btn"
+                          onClick={handleClearAiSelection}
+                        >
+                          🗑️ 清空结果
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+                
+                {/* AI选题结果展示 */}
+                {aiSelectionResult && aiSelectedProblems.length > 0 && (
+                  <div className="ai-selection-result">
+                    <h5>🎯 AI选题结果</h5>
+                    <div className="ai-selected-problems">
+                      {aiSelectedProblems.map((selected, index) => {
+                        const problem = problems.find(p => p.id === selected.problem_id);
+                        return problem ? (
+                          <div key={selected.problem_id} className="ai-selected-problem">
+                            <div className="problem-info">
+                              <span className="problem-number">{index + 1}</span>
+                              <span className="problem-title">{problem.title}</span>
+                              <span className={`difficulty-badge ${problem.difficulty}`}>
+                                {problem.difficulty === 'easy' ? '简单' : 
+                                 problem.difficulty === 'medium' ? '中等' : '困难'}
+                              </span>
+                            </div>
+                            <div className="ai-reason">
+                              <strong>选择理由：</strong>{selected.reason}
+                            </div>
+                            <div className="ai-details">
+                              <span>难度：{selected.difficulty_level}</span>
+                              <span>概念：{selected.concept_coverage}</span>
+                            </div>
+                          </div>
+                        ) : null;
+                      })}
+                    </div>
+                    
+                    {aiSelectionResult.selection_summary && (
+                      <div className="ai-summary">
+                        <strong>AI选题总结：</strong>
+                        {aiSelectionResult.selection_summary}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+              
               <div className="problem-selection">
                 {problems.map(problem => (
                   <label key={problem.id} className="problem-checkbox">

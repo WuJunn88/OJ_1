@@ -1,0 +1,43 @@
+{
+    "display_id": 1108,
+    "title": "\u3010\u5faa\u73af\u3011\u8c01\u662f\u5c0f\u5077\uff08thief\uff09",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<!--[if gte mso 9]>Normal07.8 \u78c502falsefalsefalseMicrosoftInternetExplorer4<![endif]--><!--[if gte mso 9]><![endif]--><!--[if gte mso 10]>\n<![endif]--><span style=\"font-size:medium;\"><span style=\"font-family:\u5b8b\u4f53;\">&nbsp;&nbsp;&nbsp; \u8b66\u5bdf\u5c40\u6293\u4e86<span>A</span>\u3001<span>B</span>\u3001<span>C</span>\u3001<span>D</span>\u56db\u540d\u5077\u7a83\u5acc\u7591\u72af\uff0c\u5176\u4e2d\u6709\u4e00\u4e2a\u662f\u5c0f\u5077\u3002\u5ba1\u95ee\u4e2d<span>A</span>\u8bf4\uff1a\u201c\u6211\u4e0d\u662f\u5c0f\u5077\u3002\u201d<span>B</span>\u8bf4\u201c<span>C</span>\u662f\u5c0f\u5077\u3002\u201d<span>C</span>\u8bf4\uff1a\u201c\u5c0f\u5077\u80af\u5b9a\u662f<span>D</span>\u3002\u201d<span>D</span>\u8bf4\uff1a\u201c<span>C</span>\u5728\u51a4\u6789\u4eba\u3002\u201d\u73b0\u5728\u5df2\u7ecf\u77e5\u9053\u56db\u4e2a\u4eba\u4e2d\u4e09\u4eba\u8bf4\u7684\u662f\u771f\u8bdd\uff0c\u4e00\u4eba\u8bf4\u7684\u662f\u5047\u8bdd\uff0c\u95ee\u5230\u5e95\u8c01\u662f\u5c0f\u5077\uff1f</span></span> \n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"font-size:medium;\">\u65e0\u3002</span> \n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"font-size:medium;\">\u5c0f\u5077\uff08\u7528\u5b57\u6bcd\u8868\u793a\uff09\uff0c\u5373A\u3001B\u3001C\u3001D\u5176\u4e2d\u4e00\u4e2a\u5b57\u6bcd\u3002</span> \n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

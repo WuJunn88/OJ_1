@@ -1,0 +1,43 @@
+{
+    "display_id": 1074,
+    "title": "\u7ec4\u6210\u4e09\u4f4d\u6570",
+    "description": {
+        "format": "html",
+        "value": "<p class=\"MsoNormal\">\n\t\u5c06<span>1</span>\uff0c<span>2</span>\uff0c\u2026\uff0c<span>9</span>\u5171<span>9</span>\u4e2a\u6570\u5206\u6210\u4e09\u7ec4\uff0c\u5206\u522b\u7ec4\u6210\u4e09\u4e2a\u4e09\u4f4d\u6570\uff0c\u4e14\u4f7f\u8fd9\u4e09\u4e2a\u4e09\u4f4d\u6570\u6784\u6210<span style=\"line-height:1.5;\">1</span><span style=\"line-height:1.5;\">\uff1a</span><span style=\"line-height:1.5;\">2</span><span style=\"line-height:1.5;\">\uff1a</span><span style=\"line-height:1.5;\">3</span><span style=\"line-height:1.5;\">\u7684\u6bd4\u4f8b\uff0c\u8bd5\u6c42\u51fa\u6240\u6709\u6ee1\u8db3\u6761\u4ef6\u7684\u4e09\u4e2a\u4e09\u4f4d\u6570\u3002</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span></span> \n</p>\n<p>\n\t\u4f8b\u5982\uff1a\u4e09\u4e2a\u4e09\u4f4d\u6570192\uff0c384\uff0c576\u6ee1\u8db3\u4ee5\u4e0a\u6761\u4ef6\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t\u672c\u9898\u65e0\u8f93\u5165\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u8f93\u51fa\u6240\u6709\u7b26\u5408\u8981\u6c42\u7684\u4e09\u4e2a\u4e09\u4f4d\u6570\uff0c\u6bcf\u4e00\u7ec4\u5360\u4e00\u884c\uff0c\u6570\u5b57\u4e4b\u95f4\u7531\u4e00\u4e2a\u7a7a\u683c\u5206\u9694\u3002\n</p>\n<p>\n\t\u6bcf\u7ec4\u4e2d\u7684\u4e09\u4e2a\u6570\u5b57\u6309\u7167\u4ece\u5c0f\u5230\u5927\u8f93\u51fa\uff0c\u5404\u7ec4\u4e4b\u95f4\u6309\u7167\u6bcf\u7ec4\u7684\u7b2c\u4e00\u4e2a\u6570\u4ece\u5c0f\u5230\u5927\u8f93\u51fa\u3002\n</p>\n<p>\n\t<br />\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "\u672c\u9898\u65e0\u8f93\u5165\u3002<br />\n\u672c\u9898\u7ed3\u679c\u662f\u552f\u4e00\u7684\uff0c\u6240\u4ee5\u4e0d\u63d0\u4f9b\u8f93\u51fa\u6837\u4f8b\u3002<br />"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

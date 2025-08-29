@@ -1,0 +1,43 @@
+{
+    "display_id": 1217,
+    "title": "\u5173\u7cfb\u8fd0\u7b97\u5b9e\u9a8c",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u6309\u4ee5\u4e0b\u8981\u6c42\u7f16\u7a0b\n</p>\n<table style=\"width:500px;\" border=\"1\" cellspacing=\"2\" bordercolor=\"#000000\" cellpadding=\"0\">\n\t<tbody>\n\t\t<tr>\n\t\t\t<td>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u76f4\u63a5\u8f93\u51fa\u201c7==5: \u201d\u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(7==5)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u76f4\u63a5\u8f93\u51fa\u201c5&gt;4: \u201d\u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(5&gt;4)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u76f4\u63a5\u8f93\u51fa\u201c3!=2: \u201d\u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(3!=2)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u76f4\u63a5\u8f93\u51fa\u201c6&gt;=6: \u201d\u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(6&gt;=6)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u76f4\u63a5\u8f93\u51fa\u201c5&lt;5: \u201d\u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(5&lt;5)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u4ee4a=2, b=3\u548cc=6, \uff08\u53ef\u4ee5\u76f4\u63a5 int a=2;\uff09</span> \n\t\t\t\t</p>\n\t\t\t\t<p>\n\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u8f93\u51fa\u201ca==5: \u201d \u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(a==5)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">&nbsp;\u8f93\u51fa\u201ca*b&gt;=c: \u201d \u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(a*b &gt;= c)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span><br />\n<span style=\"font-family:SimSun;\">&nbsp;\u8f93\u51fa\u201cb+4&gt;a*c: \u201d \u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97(b+4&gt;a*c)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span><br />\n<span style=\"font-family:SimSun;\">&nbsp;\u8f93\u51fa\u201c(b=2)==a: \u201d \u4ee5\u53ca\u5173\u7cfb\u8fd0\u7b97((b=2) == a)\u7684\u503c\u5e76\u56de\u8f66\u6362\u884c</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t\t</td>\n\t\t\t\t\t\t\t</tr>\n\t\t\t\t\t\t\t\t</tbody>\n\t\t\t\t\t\t\t\t\t</table>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u63d0\u793a\uff1a\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u5173\u7cfb\u8fd0\u7b97\u7684\u64cd\u4f5c\u662f\u5728\u8fdb\u884c\u5224\u65ad\uff0c\u5224\u65ad\u8be5\u5173\u7cfb\u5f0f\u662f\u5426\u6210\u7acb\uff0c\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u5982\u679c\u5173\u7cfb\u6210\u7acb\uff0c\u7ed3\u679c\u4e3a\u903b\u8f91\u503ctrue\uff1b\u5982\u679c\u5173\u7cfb\u4e0d\u6210\u7acb\uff0c\u7ed3\u679c\u4e3a\u903b\u8f91\u503cfalse\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\ttrue\u75281\u6216\u975e0\u7684\u6570\u8868\u793a\uff0c false\u75280\u8868\u793a\u3002\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u6ce8\u610f \uff1a\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u5224\u65ad\u662f\u5426\u76f8\u7b49\uff0c\u5173\u7cfb\u8fd0\u7b97\u7b26\u662f == \u4e24\u4e2a\u7b49\u53f7\u3002\u4e00\u4e2a\u7b49\u53f7\u662f\u8d4b\u503c\u547d\u4ee4\uff0c\u8fde\u7eed\u4e24\u4e2a\u7b49\u53f7\u662f\u5224\u65ad\u662f\u5426\u76f8\u7b49\u3002\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u5224\u65ad\u4e0d\u7b49\u4e8e\uff0c\u5173\u7cfb\u8fd0\u7b97\u7b26\u662f !=\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\t\u6240\u6709\u7b26\u53f7\u90fd\u662f\u5728\u82f1\u6587\u8f93\u5165\u6cd5\u4e0b\u8f93\u5165\u7684\u3002\n\t\t\t\t\t\t\t\t\t</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

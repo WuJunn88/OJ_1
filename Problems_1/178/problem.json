@@ -1,0 +1,43 @@
+{
+    "display_id": 1213,
+    "title": "\u94fe\u8868\u67e5\u627e(\u7ebf\u6027\u8868)",
+    "description": {
+        "format": "html",
+        "value": "<div style=\"line-height: 22pt\"><span style=\"font-size: 14pt\">\n<div style=\"line-height: 22pt\"><span style=\"font-size: 14pt\">&nbsp;\u7ebf\u6027\u8868(a1,a2,a3,&hellip;,an)\u4e2d\u5143\u7d20\u9012\u589e\u6709\u5e8f\u4e14\u6309\u987a\u5e8f\u5b58\u50a8\u4e8e\u8ba1\u7b97\u673a\u5185\u3002\u8981\u6c42\u8bbe\u8ba1\u4e00\u7b97\u6cd5\u5b8c\u6210\uff1a</span></div>\n<div style=\"line-height: 22pt\"><span style=\"font-size: 14pt\">\uff081\uff09 \u7528\u6700\u5c11\u65f6\u95f4\u5728\u8868\u4e2d\u67e5\u627e\u6570\u503c\u4e3ax\u7684\u5143\u7d20\u3002</span></div>\n<div style=\"line-height: 22pt\"><span style=\"font-size: 14pt\">\uff082\uff09 \u82e5\u627e\u5230\u5c06\u5176\u4e0e\u540e\u7ee7\u5143\u7d20\u4f4d\u7f6e\u76f8\u4ea4\u6362\u3002</span></div>\n<span style=\"font-size: 14pt\">\uff083\uff09 \u82e5\u627e\u4e0d\u5230\u5c06\u5176\u63d2\u5165\u8868\u4e2d\u5e76\u4f7f\u8868\u4e2d\u5143\u7d20\u4ecd\u9012\u589e\u6709\u5e8f\u3002</span></span></div>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\u8f93\u5165\uff1ax=3</p>\n<p>\u8f93\u5165\u957f\u5ea6\uff1a9</p>\n<p>\u8f93\u5165\u6570\u636e\uff1a2 3 5 7 12 15 17 23 45</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\u76f8\u540c\u5143\u7d20\u4e3a\uff1a3</p>\n<p>\u4ea4\u6362\u540e\u7684\u94fe\u8868\u4e3a\uff1a2 5 3 7 12 15 17 23 45</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "4\n9\n2 3 5 7 12 15 17 23 45",
+            "output": "no\n2 3 4 5 7 12 15 17 23 45"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

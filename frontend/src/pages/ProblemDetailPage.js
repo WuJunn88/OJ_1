@@ -317,6 +317,80 @@ const ProblemDetailPage = () => {
     }
   };
 
+  // 解析后端测试用例格式的函数
+  const parseTestCases = (testCasesStr, expectedOutputStr) => {
+    if (!testCasesStr && !expectedOutputStr) {
+      return [];
+    }
+    
+    // 优先尝试解析JSON数组格式：[ { input, output }, ... ]
+    try {
+      if (testCasesStr && testCasesStr.trim().startsWith('[')) {
+        const parsed = JSON.parse(testCasesStr);
+        if (Array.isArray(parsed)) {
+          return parsed.map((tc, idx) => ({
+            id: Date.now() + Math.random() + idx,
+            input: (tc && typeof tc.input !== 'undefined') ? String(tc.input) : '',
+            output: (tc && typeof tc.output !== 'undefined') ? String(tc.output) : ''
+          }));
+        }
+      }
+    } catch (e) {
+      // JSON解析失败则回退到旧格式
+      console.warn('解析JSON测试用例失败，回退旧格式:', e);
+    }
+    
+    const testCases = testCasesStr ? testCasesStr.split('\n').filter(line => line.trim()) : [];
+    const expectedOutputs = expectedOutputStr ? expectedOutputStr.split('\n').filter(line => line.trim()) : [];
+    
+    const maxLength = Math.max(testCases.length, expectedOutputs.length);
+    
+    const result = [];
+    for (let i = 0; i < maxLength; i++) {
+      result.push({
+        id: Date.now() + Math.random() + i, // 生成唯一ID
+        input: testCases[i] || '', // 如果没有输入则使用空字符串
+        output: expectedOutputs[i] || '' // 输出是必填的
+      });
+    }
+    
+    return result;
+  };
+
+  // 格式化测试用例显示
+  const formatTestCases = (testCasesStr, expectedOutputStr) => {
+    const testCases = parseTestCases(testCasesStr, expectedOutputStr);
+    
+    if (testCases.length === 0) {
+      return null;
+    }
+    
+    return (
+      <div className="test-cases-container">
+        {testCases.map((tc, index) => (
+          <div key={tc.id} className="test-case-item">
+            <div className="test-case-header">
+              <h4>测试用例 {index + 1}</h4>
+            </div>
+            {tc.input && (
+              <div className="test-case-input">
+                <strong>输入:</strong>
+                <pre className="example-code">{tc.input}</pre>
+              </div>
+            )}
+            {tc.output && (
+              <div className="test-case-output">
+                <strong>期望输出:</strong>
+                <pre className="example-code">{tc.output}</pre>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // 获取题目数据
   if (loading) {
     return (
       <div className="problem-detail-container">
@@ -395,18 +469,7 @@ const ProblemDetailPage = () => {
         {problem.type === 'programming' && (
           <div className="problem-examples">
             <h2>输入输出示例</h2>
-            {problem.test_cases && (
-              <div className="example-section">
-                <h3>输入:</h3>
-                <pre className="example-code">{problem.test_cases}</pre>
-              </div>
-            )}
-            {problem.expected_output && (
-              <div className="example-section">
-                <h3>期望输出:</h3>
-                <pre className="example-code">{problem.expected_output}</pre>
-              </div>
-            )}
+            {formatTestCases(problem.test_cases, problem.expected_output)}
           </div>
         )}
 

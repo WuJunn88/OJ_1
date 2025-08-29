@@ -1,0 +1,43 @@
+{
+    "display_id": 1230,
+    "title": "\u6c42\u6307\u6570\u65b9\u7a0b\u7684\u6839(fxroot) [2*+] **",
+    "description": {
+        "format": "html",
+        "value": "<span>\u6c42\u6307\u6570\u65b9\u7a0b\u7684\u6839(fxroot) <br />\n\u6c42\u65b9\u7a0bf(x)=2^x+3^x-4^x=0 \u5728[1,2]\u5185\u7684\u6839\u3002\u63d0\u793aa^x\u53ef\u8868\u793a\u6210exp(x*ln(a))\u6216\u7528math\u5e93\u4e2d\u7684power\uff08a,x\uff09\u3002 <br />\n\u8f93\u5165\uff1a\u65e0\u8f93\u5165 <br />\n\u8f93\u51fa\uff1af(x)=0\u7684\u6839\uff0cx\u7cbe\u786e\u5230\u5c0f\u6570\u70b910\u4f4d <br />\n\u63d0\u793a\uff1a\u8bb0\u65b9\u7a0bf(x)=0\uff0c\u82e5\u5b58\u57282\u4e2a\u6570x1\u548cx2\uff0c\u4e14x1</span>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

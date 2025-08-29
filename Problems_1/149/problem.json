@@ -1,0 +1,43 @@
+{
+    "display_id": 1184,
+    "title": "\u300aC\u8bed\u8a00\u7a0b\u5e8f\u8bbe\u8ba1\u300b\u6c5f\u5b9d\u948f\u4e3b\u7f16-\u4e60\u98981-3-\u65b0\u5e74\u597d",
+    "description": {
+        "format": "html",
+        "value": "<p>\u7f16\u5199\u7a0b\u5e8f\u5728\u5c4f\u5e55\u4e0a\u663e\u793a\uff1a</p>\n<p>*****************************</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Happy New Year!</p>\n<p>*****************************</p>\n<p>\u6ce8\u610f\uff1a</p>\n<p>29\u4e2a\u661f\u53f7\uff0cHappy New Year!\u9996\u5b57\u6bcd\u5927\u5199\uff0c\u4e2d\u95f41\u4e2a\u7a7a\u683c\u9694\u5f00\uff0c\u672b\u5c3e\u6709\u82f1\u6587\u53f9\u53f7\u3002</p>\n<p>H\u4e4b\u524d7\u4e2a\u7a7a\u683c\uff0c\u53f9\u53f7\u4e4b\u540e\u6ca1\u6709\u7a7a\u683c\u3002</p>\n<p>\u4e00\u51713\u884c\uff0c\u4e2d\u95f4\u6ca1\u6709\u7a7a\u884c\u3002</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\u6ca1\u6709\u8f93\u5165</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>*****************************</p>\n<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Happy New Year!</p>\n<p>*****************************</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p>\u590d\u5236\u6837\u4f8b\u8f93\u51fa\uff0c\u6539\u6210\u7a0b\u5e8f\u4ee3\u7801\u3002</p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u6ca1\u6709\u8f93\u5165",
+            "output": "*****************************\n       Happy New Year!\n*****************************"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

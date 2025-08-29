@@ -1,0 +1,43 @@
+{
+    "display_id": 1131,
+    "title": "\u6570\u5b57\u56fe\u5f62\u6253\u5370\u4e8c",
+    "description": {
+        "format": "html",
+        "value": "&nbsp;<b><span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u4ece\u952e\u76d8\u8f93\u5165\u884c\u6570</span></b><b><span style=\"font-size:14pt;\">N</span></b><b><span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\uff0c\uff11&lt;=</span></b><b><span style=\"font-size:14pt;\">N&lt;=9\uff0c\u8f93\u51fa\u4ee5\u4e0b\u56fe\u5f62</span></b><b><span style=\"font-family:\u5b8b\u4f53;font-size:14pt;\">\u3002</span></b><span style=\"font-size:14pt;\"></span> \n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;\">\u4f8b\u5982</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;\">\u8f93\u5165</span><span>5</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;\">\u8f93\u51fa</span> \n</p>\n<p style=\"text-indent:21pt;\" class=\"MsoNormal\">\n\t<span>1</span> \n</p>\n<p style=\"text-indent:15.75pt;\" class=\"MsoNormal\">\n\t<span>121</span> \n</p>\n<p style=\"text-indent:10.5pt;\" class=\"MsoNormal\">\n\t<span>12321</span> \n</p>\n<p style=\"text-indent:5.25pt;\" class=\"MsoNormal\">\n\t<span>1234321</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span>123454321</span> \n</p>\n<p class=\"MsoNormal\">\n\t<b><span></span></b>\n</p>\n<p class=\"MsoNormal\">\n\t<b><span></span></b>\n</p>\n<p class=\"MsoNormal\">\n\t<span></span>\n</p>\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;\">\u8f93\u5165</span><span>8</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span style=\"font-family:\u5b8b\u4f53;\">\u8f93\u51fa</span> \n</p>\n<p style=\"text-indent:36.75pt;\" class=\"MsoNormal\">\n\t<span>1</span> \n</p>\n<p style=\"text-indent:31.5pt;\" class=\"MsoNormal\">\n\t<span>121</span> \n</p>\n<p style=\"text-indent:26.25pt;\" class=\"MsoNormal\">\n\t<span>12321</span> \n</p>\n<p style=\"text-indent:21pt;\" class=\"MsoNormal\">\n\t<span>1234321</span> \n</p>\n<p style=\"text-indent:15.75pt;\" class=\"MsoNormal\">\n\t<span>123454321</span> \n</p>\n<p style=\"text-indent:10.3pt;\" class=\"MsoNormal\">\n\t<span>12345654321</span> \n</p>\n<p style=\"text-indent:5.15pt;\" class=\"MsoNormal\">\n\t<span>1234567654321</span> \n</p>\n<p class=\"MsoNormal\">\n\t<span>123456787654321</span> \n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

@@ -1,0 +1,43 @@
+{
+    "display_id": 1212,
+    "title": "\u5e38\u6570\u4e0e\u5e38\u91cf\u5b9e\u9a8c",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"font-family:SimSun;\">\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"></span>\n</p>\n<p>\n\t\u4f53\u9a8c\u5e38\u91cf\u7684\u5b9a\u4e49\u65b9\u6cd5\u4ee5\u53ca\u7279\u6b8a\u5b57\u7b26\u7684\u4f7f\u7528\n</p>\n<p>\n\t\u8bf7\u6839\u636e\u4ee5\u4e0b\u8981\u6c42\u7f16\u7a0b</span>&nbsp;&nbsp;\n\t<table style=\"width:500px;\" border=\"1\" cellspacing=\"1\" bordercolor=\"#000000\" cellpadding=\"1\">\n\t\t<tbody>\n\t\t\t<tr>\n\t\t\t\t<td>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528define\u547d\u4ee4\u5b9a\u4e49\u5e38\u91cfoct1\uff0c\u5e76\u8bbe\u7f6e\u4e3a\u516b\u8fdb\u5236\u657077</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528const\u547d\u4ee4\u5b9a\u4e49\u6574\u578b\u5e38\u91cfhex1\uff0c\u5e76\u8bbe\u7f6e\u4e3a\u5341\u516d\u8fdb\u5236\u6570FF</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528const\u547d\u4ee4\u5b9a\u4e49\u5b57\u7b26\u4e32\u5e38\u91cfstr1\uff0c\u5e76\u8bbe\u7f6e\u4e3a\u201cWelcome\u201d</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528const\u547d\u4ee4\u5b9a\u4e49\u5b57\u7b26\u5e38\u91cfdq1\uff0c\u5e76\u8bbe\u7f6e\u4e3a\u4e00\u4e2a\u53cc\u5f15\u53f7\u3002\uff08\u53c2\u8003\u7279\u6b8a\u5b57\u7b26\uff09</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528</span><span style=\"font-family:SimSun;\">define</span><span style=\"font-family:SimSun;\">\u547d\u4ee4\u5b9a\u4e49\u5b57\u7b26\u5e38\u91cfnl</span><span style=\"font-family:SimSun;\">1\uff0c\u5e76\u8bbe\u7f6e\u4e3a\u4e00\u4e2a<strong>\u6362\u884c</strong>\u7b26</span><span style=\"font-family:SimSun;\">\u3002\uff08\u53c2\u8003\u7279\u6b8a\u5b57\u7b26\uff09</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528</span><span style=\"font-family:SimSun;\">define</span><span style=\"font-family:SimSun;\">\u547d\u4ee4\u5b9a\u4e49\u5b57\u7b26\u4e32</span><span style=\"font-family:SimSun;\">\u5e38\u91cfstr2</span><span style=\"font-family:SimSun;\">\uff0c\u5e76\u8bbe\u7f6e\u4e3a\u201cGre</span><span style=\"font-family:SimSun;\">at!</span><span style=\"font-family:SimSun;\">\u201d</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u7528const\u547d\u4ee4\u5b9a\u4e49\u5e38\u91cfpi\uff0c\u5e76\u8bbe\u7f6e\u4e3a3.14159</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfoct1\u7684\u503c\u5e76\u6362\u884c</span> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfhex1\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfstr1\u7684\u503c\u5e76\u6362\u884c</span><span style=\"font-family:SimSun;\"> \n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfdq1\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfnl1\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfstr2\u7684\u503c\u5e76\u6362\u884c\n\t\t\t\t\t</p>\n\t\t\t\t\t<p>\n\t\t\t\t\t\t<span style=\"font-family:SimSun;\">\u8f93\u51fa\u5e38\u91cfpi*100\u7684\u503c\u5e76\u6362\u884c</span></span></span></span></span></span> \n\t\t\t\t\t</p>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tbody>\n\t</table>\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u90e8\u5206\u6837\u4f8b\u8f93\u51fa</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">63</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"></span>&nbsp;\n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u63d0\u793a\uff1a</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">#define \u4e0d\u7528\u52a0\u7c7b\u578b\u8bf4\u660e\uff0c\u4e0d\u7528\u52a0\u7b49\u53f7\uff0c\u6700\u540e\u9762\u4e0d\u7528\u52a0\u5206\u53f7</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\"></span><span style=\"font-family:SimSun;\">const \u8981\u52a0\u7c7b\u578b\u8bf4\u660e\uff0c\u8981\u7528\u7b49\u53f7\uff0c\u540e\u9762\u8981\u52a0\u82f1\u6587\u5206\u53f7</span> \n</p>\n<p>\n\t<span style=\"font-family:SimSun;\">\u7279\u6b8a\u5b57\u7b26r '\\t'\u7b49\uff0c\u662f\u7528\u82f1\u6587\u5355\u5f15\u53f7\u62ec\u8d77\u6765&nbsp;</span> \n</p>\n<p>\n\t<strong><span style=\"font-family:SimSun;\">\u5b57\u7b26\u4e32</span></strong><span style=\"font-family:SimSun;\">\u7528\u82f1\u6587</span><strong><span style=\"font-family:SimSun;\">\u53cc\u5f15\u53f7</span></strong><span style=\"font-family:SimSun;\">\u62ec\u8d77\u6765\uff0c</span> \u5b57\u7b26\u4e32\u7684\u7c7b\u578b\u8bf4\u660e\u4e3a string\n</p>\n<p>\n\t<strong><span style=\"font-family:SimSun;\">\u5b57\u7b26</span></strong><span style=\"font-family:SimSun;\">\u7528\u82f1\u6587</span><strong><span style=\"font-family:SimSun;\">\u5355\u5f15\u53f7</span></strong><span style=\"font-family:SimSun;\">\u62ec\u8d77\u6765\u3002</span> \n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

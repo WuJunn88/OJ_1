@@ -1,0 +1,43 @@
+{
+    "display_id": 1047,
+    "title": "\u3010C\u8bed\u8a00\u8bad\u7ec3\u3011\u6c42\u8f66\u901f",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u4e00\u8f86\u4ee5\u56fa\u5b9a\u901f\u5ea6\u884c\u9a76\u7684\u6c7d\u8f66\uff0c\u53f8\u673a\u5728\u4e0a\u534810\u70b9\u770b\u5230\u91cc\u7a0b\u8868\u4e0a\u7684\u8bfb\u6570\u662f\u4e00\u4e2a\u5bf9\u79f0\u6570(\u5373\u8fd9\u4e2a\u6570\u4ece\u5de6\u5411\u53f3\u8bfb\u548c\u4ece\u53f3\u5411\u5de6\u8bfb\u662f\u5b8c\u5168\u4e00\u6837\u7684)\uff0c\u4e3a95859\u3002\u4e24\u5c0f\u65f6\u540e\u91cc\u7a0b\u8868\u4e0a\u51fa\u73b0\u4e86\u4e00\u4e2a\u65b0\u7684\u5bf9\u79f0\u6570\u3002\u95ee\u8be5\u8f66\u7684\u901f\u5ea6\u662f\u591a\u5c11\uff1f\u65b0\u7684\u5bf9\u79f0\u6570\u662f\u591a\u5c11\uff1f</span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": "<p>\n\t<span>\u6839\u636e\u9898\u610f\uff0c\u8bbe\u6240\u6c42\u5bf9\u79f0\u6570\u4e3ai\uff0c\u5176\u521d\u503c\u4e3a95589\uff0c\u5bf9\u5176\u4f9d\u6b21\u9012\u589e\u53d6\u503c\uff0c\u5c06i\u503c\u7684\u6bcf\u4e00\u4f4d\u5206\u89e3\u540e\u4e0e\u5176\u5bf9\u79f0\u4f4d\u7f6e\u4e0a\u7684\u6570\u8fdb\u884c\u6bd4\u8f83\uff0c\u82e5\u6bcf\u4e2a\u5bf9\u79f0\u4f4d\u7f6e\u4e0a\u7684\u6570\u7686\u76f8\u7b49\uff0c\u5219\u53ef\u5224\u5b9ai\u5373\u4e3a\u6240\u6c42\u7684\u5bf9\u79f0\u6570\u3002</span>\n</p>"
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "no input needed",
+            "output": "95959"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

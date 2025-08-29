@@ -1,0 +1,43 @@
+{
+    "display_id": 1227,
+    "title": "\u8df3\u9a6c\u95ee\u9898 [2*+]",
+    "description": {
+        "format": "html",
+        "value": "<span>\u5982\u4e0b\u56fe\u662f\u534a\u4e2a\u4e2d\u56fd\u8c61\u68cb\u68cb\u76d8\u3002\u6709\u4e00\u53ea\u9a6c\u4ece\u5de6\u4e0b\u89d2A\u70b9\u8df3\u5230\u53f3\u4e0a\u89d2B\u70b9\u3002\u89c4\u5b9a\u53ea\u80fd\u5f80\u53f3\u8df3\uff0c\u8df3\u6cd5\u6309\u7167\u8c61\u68cb\u7684\u65e5\u5b57\u578b\u8df3\u6cd5\u3002 <br />\n<img src=\"http://localhost/JudgeOnline/imgs/1951_1.gif\" /> <br />\n\u6c42\u8df3\u6cd5\u603b\u6570</span>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

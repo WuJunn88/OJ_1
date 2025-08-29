@@ -1,0 +1,43 @@
+{
+    "display_id": 1121,
+    "title": "\u4e60\u98983-7 \u5706\u76f8\u5173\u8ba1\u7b97",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t\u8bbe\u5706\u534a\u5f84\u4e3ar\uff0c\u5706\u67f1\u9ad8\u4e3ah\uff0c\u8ba1\u7b97\u5706\u5468\u957fc\u3001\u5706\u9762\u79efarea\uff0c\u5706\u7403\u8868\u9762\u79efs\uff0c\u5706\u7403\u4f53\u79efsv\uff0c\u5706\u67f1\u4f53\u79efcv.\n</p>\n<p>\n\t\u6570\u636e\u7c7b\u578b\u8bbe\u4e3a\u53cc\u7cbe\u5ea6double\u7c7b\u578b\uff0c\u5706\u534a\u5f84r\u548c\u5706\u67f1\u9ad8h\u4ece\u952e\u76d8\u8f93\u5165\uff0c\u8981\u6c42\u4f7f\u7528scanf\u51fd\u6570\u8f93\u5165\u6570\u636e\u3002\n</p>\n<p>\n\t\u8f93\u51fa\u7ed3\u679c\u4fdd\u75592\u4f4d\u5c0f\u6570\u3002\n</p>\n<p>\n\t\u8bf7\u5c06\u5706\u5468\u7387PI=3.14\u5b9a\u4e49\u4e3a\u7b26\u53f7\u5e38\u91cf\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u4ee5\u7a7a\u683c\u5206\u9694\u7684\u5706\u534a\u5f84\u548c\u5706\u67f1\u9ad8"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t\u5206\u884c\u8f93\u51fa\u5404\u6570\u636e\uff0c\u6309\u5982\u4e0b\u683c\u5f0f\u8f93\u51fa\uff1a\n</p>\n<p>\n\tc=\u5706\u5468\u957f\n</p>\n<p>\n\tarea=\u5706\u9762\u79ef\n</p>\n<p>\n\ts=\u5706\u7403\u8868\u9762\u79ef\n</p>\n<p>\n\tsv=\u5706\u7403\u4f53\u79ef\n</p>\n<p>\n\tcv=\u5706\u67f1\u4f53\u79ef\n</p>\n<p>\n\t\u6ce8\u610f\u672b\u5c3e\u7684\u6362\u884c\u3002\n</p>\n<p>\n\t&nbsp;\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "1.5 3",
+            "output": "c=9.42\narea=7.06\ns=28.26\nsv=14.13\ncv=21.20"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

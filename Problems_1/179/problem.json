@@ -1,0 +1,43 @@
+{
+    "display_id": 1214,
+    "title": "\u67e5\u627e\u5143\u7d20(\u7ebf\u6027\u8868)",
+    "description": {
+        "format": "html",
+        "value": "<p>\uff08\u7ebf\u6027\u8868\uff09\u8bd5\u7f16\u5199\u4e00\u4e2a\u7b97\u6cd5\uff0c\u5728\u5e26\u8868\u5934\u7ed3\u70b9\u7684\u5355\u94fe\u8868\u4e2d\u5bfb\u627e\u4e00\u4e2a\u6570\u3002</p>\n<p>\u82e5\u627e\u5230\uff0c\u5219\u51fd\u6570\u8fd4\u56de\u8be5\u6570\u5728\u5217\u8868\u4e2d\u7684\u5730\u5740(i [1~n])\uff1b</p>\n<p>\u82e5\u627e\u4e0d\u5230\uff0c\u5219\u51fd\u6570\u8fd4\u56de0\u3002</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\u7b2c\u4e00\u884c \u539f\u59cb\u6570\u5217\uff1a</p>\n<p>2 3 4 5 6 7 8 9</p>\n<p>\u7b2c\u4e8c\u884c \u9700\u8981\u627e\u7684\u6570\uff1a</p>\n<p>1</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\u627e\u5230\u5219\u8f93\u51fa\u6570\u5728\u6570\u5217\u4e2d\u7684\u4f4d\u7f6e\uff0c\u7b2c\u4e00\u4e2a\u4f4d\u7f6e\u8f93\u51fa1\u4f9d\u6b21\u7c7b\u63a8</p>\n<p>\u82e5\u6ca1\u6709\u627e\u5230\u8f93\u51fa0</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "2 3 4 5 6 7 8 9\n5",
+            "output": "4"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

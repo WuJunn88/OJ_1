@@ -1,0 +1,43 @@
+{
+    "display_id": 1140,
+    "title": "\u540c\u65f6\u88ab3\u30015\u30017\u6574\u9664\u7684\u6570",
+    "description": {
+        "format": "html",
+        "value": "&nbsp;\n<div style=\"vertical-align:baseline;text-align:left;margin-left:0.38in;\">\n\t<span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u6c42</span><span style=\"font-size:18px;font-family:Arial;color:black;\">100000000</span><span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u4ee5\u5185</span><span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u7684\u6574\u6570\u4e2d\uff0c</span><span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u80fd\u540c\u65f6\u88ab</span><span style=\"font-size:18px;font-family:Arial;color:black;\">3</span><span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u3001</span><span style=\"font-size:18px;font-family:Arial;color:black;\">5</span><span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u3001</span><span style=\"font-size:18px;font-family:Arial;color:black;\">7</span><span style=\"font-size:18px;font-family:\u5b8b\u4f53;color:black;\">\u6574\u9664\u7684\u6570\u4e2d\u6700\u5927\u7684\u90a3\u4e00\u4e2a\u3002</span> \n</div>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "\u65e0"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}

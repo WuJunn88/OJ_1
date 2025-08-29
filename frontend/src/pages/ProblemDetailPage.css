@@ -375,19 +375,6 @@
   margin-top: 2px;
   order: -1;
 }
-/* 隐藏原生单选/复选圆点，保留可点击区域 */
-.option-item input[type="radio"],
-.option-item input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* 为选项文本留出空间并展示自定义视觉（可后续扩展） */
-.option-item .option-label,
-.option-item .option-text {
-  padding-left: 0;
-}
 
 .option-text {
   font-size: 16px;
@@ -398,6 +385,7 @@
   margin-left: 0;
   padding-left: 0;
   order: 1;
+  align-items: flex-start;
 }
 
 .option-text strong {
@@ -542,4 +530,59 @@
     padding: 12px;
     font-size: 14px;
   }
+}
+
+/* 测试用例显示样式 */
+.test-cases-container {
+  margin-top: 20px;
+}
+
+.test-case-item {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.test-case-header h4 {
+  margin: 0 0 15px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.test-case-input,
+.test-case-output {
+  margin-bottom: 15px;
+}
+
+.test-case-input:last-child,
+.test-case-output:last-child {
+  margin-bottom: 0;
+}
+
+.test-case-input strong,
+.test-case-output strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.test-case-input .example-code,
+.test-case-output .example-code {
+  margin: 0;
+  background: white;
+  border: 1px solid #dee2e6;
+}
+
+/* 空输入的特殊样式 */
+.test-case-input .example-code:empty::before {
+  content: "无输入";
+  color: #999;
+  font-style: italic;
 }

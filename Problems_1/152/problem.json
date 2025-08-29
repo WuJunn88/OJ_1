@@ -1,0 +1,43 @@
+{
+    "display_id": 1187,
+    "title": "\u53cd\u5e8f\u6570",
+    "description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u8bbeN\u662f\u4e00\u4e2a\u56db\u4f4d\u6570\uff0c\u5b83\u76849\u500d\u6070\u597d\u662f\u5176\u53cd\u5e8f\u6570\uff08\u4f8b\u5982\uff1a1234\u7684\u53cd\u5e8f\u6570\u662f4321\uff09</span><br />\n<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u6c42N\u7684\u503c</span>\n</p>"
+    },
+    "tags": [
+        "FATE_YO"
+    ],
+    "input_description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u7a0b\u5e8f\u65e0\u4efb\u4f55\u8f93\u5165\u6570\u636e\u3002</span>\n</p>"
+    },
+    "output_description": {
+        "format": "html",
+        "value": "<p>\n\t<span style=\"color:#333333;font-family:'MicroSoft Yahei', Helvetica, Arial, Georgia, Simsun;font-size:14px;line-height:25px;\">\u8f93\u51fa\u9898\u76ee\u8981\u6c42\u7684\u56db\u4f4d\u6570\uff0c\u5982\u679c\u7ed3\u679c\u6709\u591a\u7ec4\uff0c\u5219\u6bcf\u7ec4\u7ed3\u679c\u4e4b\u95f4\u4ee5\u56de\u8f66\u9694\u5f00\u3002</span>\n</p>"
+    },
+    "test_case_score": [
+        {
+            "score": 100,
+            "input_name": "1.in",
+            "output_name": "1.out"
+        }
+    ],
+    "hint": {
+        "format": "html",
+        "value": ""
+    },
+    "time_limit": 1000,
+    "memory_limit": 256,
+    "samples": [
+        {
+            "input": "\u65e0",
+            "output": "\u65e0"
+        }
+    ],
+    "template": {},
+    "spj": null,
+    "rule_type": "ACM",
+    "source": "FATE_YO",
+    "answers": []
+}
