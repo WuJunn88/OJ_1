@@ -11,6 +11,7 @@ const TeacherDashboardPage = () => {
   const [activeSubTab, setActiveSubTab] = useState('list'); // 子标签页
   const [users, setUsers] = useState([]);
   const [problems, setProblems] = useState([]);
+  const [allProblems, setAllProblems] = useState([]);
   const [schools, setSchools] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [majors, setMajors] = useState([]);
@@ -201,6 +202,20 @@ const TeacherDashboardPage = () => {
 
   useEffect(() => {
     fetchInitialData();
+  }, []);
+
+  // 单独获取完整题库用于作业选题（不受分页限制）
+  useEffect(() => {
+    (async () => {
+      try {
+        const all = await getProblems(1, 9999, '', true);
+        if (all && all.problems) {
+          setAllProblems(all.problems);
+        }
+      } catch (e) {
+        console.warn('获取全部题目失败:', e);
+      }
+    })();
   }, []);
 
   // 滚动监听和动画触发
@@ -779,6 +794,15 @@ const TeacherDashboardPage = () => {
       setTotalProblems(problemsData.total);
       setTotalPages(problemsData.pages);
       setCurrentPage(1);
+      // 同步刷新完整题库，确保作业选题可见最新题目
+      try {
+        const all = await getProblems(1, 9999, '', true);
+        if (all && all.problems) {
+          setAllProblems(all.problems);
+        }
+      } catch (e) {
+        console.warn('刷新完整题库失败:', e);
+      }
       
       // 切换到题目列表
       setActiveSubTab('list');
@@ -885,6 +909,15 @@ const TeacherDashboardPage = () => {
       setTotalProblems(problemsData.total);
       setTotalPages(problemsData.pages);
       setCurrentPage(1);
+      // 同步刷新完整题库，确保作业选题从allProblems中剔除已删除题
+      try {
+        const all = await getProblems(1, 9999, '', true);
+        if (all && all.problems) {
+          setAllProblems(all.problems);
+        }
+      } catch (e) {
+        console.warn('刷新完整题库失败:', e);
+      }
     } catch (error) {
       setError(error.response?.data?.error || '删除题目失败');
     } finally {
@@ -2670,7 +2703,7 @@ const TeacherDashboardPage = () => {
                     </div>
                     
                     <div className="problem-selection">
-                      {problems.map(problem => (
+                      {(allProblems.length > 0 ? allProblems : problems).map(problem => (
                         <label key={problem.id} className="problem-checkbox">
                           <input 
                             type="checkbox" 
@@ -3545,7 +3578,8 @@ const TeacherDashboardPage = () => {
                     <h5>🎯 AI选题结果</h5>
                     <div className="ai-selected-problems">
                       {aiSelectedProblems.map((selected, index) => {
-                        const problem = problems.find(p => p.id === selected.problem_id);
+                        const sourceList = allProblems.length > 0 ? allProblems : problems;
+                        const problem = sourceList.find(p => p.id === selected.problem_id);
                         return problem ? (
                           <div key={selected.problem_id} className="ai-selected-problem">
                             <div className="problem-info">
@@ -3579,7 +3613,7 @@ const TeacherDashboardPage = () => {
               </div>
               
               <div className="problem-selection">
-                {problems.map(problem => (
+                {(allProblems.length > 0 ? allProblems : problems).map(problem => (
                   <label key={problem.id} className="problem-checkbox">
                     <input 
                       type="checkbox" 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getTeacherCourses, getCourseAssignments, getCourseStudents, getProblems, getAssignmentCompletionStatus } from '../services/api';
+import { getTeacherCourses, getCourseAssignments, getCourseStudents, getProblems, getAssignmentCompletionStatus, getProblem } from '../services/api';
 import './StudentDashboardPage.css';
 import WhaleIcon from '../components/WhaleIcon';
 const StudentDashboardPage = () => {
@@ -175,41 +175,31 @@ const StudentDashboardPage = () => {
     try {
       setViewingAssignment(assignment);
       
-      // 获取作业包含的题目详情
+      // 获取作业包含的题目详情（按ID逐个获取，避免分页影响）
       if (assignment.problem_ids && assignment.problem_ids.length > 0) {
         try {
-          // 调用API获取题目详情
-          const problemsData = await getProblems(1, 100); // 获取前100个题目
-          if (problemsData && problemsData.problems) {
-            // 过滤出作业中包含的题目
-            const assignmentProblemsList = problemsData.problems.filter(problem => 
-              assignment.problem_ids.includes(problem.id)
-            );
-            
-            // 转换为需要的格式
-            const formattedProblems = assignmentProblemsList.map(problem => ({
-              id: problem.id,
-              title: problem.title || `题目 ${problem.id}`,
-              description: problem.description || `这是作业"${assignment.name}"中的题目`,
-              difficulty: problem.difficulty || '未知',
-              type: problem.type || '未知类型'
-            }));
-            
-            setAssignmentProblems(formattedProblems);
-            console.log(`获取到作业"${assignment.name}"的题目:`, formattedProblems);
-          } else {
-            // 如果API调用失败，使用题目ID作为备选
-            const formattedProblems = assignment.problem_ids.map((pid, idx) => ({
-              id: pid,
-              title: `题目 ${idx + 1}`,
-              description: `这是作业"${assignment.name}"中的题目`,
-              difficulty: '未知',
-              type: '未知类型'
-            }));
-            setAssignmentProblems(formattedProblems);
-          }
+          const fetched = await Promise.all(
+            assignment.problem_ids.map(async (pid) => {
+              try {
+                const p = await getProblem(pid);
+                return p;
+              } catch (e) {
+                return null;
+              }
+            })
+          );
+          const validProblems = fetched.filter(Boolean);
+          const formattedProblems = validProblems.map(problem => ({
+            id: problem.id,
+            title: problem.title || `题目 ${problem.id}`,
+            description: problem.description || `这是作业"${assignment.name}"中的题目`,
+            difficulty: problem.difficulty || '未知',
+            type: problem.type || '未知类型'
+          }));
+          setAssignmentProblems(formattedProblems);
+          console.log(`获取到作业"${assignment.name}"的题目:`, formattedProblems);
         } catch (error) {
-          console.warn('获取题目详情失败，使用备选数据:', error);
+          console.warn('按ID获取题目详情失败，使用备选数据:', error);
           const formattedProblems = assignment.problem_ids.map((pid, idx) => ({
             id: pid,
             title: `题目 ${idx + 1}`,
